@@ -1,0 +1,44 @@
+•• P21.7 Write a program to display the protocol, host, port, and file components of a URL. Hint: Look at the API documentation of the URL 
+class.
+========================================================================================
+solution
+=====
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
+public class URLGet
+{
+	public static void main(String[] args) throws IOException
+	{
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("enter the URL: ");
+		String urlString = in.next();
+		
+		URL u = new URL(urlString);
+		URLConnection connection = u.openConnection();
+		
+		System.out.println("protocol: " + u.getProtocol());
+		
+		System.out.println("port: " + u.getPort());
+		
+		System.out.println("host: " + u.getHost());
+		
+		System.out.println("file components: " + u.getFile());
+				
+	}
+}
+========================================================================================
+sample output
+=========
+
+enter the URL: 
+https://www.englishclub.com/vocabulary/world-countries-nationality.htm
+protocol: https
+port: -1
+host: www.englishclub.com
+file components: /vocabulary/world-countries-nationality.htm
+
+========================================================================================

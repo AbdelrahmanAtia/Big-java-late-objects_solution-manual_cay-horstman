@@ -1,0 +1,100 @@
+••• P21.12 A page such as
+
+http://www.infoplease.com/ipa/A0004379.html
+
+contains information about a country. Write a program that asks the user for a country name and then prints the area and population.
+========================================================================================
+solution
+=====
+
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
+public class URLGet
+{
+	public static void main(String[] args) throws IOException
+	{
+		Scanner clientInput = new Scanner(System.in);
+		
+		System.out.println("enter the country name: ");
+		String countryName = clientInput.next();
+		
+		String urlString;
+		urlString = "http://www.infoplease.com/ipa/A0004379.html";
+		System.out.println("Using " + urlString);
+	
+		// Open connection
+		
+		URL u = new URL(urlString);
+		URLConnection connection = u.openConnection();
+		
+		// Check if response code is HTTP_OK (200)
+		
+		HttpURLConnection httpConnection = (HttpURLConnection) connection;
+		
+		int code = httpConnection.getResponseCode();
+		String message = httpConnection.getResponseMessage();
+		
+		System.out.println(code + " " + message);
+		
+		if (code != HttpURLConnection.HTTP_OK)
+		{
+			return;
+		}
+		
+		// Read server response
+		InputStream instream = connection.getInputStream();
+		Scanner in = new Scanner(instream);
+		
+		char ch = '"';
+		
+		String target1 ="<td><div align=" +ch +"left"+ch + ">";
+		String target2 = "</div></td>";
+		String replacement = "";
+				
+		
+		while (in.hasNextLine())
+		{
+			String input = in.nextLine();
+
+			if(input.contains(countryName))
+			{
+				String population = in.nextLine();
+				
+				population = population.replace(target1, replacement);
+				population = population.replace(target2, replacement);
+				population = population.trim();
+
+				System.out.println("population= " + population);
+				
+				String area = in.nextLine();
+				
+				area = area.replace(target1, replacement);
+				area = area.replace(target2, replacement);
+				area = area.trim();
+				
+				System.out.println("area= " + area);		
+				
+				break;
+			}
+		}
+	}
+}
+
+========================================================================================
+sample input
+========
+enter the country name: 
+Egypt
+
+sample output
+=========
+Using http://www.infoplease.com/ipa/A0004379.html
+200 OK
+population= 82,079,636
+area= 386,660
+========================================================================================

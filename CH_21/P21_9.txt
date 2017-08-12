@@ -1,0 +1,210 @@
+••• P21.9 Write a chat server and client program. The chat server accepts connections from clients. Whenever one of the clients sends a 
+
+chat message, it is displayed for all other clients to see. Use a protocol with three commands: LOGIN name, CHAT message, and LOGOUT.
+========================================================================================
+solution
+=====
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server 
+{
+	public static void main(String [] args) throws IOException
+	{
+		final int PORT_NUM = 8080;
+		ServerSocket server = new ServerSocket(PORT_NUM);
+		Clients clients = new Clients();
+		
+		System.out.println("waiting for clients to connect ...");
+		while(true)
+		{
+			Socket s = server.accept();
+			clients.addSocket(s);
+			System.out.println("Client Connected");
+			ClientService service = new ClientService(clients , s);
+			Thread t= new Thread(service);
+			t.start();
+		}
+	}
+}
+========================================================================================
+import java.net.Socket;
+import java.util.ArrayList;
+
+/**
+ * this class contains all the server sockets connected to all 
+ * available clients
+ */
+public class Clients 
+{
+	private ArrayList <Socket> sockets;
+	
+	public Clients()
+	{
+		sockets = new ArrayList<>();
+	}
+	
+	public void addSocket(Socket s)
+	{
+		sockets.add(s);
+	}
+	
+	public ArrayList<Socket> getSockets()
+	{
+		return sockets;
+	}
+}
+========================================================================================
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class ClientService implements Runnable
+{
+	private Clients clients;
+	private Socket s;
+	private Scanner in;
+	private PrintWriter out;
+	private boolean loggedIn ;
+	private String name;
+
+	public ClientService(Clients clients , Socket aSocket) 
+	{
+		this.clients = clients;
+		s = aSocket;
+		loggedIn = false;
+	}
+
+	public void run()
+	{
+		try
+		{
+			try
+			{
+				out = new PrintWriter(s.getOutputStream());
+				in = new Scanner(s.getInputStream());
+				doService();
+			}
+			finally
+			{
+				s.close();
+			}
+		}
+		catch (IOException exception)
+		{
+			exception.printStackTrace();
+		}
+	}
+	
+	public void doService() throws IOException
+	{
+		while(true)
+		{
+			String command = in.next();
+			if(command.equals("LOGIN"))
+			{
+				name = in.next();
+				loggedIn = true;
+			}
+			else if(command.equals("CHAT") && loggedIn)
+			{
+				String message = in.nextLine();
+				for(Socket s : clients.getSockets())
+				{
+					out = new PrintWriter(s.getOutputStream());
+					out.println(name + ": " + message);
+					out.flush();
+				}
+			}
+			else if(command.equals("LOGOUT"))
+			{
+				loggedIn = false;
+			}
+			else
+				System.out.println("invalid command");
+
+		}
+	}
+}
+========================================================================================
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class Client 
+{
+	public static void main(String [] args) throws IOException
+	{
+		final int PORT_NUMBER = 8080;
+		Socket s = new Socket("localhost" , PORT_NUMBER);
+		
+		InputStream inStream = s.getInputStream();
+		OutputStream outStream = s.getOutputStream();
+		
+		final Scanner in = new Scanner(inStream);
+		final PrintWriter out = new PrintWriter(outStream);
+		
+		final Scanner clientInput = new Scanner(System.in);
+		
+		class Send implements Runnable
+		{
+
+			@Override
+			public void run() 
+			{
+				while(true)
+				{
+					String command = clientInput.nextLine();
+					out.println(command);
+					out.flush();
+				}
+			}
+			
+		}
+		class Receive implements Runnable
+		{
+
+			public void run() 
+			{
+				while(true)
+				{
+					String response = in.nextLine();
+					System.out.println(response);
+				}
+			}
+		}
+		
+		Thread t1 = new Thread(new Send());
+		Thread t2 = new Thread(new Receive());
+		
+		t1.start();
+		t2.start();
+			
+	}
+}
+========================================================================================
+sample output
+=========
+LOGIN amr
+CHAT hi ali
+amr:  hi ali
+ali:  hi amr, how are u??
+LOGOUT
+====================
+LOGIN ali
+amr:  hi ali
+CHAT hi amr, how are u??
+ali:  hi amr, how are u??
+LOGOUT
+====================
+waiting for clients to connect ...
+Client Connected
+Client Connected
+========================================================================================

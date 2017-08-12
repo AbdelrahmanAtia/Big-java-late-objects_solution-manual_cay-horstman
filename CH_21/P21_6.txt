@@ -1,0 +1,106 @@
+•• P21.6 Implement a client-server program in which the client will print the date and time given by the server. Two classes should be 
+
+implemented: DateClient and DateServer. The DateServer simply prints new Date().toString() whenever it accepts a connection and then 
+
+closes the socket.
+====================================================================================================
+solution
+=====
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+public class DateClient 
+{
+	public static void main(String [] args) throws UnknownHostException, IOException
+	{
+		final int PORT_NUMBER = 888;
+		Socket s = new Socket("localhost" , PORT_NUMBER);
+		
+		InputStream inStream = s.getInputStream();
+		OutputStream outStream = s.getOutputStream();
+		
+		Scanner in = new Scanner(inStream);
+		PrintWriter out = new PrintWriter(outStream);
+		
+		System.out.print(in.nextLine());
+		s.close();
+	}
+}
+======================================================================================================
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Date;
+import java.util.Scanner;
+
+public class ClientService implements Runnable
+{
+	private Socket s;
+	private Scanner in;
+	private PrintWriter out;
+
+	public ClientService(Socket aSocket) 
+	{
+		s = aSocket;
+	}
+
+	public void run()
+	{
+		try
+		{
+			try
+			{
+				in = new Scanner(s.getInputStream());
+				out = new PrintWriter(s.getOutputStream());
+				doService();
+			}
+			finally
+			{
+				s.close();
+			}
+		}
+		catch (IOException exception)
+		{
+			exception.printStackTrace();
+		}
+	}
+	
+	public void doService() throws IOException
+	{
+			out.println(new Date().toString());
+			out.flush();
+	}
+}
+===================================================================================================
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class DateServer 
+{
+	public static void main(String [] args) throws IOException
+	{
+		final int PORT_NUMBER = 888;
+		ServerSocket server = new ServerSocket(PORT_NUMBER);
+		System.out.println("waiting for clients to connect ...");
+
+		while(true)
+		{
+			Socket s = server.accept();
+			ClientService service = new ClientService(s);
+			Thread t = new Thread(service);
+			t.start();			
+		}
+	}
+}
+====================================================================================================
+output
+=======
+Sat Aug 12 20:32:33 EET 2017
+====================================================================================================
