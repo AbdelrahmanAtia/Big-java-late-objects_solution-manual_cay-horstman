@@ -1,0 +1,153 @@
+••• P 20.3 Implement a Queue class whose add and remove methods are synchronized. Supply one thread, called the producer, which 
+
+keeps inserting strings into the queue as long as there are fewer than 10 elements in it. When the queue gets too full, the thread waits.
+
+As sample strings, simply use time stamps new Date().toString(). Supply a second thread, called the consumer, that keeps removing and 
+
+printing strings from the queue as long as the queue is not empty. When the queue is empty, the thread waits. Both the consumer and 
+
+producer threads should run for 100 iterations.
+========================================================================================
+solution
+---------
+
+import java.util.LinkedList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Queue 
+{
+	private LinkedList <Object> l;
+	private Lock queueChangeLock;
+	private Condition notEmptyCondition;
+	private Condition notFullCondition;
+	
+	public Queue()
+	{
+		l = new LinkedList<>();
+		queueChangeLock = new ReentrantLock();
+		notEmptyCondition = queueChangeLock.newCondition();
+		notFullCondition = queueChangeLock.newCondition();
+	}
+	
+	public void add(Object element) throws InterruptedException
+	{
+		queueChangeLock.lock();
+		try
+		{
+			while(l.size() >= 10)
+			{
+				notFullCondition.await();
+			}
+			l.addFirst(element);
+			System.out.println("added element = " + element);
+			notEmptyCondition.signalAll();
+		}
+		finally
+		{
+			queueChangeLock.unlock();
+		}
+	}
+	public Object remove() throws InterruptedException
+	{
+		queueChangeLock.lock();
+		try
+		{
+			while(l.isEmpty())
+			{
+				notEmptyCondition.await();
+			}
+			
+			Object data = l.removeLast();
+			System.out.println("removed element = " + data);
+			
+			if(l.size() < 10  )
+				notFullCondition.signalAll();
+				
+			return data;
+		}
+		finally
+		{
+			queueChangeLock.unlock();
+		}
+	}	
+}
+
+========================================================================================
+
+import java.util.Date;
+public class AddRunner implements Runnable
+{
+	
+	private Queue q;
+	private int iterations;
+
+	public AddRunner(Queue q ,  int iterations)
+	{
+		this.q = q;
+		this.iterations = iterations;
+	}
+
+	public void run() 
+	{
+		try
+		{
+			for(int i = 0 ; i < iterations ; i++)
+			{
+				q.add(new Date().toString());
+				Thread.sleep(100);
+			}
+		}
+		catch(InterruptedException e)
+		{
+		}
+	}
+}
+========================================================================================
+public class RemoveRunner implements Runnable
+{
+	private Queue q;
+	private int iterations;
+	
+	public RemoveRunner(Queue q , int iterations)
+	{
+		this.q = q;
+		this.iterations = iterations;
+	}
+
+	public void run() 
+	{
+		try
+		{
+			for(int i = 0 ; i < iterations ; i++)
+			{
+				q.remove();
+				Thread.sleep(100);
+			}
+		}
+		catch(InterruptedException e)
+		{
+		}
+	}
+}
+========================================================================================
+public class QueueThreadRunner 
+{
+	public static void main(String [] args)
+	{
+		Queue q = new Queue();
+		final int ITERATIONS = 100;
+		
+		AddRunner r1 = new AddRunner(q , ITERATIONS);
+		RemoveRunner r2 = new RemoveRunner(q , ITERATIONS);
+		
+		Thread producer = new Thread(r1);
+		Thread consumer = new Thread(r2);
+		
+		producer.start();
+		consumer.start();
+		
+	}
+}
+========================================================================================

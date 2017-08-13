@@ -1,0 +1,232 @@
+•• P 20.2 Implement a stack as a linked list in which the push, pop, and isEmpty methods can be safely accessed from multiple threads.
+========================================================================================
+solution
+----------
+
+import java.util.LinkedList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+ public class Stack
+ {
+	 private LinkedList <Object>linkedList;
+	 private Lock stackChangeLock;
+	 private Condition notEmptyCondition;
+	
+	 /**
+	 Constructs an empty stack.
+	 */
+	 public Stack()
+	 {
+		 linkedList = new LinkedList<>();
+		 stackChangeLock = new ReentrantLock();
+		 notEmptyCondition = stackChangeLock.newCondition();
+	 }
+	
+	 /**
+	 Adds an element to the top of the stack.
+	 @param element the element to add
+	 */
+	 public void push(Object element)
+	 {
+		 stackChangeLock.lock();
+		 try
+		 {
+			linkedList.addFirst(element);
+			 System.out.println("pushed element = " + element);
+			 notEmptyCondition.signalAll();
+		 }
+		 finally
+		 {
+			 stackChangeLock.unlock();
+		 }
+		
+	 }
+	
+	 /**
+	 Removes the element from the top of the stack.
+	 @return the removed element
+	 * @throws InterruptedException 
+	 */
+	 public Object pop() throws InterruptedException
+	 {
+		 stackChangeLock.lock();
+		 try
+		 {
+			 while (linkedList.isEmpty()) 
+			 {
+				 notEmptyCondition.await();
+			 }
+			
+			 Object element = linkedList.removeFirst();
+			 System.out.println("popped element = " + element);
+			 
+			 return element; 
+		 }
+		 finally
+		 {
+			 stackChangeLock.unlock();
+		 }
+		 
+	 }
+	
+	 /**
+	 Checks whether this stack is empty.
+	 @return true if the stack is empty
+	 */
+	 public boolean isEmpty()
+	 {
+		 stackChangeLock.lock();
+		 try
+		 {
+			 if(linkedList.isEmpty())
+			 {
+				 System.out.println("stack is empty");
+				 return true;
+			 }
+			 else
+			 {
+				 System.out.println("stack is not empty");
+				 return false;
+			 }
+			 
+		 }
+		 finally
+		 {
+			 stackChangeLock.unlock();
+		 }
+	 }
+}
+========================================================================================
+
+public class PushRunnable implements Runnable
+{
+	private Stack s;
+	private static final int DELAY = 5;
+	public PushRunnable(Stack  stack)
+	{
+		s = stack;
+	}
+
+	public void run() 
+	{
+		try 
+		{
+			for(int i = 0 ; i < 10 ; i++)
+			{
+				s.push(i);
+				Thread.sleep(DELAY);
+			}
+		} 
+		catch (InterruptedException e) 
+		{
+		}
+	}
+}
+========================================================================================
+
+public class PopRunnable implements Runnable
+{
+	private Stack s;
+	private static final int DELAY = 5;
+	public PopRunnable(Stack  stack)
+	{
+		s = stack;
+	}
+
+	public void run() 
+	{
+		try 
+		{
+			for(int i = 0 ; i < 10 ; i++)
+			{
+				s.pop();
+				Thread.sleep(DELAY);
+			}
+		} 
+		catch (InterruptedException e) 
+		{
+		}
+	}
+}
+========================================================================================
+
+public class IsEmptyRunnable implements Runnable
+{
+	private Stack s;
+	private static final int DELAY = 5;
+	public IsEmptyRunnable(Stack  stack)
+	{
+		s = stack;
+	}
+
+	public void run() 
+	{
+		try 
+		{
+			for(int i = 0 ; i < 10 ; i++)
+			{
+				s.isEmpty();
+				Thread.sleep(DELAY);
+			}
+		} 
+		catch (InterruptedException e) 
+		{
+		}
+	}
+}
+========================================================================================
+
+public class ThreadRunner 
+{
+	public static void main(String [] args)
+	{
+		Stack s = new Stack();
+		
+		PushRunnable r1 = new PushRunnable(s);
+		PopRunnable r2 = new PopRunnable(s);
+		IsEmptyRunnable r3 = new IsEmptyRunnable(s);
+		
+		Thread t1 = new Thread(r1);
+		Thread t2 = new Thread(r2);
+		Thread t3 = new Thread(r3);
+		
+		t1.start();
+		t2.start();
+		t3.start();
+		
+	}
+}
+========================================================================================
+pushed element = 0
+stack is not empty
+popped element = 0
+stack is empty
+pushed element = 1
+popped element = 1
+stack is empty
+pushed element = 2
+popped element = 2
+stack is empty
+pushed element = 3
+popped element = 3
+stack is empty
+pushed element = 4
+popped element = 4
+pushed element = 5
+stack is not empty
+popped element = 5
+stack is empty
+pushed element = 6
+popped element = 6
+pushed element = 7
+popped element = 7
+stack is empty
+stack is empty
+pushed element = 8
+popped element = 8
+pushed element = 9
+stack is not empty
+popped element = 9
+========================================================================================

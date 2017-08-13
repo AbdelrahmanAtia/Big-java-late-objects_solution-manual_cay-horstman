@@ -1,0 +1,56 @@
+•• P 20.7 Write a program WordCount that counts the words in one or more files. Start a new thread for each file. For example, if you call
+
+java WordCount report.txt address.txt Homework.java
+
+then the program might print
+
+address.txt: 1052
+Homework.java: 445
+report.txt: 2099
+========================================================================================
+solution
+---------
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class FileRunnable implements Runnable
+{
+	private String str;
+	private Scanner in;
+	private int count;
+	
+	public FileRunnable(String str) throws FileNotFoundException
+       	{
+		this.str = str;
+		in = new Scanner(new File(str));
+		count = 0;
+	}
+	public void run()
+	{
+		while(in.hasNext())
+		{
+			count++;
+			in.next();
+		}
+		System.out.println(str+": "+ count);
+		in.close();
+	}
+}
+========================================================================================
+import java.io.FileNotFoundException;
+
+public class WordCount 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		
+		for(int i = 0; i < args.length ; i++)
+		{
+			FileRunnable r = new FileRunnable(args[i]);		
+			Thread t= new Thread(r);
+			t.start();
+		}
+	}
+}
+========================================================================================

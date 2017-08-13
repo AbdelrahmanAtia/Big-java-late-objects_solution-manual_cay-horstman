@@ -1,0 +1,216 @@
+••• Graphics P 20.19 Reorganize the code of the sorting animation in Section 20.6 so that it can be used for generic animations. Provide a 
+class Animated with abstract methods
+
+public void run()
+public void draw(Graphics g, int width, int height)
+
+and concrete methods
+
+public void lock()
+public void unlock(int steps)
+public void setComponent(JComponent component)
+
+so that the SelectionSorter can be implemented as
+
+public class SelectionSorter extends Animated
+{
+	private int[] a;
+	private int markedPosition = -1;
+	private int alreadySorted = -1;
+	public SelectionSorter(int[] anArray) { a = anArray; }
+	public void run()
+	{
+		for (int i = 0; i < a.length - 1; i++)
+		{
+			int minPos = minimumPosition(i);
+			lock();
+			ArrayUtil.swap(a, minPos, i);
+			alreadySorted = i;
+			unlock(2);
+		}
+	}
+	private int minimumPosition(int from)
+	{
+		int minPos = from;
+		for (int i = from + 1; i < a.length; i++)
+		{
+			lock();
+			if (a[i] < a[minPos]) { minPos = i; }
+			markedPosition = i;
+			unlock(2);
+		}
+		return minPos;
+	}
+	public void draw(Graphics g, int width, int height)
+	{
+		int deltaX = width / a.length;
+		for (int i = 0; i < a.length; i++)
+		{
+			if (i == markedPosition) { g.setColor(Color.RED); }
+			else if (i <= alreadySorted) { g.setColor(Color.BLUE); }
+			else { g.setColor(Color.BLACK); }
+			g.drawLine(i * deltaX, 0, i * deltaX, a[i]);
+		}
+	}
+}
+
+The remaining classes should be independent of any particular animation.
+========================================================================================
+solution
+----------
+
+import java.awt.Graphics;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.swing.JComponent;
+
+public abstract class Animated 
+{
+	private Lock sortStateLock = new ReentrantLock();
+	
+	 // The component is repainted when the animation is paused
+	private JComponent component;
+	private static final int DELAY = 100;
+	
+	
+	public abstract void run() throws InterruptedException;
+	public abstract void draw(Graphics g, int width, int height);
+	
+	public void lock()
+	{
+		sortStateLock.lock();
+	}
+	public void unlock(int steps) throws InterruptedException
+	{
+		sortStateLock.unlock();
+		component.repaint();
+		Thread.sleep(steps * DELAY);
+	}
+	public void setComponent(JComponent component)
+	{
+		this.component = component;
+	}
+
+}
+========================================================================================
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class SelectionSorter_P20_19 extends Animated
+{
+	private int[] a;
+	private int markedPosition = -1;
+	private int alreadySorted = -1;
+	public SelectionSorter_P20_19(int[] anArray) { a = anArray; }
+	public void run() throws InterruptedException
+	{
+		for (int i = 0; i < a.length - 1; i++)
+		{
+			int minPos = minimumPosition(i);
+			lock();
+			ArrayUtil.swap(a, minPos, i);
+			alreadySorted = i;
+			unlock(2);
+		}
+	}
+	private int minimumPosition(int from) throws InterruptedException
+	{
+		int minPos = from;
+		for (int i = from + 1; i < a.length; i++)
+		{
+			lock();
+			if (a[i] < a[minPos]) { minPos = i; }
+			markedPosition = i;
+			unlock(2);
+		}
+		return minPos;
+	}
+	public void draw(Graphics g, int width, int height)
+	{
+		int deltaX = width / a.length;
+		for (int i = 0; i < a.length; i++)
+		{
+			if (i == markedPosition) { g.setColor(Color.RED); }
+			else if (i <= alreadySorted) { g.setColor(Color.BLUE); }
+			else { g.setColor(Color.BLACK); }
+			g.drawLine(i * deltaX, 0, i * deltaX, a[i]);
+		}
+	}
+}
+========================================================================================
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+/**
+A component that displays the current state of the selection sort algorithm.
+*/
+public class SelectionSortComponent_P20_19 extends JComponent
+{
+	private SelectionSorter_P20_19 sorter;
+	/**
+	Constructs the component.
+	*/
+	public SelectionSortComponent_P20_19()
+	{
+		int[] values = ArrayUtil.randomIntArray(30, 300);
+		sorter = new SelectionSorter_P20_19(values);
+		sorter.setComponent(this);
+	}
+	public void paintComponent(Graphics g)
+	{
+		sorter.draw(g , this.getWidth() , this.getHeight());
+	}
+	/**
+	Starts a new animation thread.
+	*/
+	public void startAnimation()
+	{
+		class AnimationRunnable implements Runnable
+		{
+			public void run()
+			{
+				try
+				{
+					sorter.run();
+				}
+				catch (InterruptedException exception)
+				{
+				}
+			}
+		}
+		Runnable r = new AnimationRunnable();
+		Thread t = new Thread(r);
+		t.start();
+	}
+}
+========================================================================================
+
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+
+public class SelectionSortViewer
+{
+	public static void main(String[] args)
+	{
+		JFrame frame = new JFrame();
+		
+		final int FRAME_WIDTH = 300;
+		final int FRAME_HEIGHT = 400;
+		
+		frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Selection Sort");
+		
+		final SelectionSortComponent_P20_19 component = new SelectionSortComponent_P20_19();
+		
+		frame.add(component, BorderLayout.CENTER);
+		frame.setVisible(true);
+		
+		component.startAnimation();
+	}
+}
+========================================================================================
+>> through this example , you can animate any sorting algorithm easly.
+========================================================================================

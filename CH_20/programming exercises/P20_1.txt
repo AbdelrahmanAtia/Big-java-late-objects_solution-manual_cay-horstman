@@ -1,0 +1,77 @@
+•• P 20.1 Write a program in which multiple threads add and remove elements from a java.util.LinkedList. Demonstrate that the list is being corrupted.
+========================================================================================
+solution
+---------
+
+import java.util.LinkedList;
+public class P20_1 
+{
+	private LinkedList <Integer> a ;
+	private static final int DELAY = 10;
+		
+	public P20_1()
+	{
+		a = new LinkedList<>();
+	}
+	
+	public void runThreads()
+	{
+		class AddRunnable implements Runnable
+		{
+			public void run() 
+			{
+				try
+				{
+					for(int i = 0 ; i < 10 ; i++)
+					{
+						a.addFirst(i);
+						System.out.println("add "+ i);
+						Thread.sleep(DELAY);
+					}
+				}
+				catch(InterruptedException exception)
+				{
+				}
+			}
+		}
+		
+		class RemoveRunnable implements Runnable
+		{
+			public void run() 
+			{
+				try
+				{
+					for(int i = 0 ; i < 10 ; i++)
+					{
+						int removed = a.removeFirst();
+						System.out.println("remove "+ removed);
+						Thread.sleep(DELAY);
+					}
+				}
+				catch(InterruptedException exception)
+				{
+				}
+			}
+		}
+		AddRunnable r1 = new AddRunnable();
+		RemoveRunnable r2 = new RemoveRunnable();
+		
+		Thread t1 = new Thread(r1);
+		Thread t2 = new Thread(r2);
+		
+		t1.start();
+		t2.start();
+	}
+}
+========================================================================================
+public class ArrayThreadRunner {
+
+	public static void main(String[] args) {
+
+		P20_1 x = new P20_1();
+		x.runThreads();
+	}
+}
+========================================================================================
+output will be a NoSuchElementException when it tries to remove an element from the list while it is empty.
+========================================================================================

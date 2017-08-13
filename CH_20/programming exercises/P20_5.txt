@@ -1,0 +1,168 @@
+• P 20.5 Reimplement Exercise P20.4 by using the ArrayBlockingQueue class from the standard library.
+========================================================================================
+solution
+---------
+import java.util.NoSuchElementException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Queue 
+{
+	private ArrayBlockingQueue <Object> l;
+	private Lock queueChangeLock;
+	private Condition notEmptyCondition;
+	private Condition notFullCondition;
+	private static final int CAPACITY = 9;
+	
+	public Queue()
+	{
+		l = new ArrayBlockingQueue<>(CAPACITY , true);
+		queueChangeLock = new ReentrantLock();
+		notEmptyCondition = queueChangeLock.newCondition();
+		notFullCondition = queueChangeLock.newCondition();
+	}
+	
+	public void add(Object element) throws InterruptedException
+	{
+		queueChangeLock.lock();
+		try
+		{
+			l.add(element);
+			System.out.println("added element = " + element);
+			notEmptyCondition.signalAll();
+		}
+		// if the thread attempted to add to the queue when it is full , an                 //IllegalStateException is thrown
+		//so we handle it here by making the thread await
+		catch(IllegalStateException e)
+		{
+			notFullCondition.await();
+		}
+		finally
+		{
+			queueChangeLock.unlock();
+		}
+	}
+	public Object remove() throws InterruptedException
+	{
+		queueChangeLock.lock();
+		try
+		{
+			Object data = l.remove();
+			System.out.println("removed element = " + data);
+			notFullCondition.signalAll();
+			return data;
+		}
+		// if the thread attempted to remove from the queue when it is empty , a                 //NoSuchElementException is thrown
+		//so we handle it here by making the thread await
+		catch(NoSuchElementException e)
+		{
+			notEmptyCondition.await();
+			return null;
+		}
+		
+		finally
+		{
+			queueChangeLock.unlock();
+		}
+	}
+	public boolean isEmpty()
+	{
+		if(l.size() == 0)
+			return true;
+		else
+			return false;
+	}
+}
+========================================================================================
+import java.util.Date;
+public class AddRunner implements Runnable
+{
+	
+	private Queue q;
+	private int iterations;
+
+	public AddRunner(Queue q ,  int iterations)
+	{
+		this.q = q;
+		this.iterations = iterations;
+	}
+
+	public void run() 
+	{
+		try
+		{
+			for(int i = 0 ; i < iterations ; i++)
+			{
+				q.add(new Date().toString());
+				Thread.sleep(10);
+			}
+		}
+		catch(InterruptedException e)
+		{
+		}
+	}
+}
+========================================================================================
+public class RemoveRunner implements Runnable
+{
+	private Queue q;
+	private int iterations;
+	
+	public RemoveRunner(Queue q , int iterations)
+	{
+		this.q = q;
+		this.iterations = iterations;
+	}
+
+	public void run() 
+	{
+		try
+		{
+			for(int i = 0 ; i < iterations ; i++)
+			{
+				q.remove();
+				Thread.sleep(10);
+			}
+		}
+		catch(InterruptedException e)
+		{
+		}
+	}
+}
+========================================================================================
+import java.util.Scanner;
+public class QueueThreadRunner 
+{
+	public static void main(String [] args) throws InterruptedException
+	{
+		
+		Queue q = new Queue();
+		final int ITERATIONS = 100;
+		
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("enter the number of producer threads: ");
+		int producerNum = in.nextInt();
+		
+		System.out.println("enter the number of consumer  threads: ");
+		int consumerNum = in.nextInt();
+		
+		
+		for(int i = 0 ; i < producerNum ; i++)
+		{
+			AddRunner r1 = new AddRunner(q , ITERATIONS);
+			Thread producer = new Thread(r1);
+			producer.start();
+		}
+		
+		for(int i = 0 ; i < consumerNum ; i++)
+		{
+			RemoveRunner r2 = new RemoveRunner(q , ITERATIONS);
+			Thread consumer = new Thread(r2);
+			consumer.start();
+		}	
+	}
+}
+========================================================================================

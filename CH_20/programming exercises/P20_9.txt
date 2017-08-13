@@ -1,0 +1,58 @@
+•• P 20.9 Write a program Find that searches all files specified on the command line and prints out all lines containing a reserved word. 
+Start a new thread for each file. For example, if you call
+
+java Find Buff report.txt address.txt Homework.java
+
+then the program might print
+
+report.txt: Buffet style lunch will be available at the
+address.txt: Buffet, Warren|11801 Trenton Court|Dallas|TX
+Homework.java: BufferedReader in;
+address.txt: Walters, Winnie|59 Timothy Circle|Buffalo|MI
+========================================================================================
+solution
+---------
+
+import java.io.FileNotFoundException;
+public class Find 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		String reservedWord = args[0];
+		for(int i =1 ; i < args.length ; i++)
+		{
+			FileRunnable r = new FileRunnable(reservedWord , args[i]);
+			Thread t = new Thread(r);
+			t.start();
+		}
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class FileRunnable implements Runnable
+{
+	private String reservedWord;
+	private String fileName;
+	private Scanner in;
+	
+	public FileRunnable(String reservedWord , String fileName) throws FileNotFoundException
+             {
+		this.fileName = fileName;
+		this.reservedWord = reservedWord;
+		in = new Scanner(new File(fileName));
+	}
+	public void run()
+	{
+		while(in.hasNextLine())
+		{
+			String line = in.nextLine();
+			if(line.contains(reservedWord))
+				System.out.println(fileName +": "  + line);
+		}
+		in.close();
+	}
+}
+========================================================================================

@@ -1,0 +1,215 @@
+••• Graphics P 20.17 Implement an animation of the merge sort algorithm of Chapter 14. Reimplement the algorithm so that the recursive calls sort the elements inside a subrange of the original array, rather than in their own arrays:
+
+public void mergeSort(int from, int to)
+{
+    if (from == to) { return; }
+    int mid = (from + to) / 2;
+    mergeSort(from, mid);
+    mergeSort(mid + 1, to);
+    merge(from, mid, to);
+}
+
+The merge method merges the sorted ranges a[from] . . . a[mid] and a[mid + 1] . . . a[to]. Merge the ranges into a temporary array, then copy back the temporary array into the combined range. Pause in the merge method whenever you inspect an array element. Color the range a[from] . . . a[to] in blue and the currently inspected element in red.
+========================================================================================
+solution
+----------
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.swing.JComponent;
+
+public class MergeSorter
+{
+	private int[] a;
+	
+	private int markedPosition = -1;
+	private int alreadySorted = -1;
+	
+	private Lock sortStateLock;
+	
+	private JComponent component;
+	
+	private static final int DELAY = 5;
+	
+	public MergeSorter (int[] anArray, JComponent aComponent)
+	{
+		 a = anArray;
+		 sortStateLock = new ReentrantLock();
+		 component = aComponent;
+	}
+	
+	public void mergeSort(int from, int to) throws InterruptedException
+	{
+	    if (from == to) { return; }
+	    int mid = (from + to) / 2;
+	    mergeSort(from, mid);
+	    mergeSort(mid + 1, to);
+	    merge(from, mid, to);
+	}
+	
+	private void merge(int from,int mid,int to) throws InterruptedException
+	{
+		 int iFirst = from; // Next element to consider in the first array
+		 int iSecond = mid + 1;; // Next element to consider in the second array
+		 int j = 0; // Next open position in a
+		 int [] b = new int[a.length];
+		
+		 // As long as neither iFirst past mid nor iSecond past to move
+		 // the smaller element into b
+		 while (iFirst <= mid && iSecond <= to)
+		 {
+			 if (a[iFirst] < a[iSecond])
+			 {
+				 b[j] = a[iFirst];
+				 iFirst++;
+			 }
+			 else
+			 {
+				 b[j] = a[iSecond];
+				 iSecond++;
+			 }
+			 j++;
+		  }
+		 
+		  // Note that only one of the two loops below copies entries
+		  // Copy any remaining entries before the mid
+		  while (iFirst <= mid)
+		  {
+			  b[j] = a[iFirst];
+			  iFirst++; j++;
+		  }
+		  // Copy any remaining entries before the "to"
+		  while (iSecond <= to)
+		  {
+			  b[j] = a[iSecond];
+			  iSecond++; j++;
+		  }
+		  
+		  //copy the array b into a
+		  int s = 0; // to  visit elements of array b
+		  for(int i = from; i <= to; i++)
+		  {
+			  a[i] = b[s];
+			  s++;
+			  markedPosition = i;  //for animation
+			  pause(2);
+		  }
+	}
+	 public void draw(Graphics g)
+	 {
+		 sortStateLock.lock();
+		 try
+		 {
+			 int deltaX = component.getWidth() / a.length;
+			 for (int i = 0; i < a.length; i++)
+			 {
+				 if (i == markedPosition)
+				 {
+					 g.setColor(Color.RED);
+				 }
+				 else if (i < markedPosition)
+				 {
+					 g.setColor(Color.BLACK);
+				 }
+				 else
+				 {
+					 g.setColor(Color.BLACK);
+				 }
+				 
+				 g.drawLine(i * deltaX, component.getHeight(), i * deltaX,component.getHeight() -  a[i]);
+			 }
+		 }
+		 finally
+		 {
+			 sortStateLock.unlock();
+		 }
+	 }
+	public void pause(int steps)  throws InterruptedException
+	{
+		 component.repaint();
+		 Thread.sleep(steps * DELAY);
+	}
+}
+========================================================================================
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+ /**
+ A component that displays the current state of the merge sort algorithm.
+ */
+ public class MergeSortComponent extends JComponent
+ {
+	 private MergeSorter sorter;
+	
+	 private int [] values;
+	 /**
+	 Constructs the component.
+	 */
+	 public MergeSortComponent()
+	 {
+		 values = ArrayUtil.randomIntArray(284, 340);
+		 sorter = new MergeSorter(values, this);
+	 }
+	
+	 public void paintComponent(Graphics g)
+	 {
+		  sorter.draw(g);
+	 }
+		 
+	  /**
+	  Starts a new animation thread.
+	  */
+	  public void startAnimation()
+	  {
+		  class AnimationRunnable implements Runnable
+		  {
+			  public void run()
+			  {
+				  try
+				  {
+					  sorter.mergeSort(0 , values.length-1);
+				  }
+				  catch (InterruptedException exception)
+				  {
+				  }
+			  }
+		  }
+		 
+		  Runnable r = new AnimationRunnable();
+		  Thread t = new Thread(r);
+		  t.start();
+	  }
+  }
+========================================================================================
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
+public class MergeSortViewer 
+{
+	public static void main(String[] args)
+	{
+		JFrame frame = new JFrame();
+		
+		final int FRAME_WIDTH = 300;
+		final int FRAME_HEIGHT = 400;
+		
+		frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		final MergeSortComponent component = new MergeSortComponent();
+	
+		frame.add(component, BorderLayout.CENTER);
+		
+		
+		frame.setVisible(true);
+		component.startAnimation();
+	}
+}
+========================================================================================
+
+note that >> the parameter of the pause method should be propotional to the number of inspected elements of the array
+========================================================================================

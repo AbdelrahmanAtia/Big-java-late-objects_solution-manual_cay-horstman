@@ -1,0 +1,197 @@
+•• P 20.10 Add a condition to the deposit method of the BankAccount class in Section 20.5, restricting deposits to $100,000 (the insurance 
+limit of the U.S. government). The method should block until sufficient money has been withdrawn by another thread. Test your program 
+with a large number of deposit threads.
+========================================================================================
+solution
+----------
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ A bank account has a balance that can be changed by
+ deposits and withdrawals.
+ */
+ public class BankAccount
+ {
+	 private double balance;
+	 private Lock balanceChangeLock;
+	 private Condition sufficientFundsCondition;
+	 private Condition inInsuranceLimit;
+	 private static final int INSURANCE_LIMIT = 100000;
+	 /**
+	 Constructs a bank account with a zero balance.
+	 */
+	 public BankAccount()
+	 {
+		 balance = 0;
+		 balanceChangeLock = new ReentrantLock();
+		 sufficientFundsCondition = balanceChangeLock.newCondition();
+		 inInsuranceLimit = balanceChangeLock.newCondition();
+	 }
+	
+	 /**
+	 Deposits money into the bank account.
+	 @param amount the amount to deposit
+	 * @throws InterruptedException 
+	 */
+	 public void deposit(double amount) throws InterruptedException
+	 {
+		 balanceChangeLock.lock();
+		 try
+		 {
+			 while((balance + amount) > 100000)
+			 {
+				 inInsuranceLimit.await();
+			 }
+			  System.out.print("Depositing " + amount);
+			  double newBalance = balance + amount;
+			  System.out.println(", new balance is " + newBalance);
+			  balance = newBalance;
+			  sufficientFundsCondition.signalAll();
+		 }
+		 finally
+		 {
+			  balanceChangeLock.unlock();
+		 }
+	}
+		 
+	  /**
+	  Withdraws money from the bank account.
+	  @param amount the amount to withdraw
+	  */
+	  public void withdraw(double amount) throws InterruptedException
+	  {
+		  balanceChangeLock.lock();
+		  try
+		  {
+			  while (balance < amount)
+			  {
+				  sufficientFundsCondition.await();
+			  }
+			
+			  System.out.print("Withdrawing " + amount);
+			  double newBalance = balance - amount;
+			  System.out.println(", new balance is " + newBalance);
+			  balance = newBalance;
+			  if(balance < 100000)
+				  inInsuranceLimit.signalAll();
+		  }
+		  finally
+		  {
+			  balanceChangeLock.unlock();
+		  }
+	  }
+	
+	 /**
+	 Gets the current balance of the bank account.
+	 @return the current balance
+	 */
+	 public double getBalance()
+	 {
+		 return balance;
+	 }
+ }
+========================================================================================
+ /**
+ A deposit runnable makes periodic deposits to a bank account.
+ */
+ public class DepositRunnable implements Runnable
+ {
+	 private static final int DELAY = 1;
+	 private BankAccount account;
+	 private double amount;
+	 private int count;
+	
+	 /**
+	 Constructs a deposit runnable.
+	 @param anAccount the account into which to deposit money
+	 @param anAmount the amount to deposit in each repetition
+	 @param aCount the number of repetitions
+	 */
+	 public DepositRunnable(BankAccount anAccount, double anAmount, int aCount)
+	 {
+		 account = anAccount;
+		 amount = anAmount;
+		 count = aCount;
+	 }
+	 public void run()
+	 {
+		 try
+		 {			 
+			 for (int i = 1; i <= count; i++)
+			 {
+				 account.deposit(amount);
+				 Thread.sleep(DELAY);
+			 }
+		 }
+		 catch (InterruptedException exception) {}
+	 }
+ }
+========================================================================================
+/**
+ A withdraw runnable makes periodic withdrawals from a bank account.
+ */
+ public class WithdrawRunnable implements Runnable
+ {
+	 private static final int DELAY = 1;
+	 private BankAccount account;
+	 private double amount;
+	 private int count;
+	
+	 /**
+	 Constructs a withdraw runnable.
+	 @param anAccount the account from which to withdraw money
+	 @param anAmount the amount to withdraw in each repetition
+	 @param aCount the number of repetitions
+	 */
+	 public WithdrawRunnable(BankAccount anAccount, double anAmount,
+	 int aCount)
+	 {
+		 account = anAccount;
+		 amount = anAmount;
+		 count = aCount;
+	 }
+	
+	 public void run()
+	 {
+		 try
+		 {			 
+			 for (int i = 1; i <= count; i++)
+			 {
+				 account.withdraw(amount);
+				 Thread.sleep(DELAY);
+			 }
+		 }
+		 catch (InterruptedException exception) {}
+	 }
+ }
+========================================================================================
+ /**
+ This program runs threads that deposit and withdraw
+ money from the same bank account.
+ */
+ public class BankAccountThreadRunner
+ {
+	 public static void main(String[] args)
+	 {
+		 BankAccount account = new BankAccount();
+		 final double AMOUNT = 10000;
+		 final int REPETITIONS = 100;
+		 final int THREADS = 100;
+		
+		 for (int i = 1; i <= THREADS ; i++)
+		 {
+			 DepositRunnable d = new DepositRunnable(account, AMOUNT, REPETITIONS);
+			 WithdrawRunnable w = new WithdrawRunnable(account, AMOUNT, REPETITIONS);
+			
+			 Thread dt = new Thread(d);
+			 Thread wt = new Thread(w);
+			
+			 dt.start();
+			 wt.start();
+		 }
+	 }
+ }
+========================================================================================

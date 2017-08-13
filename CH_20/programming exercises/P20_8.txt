@@ -1,0 +1,119 @@
+••• P 20.8 Enhance the program of Exercise P20.7 so that the last active thread also prints a combined count. Use locks to protect the 
+combined word count and a counter of active threads.
+========================================================================================
+solution
+----------
+
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class TotalWordsCount 
+{
+	private int combinedCount;
+	private Lock stateChangeLock;
+	private int threadsCount;
+
+	public TotalWordsCount()
+	{
+		combinedCount = 0;
+		stateChangeLock = new ReentrantLock();
+		threadsCount = 0;
+	}
+	
+	
+	public void addCount(int count)
+	{
+		
+		stateChangeLock.lock();
+		try
+		{
+			combinedCount = combinedCount + count;
+		}
+		finally
+		{
+			stateChangeLock.unlock();
+		}
+	}
+	
+	public int getTotalWordsCount()
+	{
+		return combinedCount;
+	}
+	
+	public void increamentThreadsCount()
+	{
+		stateChangeLock.lock();
+		try
+		{
+			threadsCount++;
+		}
+		finally
+		{
+			stateChangeLock.unlock();
+		}
+	}
+	public void decreamentThreadsCount()
+	{
+		stateChangeLock.lock();
+		try
+		{
+			threadsCount--;
+			if(threadsCount == 0)
+				System.out.println("combinedCount = " + combinedCount);
+		}
+		finally
+		{
+			stateChangeLock.unlock();
+		}	
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class FileRunnable implements Runnable
+{
+	private String str;
+	private Scanner in;
+	private int count;
+	private  TotalWordsCount obj;
+	
+	public FileRunnable(String str, TotalWordsCount obj) throws FileNotFoundException
+    {
+		this.str = str;
+		in = new Scanner(new File(str));
+		count = 0;
+		this.obj = obj;
+	}
+	public void run()
+	{
+		obj.increamentThreadsCount();
+		while(in.hasNext())
+		{
+			count++;
+			in.next();
+		}
+		in.close();
+		System.out.println(str+": "+ count);
+		obj.addCount(count);
+		obj.decreamentThreadsCount();
+	}
+}
+========================================================================================
+import java.io.FileNotFoundException;
+
+public class WordCount 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		
+		for(int i = 0; i < args.length ; i++)
+		{
+			FileRunnable r = new FileRunnable(args[i]);		
+			Thread t= new Thread(r);
+			t.start();
+		}
+	}
+}
+========================================================================================

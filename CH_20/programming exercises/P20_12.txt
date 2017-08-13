@@ -1,0 +1,91 @@
+•• Graphics P 20.12 Write a program that shows two cars moving across a window. Use a separate thread for each car.
+========================================================================================
+solution
+---------
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Car extends JComponent
+{
+	private int x;
+	private int y;
+	private static final int width = 50;
+	private static final int height = 50;
+	
+	public Car(int x , int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawRect(x, y, width, height);
+	}
+	
+	public void moveBy(int dx , int dy)
+	{
+		x = x + dx;
+		y = y + dy;
+		repaint();
+	}
+}
+========================================================================================
+import javax.swing.JFrame;
+
+public class CarRunnable implements Runnable
+{
+	private int x;
+	private int y;
+	private JFrame frame;
+	
+	
+	public CarRunnable(int x , int y, JFrame frame)
+	{
+		this.x = x;
+		this.y = y;
+		this.frame = frame;
+	}
+
+	public void run() 
+	{
+		Car c = new Car(x , y);
+		frame.add(c);
+		frame.setVisible(true);
+		
+			for(int j = 0 ; j < 9 ; j++)
+			{
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e) {}
+				
+				c.moveBy(60, 0);
+			}
+	}
+}
+========================================================================================
+import javax.swing.JFrame;
+
+public class CarThreadRunner 
+{
+	public static void main(String [] args)
+	{
+		
+		JFrame frame = new JFrame();
+		frame.setSize(610, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		CarRunnable r1 = new CarRunnable(0 , 100 , frame);
+		CarRunnable r2 = new CarRunnable(0 , 200 , frame);
+		
+		Thread t1 = new Thread(r1);
+		Thread t2 = new Thread(r2);
+		
+		t1.start();
+		t2.start();
+	}
+}
+========================================================================================

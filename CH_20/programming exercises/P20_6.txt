@@ -1,0 +1,109 @@
+•• P 20.6 Modify the ArrayList implementation of Section 16.2 so that all methods can be safely accessed from multiple threads.
+========================================================================================
+solution
+----------
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ArrayList 
+{
+	private Object[] buffer;
+	private int currentSize;
+	private Lock arrayListChangeLock;
+	
+	public ArrayList()
+	{
+		final int INITIAL_SIZE = 10;
+		buffer = new Object[INITIAL_SIZE];
+		currentSize = 0;
+		arrayListChangeLock = new ReentrantLock();	
+	}
+	public int size() { return currentSize; }
+	
+	public Object get(int pos)
+	{
+		arrayListChangeLock.lock();
+		try
+		{
+			checkBounds(pos);
+			return buffer[pos];
+		}
+		finally
+		{
+			arrayListChangeLock.unlock();
+		}
+	}
+	
+	
+	public void set(int pos, Object element)
+	{
+		arrayListChangeLock.lock();
+		try
+		{
+			checkBounds(pos);
+			buffer[pos] = element;
+		}
+		finally
+		{
+			arrayListChangeLock.unlock();
+		}
+	}
+	private void checkBounds(int n)
+	{
+		if (n < 0 || n >= currentSize)
+		{
+			throw new IndexOutOfBoundsException();
+		}
+	}
+	
+	public Object remove(int pos)
+	{
+		arrayListChangeLock.lock();
+		try
+		{
+			checkBounds(pos);
+			Object removed = buffer[pos];
+			for (int i = pos + 1; i < currentSize; i++)
+			{
+				buffer[i - 1] = buffer[i];
+			}
+			currentSize--;
+			return removed;
+		}
+		finally
+		{
+			arrayListChangeLock.unlock();
+		}		
+	}
+	public boolean addLast(Object newElement)
+	{
+		arrayListChangeLock.lock();
+		try
+		{
+			growBufferIfNecessary();
+			currentSize++;
+			buffer[currentSize - 1] = newElement;
+			return true;
+		}
+		finally
+		{
+			arrayListChangeLock.unlock();
+		}
+		
+	}
+	private void growBufferIfNecessary()
+	{
+		if (currentSize == buffer.length)
+		{
+			Object[] newBuffer =
+			new Object[2 * buffer.length]; 
+			for (int i = 0; i < buffer.length; i++)
+			{
+				newBuffer[i] = buffer[i]; 
+			}
+			buffer = newBuffer; 
+		}
+	}
+}
+========================================================================================
