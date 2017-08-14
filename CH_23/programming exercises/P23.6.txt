@@ -1,0 +1,115 @@
+•• P23.6 Enhance Exercise P23.4 as follows First read the XML file in, then add ten percent interest to all accounts, and write an XML file that contains the increased account balances.
+========================================================================================
+solution
+=====
+>> we need to add only a class called AccountBuilder and to modify the AccountParserDemo class
+========================================================================================
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+
+public class AccountBuilder 
+{
+	
+	private DocumentBuilder builder;
+	private Document doc;
+
+	public AccountBuilder() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		builder = dbfactory.newDocumentBuilder();
+	}
+	
+	public Document build(ArrayList<Account>bank)
+	{
+		doc = builder.newDocument();
+		doc.appendChild(createBank(bank));
+		return doc;
+	}
+
+	private Node createBank(ArrayList<Account> bank) 
+	{
+		Element e = doc.createElement("bank");
+		for(Account account : bank)
+		{
+			e.appendChild(createAccount(account));
+		}
+		return e;	
+	}
+
+	private Node createAccount(Account account) 
+	{
+		Element e = doc.createElement("account");
+		e.appendChild(createTextElement("number", "" + account.getAccountNumber()));
+		e.appendChild(createTextElement("balance", "" + account.getBalance()));
+		return e;
+	}
+	
+	private Element createTextElement(String name, String text)
+	{
+		Text t = doc.createTextNode(text);
+		Element e = doc.createElement(name);
+		e.appendChild(t);
+		return e;
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+
+public class AccountParserDemo 
+{
+	public static void main(String[] args) throws Exception
+	{
+		AccountParser parser = new AccountParser();
+		ArrayList <Account> bank = parser.parse("bank.xml");
+		for(Account account : bank)
+		{
+			account.setBalance(account.getBalance() * 1.1);  // to increase balance by ten percent
+		}
+		AccountBuilder builder = new AccountBuilder();
+		Document doc = builder.build(bank);
+
+		DOMImplementation impl = doc.getImplementation();
+		DOMImplementationLS implLS = (DOMImplementationLS) impl.getFeature("LS", "3.0");
+		LSSerializer ser = implLS.createLSSerializer();
+		ser.getDomConfig().setParameter("format-pretty-print", true);
+		String out = ser.writeToString(doc);
+
+		PrintWriter output = new PrintWriter(new File("bankModified.xml"));
+		output.println(out);
+		output.close();
+	}
+}
+========================================================================================
+xml file
+=========
+<?xml version="1.0" encoding="UTF-16"?>
+<bank>
+    <account>
+        <number>3</number>
+        <balance>1424.852</balance>
+    </account>
+    <account>
+        <number>5</number>
+        <balance>197792.496</balance>
+    </account>
+    <account>
+        <number>11</number>
+        <balance>2702685.953</balance>
+    </account>
+</bank>
+========================================================================================

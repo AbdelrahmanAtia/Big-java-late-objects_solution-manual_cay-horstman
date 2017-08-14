@@ -1,0 +1,100 @@
+•• Graphics P23.14 Write a program that can read an XML document of the form
+<rectangularshape shape="ellipse">
+<x>5</x>
+<y>10</y>
+<width>20</width>
+<height>30</height>
+</rectangularshape>
+Support shape attributes "rectangle", "roundrectangle", and "ellipse". Draw the shape in a window.
+========================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Shape extends JComponent
+{
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	private String shapeType;
+	
+	public Shape(int x, int y, int width, int height, String shapeType)
+	{
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.shapeType = shapeType;
+	}
+	public void paintComponent(Graphics g)
+	{
+		if(shapeType.equals("rectangle"))
+			g.fillRect(x, y, width, height);
+		else if(shapeType.equals("roundrectangle"))
+			g.fillRoundRect(x, y, width, height, 2, 2);
+		else if(shapeType.equals("ellipse"))
+			g.fillOval(x, y, width, height);		
+	}
+}
+
+========================================================================================
+import java.io.File;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class ShapeParser 
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	
+	public ShapeParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	
+	public Shape parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+		
+		int x =Integer.parseInt(path.evaluate("rectangularshape/x", doc));
+		int y =Integer.parseInt(path.evaluate("rectangularshape/y", doc));
+		int width =Integer.parseInt(path.evaluate("rectangularshape/width", doc));
+		int height =Integer.parseInt(path.evaluate("rectangularshape/height", doc));
+		String shapeType = path.evaluate("rectangularshape/@shape", doc);
+		
+		Shape shape = new Shape(x, y, width, height, shapeType);
+		return shape;
+	}
+}
+========================================================================================
+import javax.swing.JFrame;
+
+public class ShapeParserDemo 
+{
+	public static void main(String [] args) throws Exception
+	{
+		ShapeParser parser = new ShapeParser();
+		Shape shape = parser.parse("Shape.xml");
+		
+		JFrame frame = new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		frame.add(shape);
+		frame.setVisible(true);
+	}
+}
+========================================================================================

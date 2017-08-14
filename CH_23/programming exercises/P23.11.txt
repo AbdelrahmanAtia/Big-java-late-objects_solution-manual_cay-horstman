@@ -1,0 +1,424 @@
+••• P23.11 Modify Exercise P23.10 to support separate shipping and billing addresses.
+========================================================================================
+solution
+=====
+
+import java.util.ArrayList;
+
+/**
+Describes an invoice for a set of purchased products.
+*/
+public class Invoice
+{
+	private Address billingAddress;
+	private Address shippingAddress;
+	private ArrayList<LineItem> items;
+	
+	/**
+	Constructs an invoice.
+	param anAddress the billing address
+	*/
+	public Invoice(Address billingAddress, Address shippingAddress)
+	{
+		items = new ArrayList<LineItem>();
+		this.billingAddress = billingAddress;
+		this.shippingAddress = shippingAddress;
+	}
+	
+	/**
+	Adds a charge for a product to this invoice.
+	param aProduct the product that the customer ordered
+	param quantity the quantity of the product
+	*/
+	public void add(Product aProduct, int quantity)
+	{
+		LineItem anItem = new LineItem(aProduct, quantity);
+		items.add(anItem);
+	}
+	
+	/**
+	Formats the invoice.
+	return the formatted invoice
+	*/
+	public String format()
+	{
+		String r = " I N V O I C E\n\n" + billingAddress.format() + String.format("\n\n%-30s%8s%5s%8s\n", "Description", "Price", "Qty", "Total");
+		for (LineItem item : items)
+		{
+			r = r + item.format() + "\n";
+		}
+		r = r + String.format("\nAMOUNT DUE: $%8.2f", getAmountDue());
+		return r;
+	}
+	
+	/**
+	Computes the total amount due.
+	return the amount due
+	*/
+	public double getAmountDue()
+	{
+		double amountDue = 0;
+		for (LineItem item : items)
+		{
+			amountDue = amountDue + item.getTotalPrice();
+		}
+		return amountDue;
+	}
+	
+	public Address getBillingAddress() 
+	{
+		return billingAddress;
+	}
+
+	public ArrayList<LineItem> getItems()
+              {
+		return items;
+	}
+
+	public Address getShippingAddress() 
+	{
+		return shippingAddress;
+	}
+}
+========================================================================================
+/**
+Describes a mailing address.
+*/
+public class Address
+{
+	private String name;
+	private String street;
+	private String city;
+	private String state;
+	private String zip;
+	
+	/**
+	Constructs a mailing address.
+	param aName the recipient name
+	param aStreet the street
+	param aCity the city
+	param aState the two-letter state code
+	param aZip the ZIP postal code
+	*/
+	public Address(String aName, String aStreet,
+	String aCity, String aState, String aZip)
+	{
+		name = aName;
+		street = aStreet;
+		city = aCity;
+		state = aState;
+		zip = aZip;
+	}
+	
+	/**
+	Formats the address.
+	return the address as a string with three lines
+	*/
+	public String format()
+	{
+		return name + "\n" + street + "\n" + city + ", " + state + " " + zip;
+	}
+	public String getName() {
+		return name;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+}
+========================================================================================
+/**
+Describes a product with a description and a price.
+*/
+public class Product
+{
+	private String description;
+	private double price;
+	
+	/**
+	Constructs a product from a description and a price.
+	param aDescription the product description
+	param aPrice the product price
+	*/
+	public Product(String aDescription, double aPrice)
+	{
+		description = aDescription;
+		price = aPrice;
+	}
+	/**
+	Gets the product description.
+	return the description
+	*/
+	public String getDescription()
+	{
+		return description;
+	}
+	/**
+	Gets the product price.
+	return the unit price
+	*/
+	public double getPrice()
+	{
+		return price;
+	}
+}
+========================================================================================
+/**
+Describes a quantity of an article to purchase.
+*/
+public class LineItem
+{
+	private int quantity;
+	private Product theProduct;
+	
+	/**
+	Constructs an item from the product and quantity.
+	param aProduct the product
+	param aQuantity the item quantity
+	*/
+	public LineItem(Product aProduct, int aQuantity)
+	{
+		theProduct = aProduct;
+		quantity = aQuantity;
+	}
+	
+	/**
+	Computes the total cost of this line item.
+	return the total price
+	*/
+	public double getTotalPrice()
+	{
+		return theProduct.getPrice() * quantity;
+	}
+	
+	/**
+	Formats this item.
+	return a formatted string of this line item
+	*/
+	public String format()
+	{
+		return String.format("%-30s%8.2f%5d%8.2f",
+		theProduct.getDescription(), theProduct.getPrice(),
+		quantity, getTotalPrice());
+	}
+
+	public Product getProduct() 
+	{
+		return theProduct;
+	}
+
+	public int getQuantity() 
+	{
+		return quantity;
+	}
+}
+========================================================================================
+import java.util.ArrayList;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+
+/**
+ builds a DOM document for an invoice
+*/
+public class InvoiceBuilder 
+{
+	
+	private DocumentBuilder builder;
+	private Document doc;
+	
+	/**
+	 constructs an invoice builder
+	*/
+	public InvoiceBuilder() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		builder = factory.newDocumentBuilder();
+	}
+	
+	/**
+	Builds a DOM document for an invoice.
+	param anInvoice the invoice
+	return a DOM document describing the invoice
+	*/
+	public Document build(Invoice anInvoice)
+	{
+		doc = builder.newDocument();
+		doc.appendChild(createInvoice(anInvoice));
+		return doc;
+	}
+	
+	/**
+	Builds a DOM element for an invoice.
+	param anInvoice the invoice
+	return a DOM element describing the invoice
+	*/
+	private Element createInvoice(Invoice anInvoice)
+	{
+		Element e = doc.createElement("invoice");
+		e.appendChild(createAddress("shipto", anInvoice.getShippingAddress()));
+		e.appendChild(createAddress("billto", anInvoice.getBillingAddress()));
+		e.appendChild(createItems(anInvoice.getItems()));
+		e.appendChild(createTextElement("amountDue", "" + anInvoice.getAmountDue()));
+		return e;
+	}
+	
+	/**
+	Builds a DOM element for an Address.
+	param anAddress the address
+	return a DOM element describing the Address
+	*/
+	private Element createAddress(String name, Address anAddress)
+	{
+		Element e = doc.createElement(name);
+		e.appendChild(createTextElement("name", anAddress.getName()));
+		e.appendChild(createTextElement("street", anAddress.getStreet()));
+		e.appendChild(createTextElement("city", anAddress.getCity()));
+		e.appendChild(createTextElement("state", anAddress.getState()));
+		e.appendChild(createTextElement("zip", anAddress.getZip()));
+		return e;
+	}
+	
+	/**
+	Builds a DOM element for an array list of items.
+	param items the items
+	return a DOM element describing the items
+	*/
+	private Element createItems(ArrayList<LineItem> items)
+	{
+		Element e = doc.createElement("items");
+		for(LineItem anItem : items)
+		{
+			e.appendChild(createItem(anItem));
+		}
+		return e;
+	}
+	
+	/**
+	Builds a DOM element for an item.
+	param anItem the item
+	return a DOM element describing the item
+	*/
+	private Element createItem(LineItem anItem)
+	{
+		Element e = doc.createElement("item");
+		e.appendChild(createProduct(anItem.getProduct()));
+		e.appendChild(createTextElement("quantity", "" +  anItem.getQuantity()));
+		e.appendChild(createTextElement("totalPrice", "" + anItem.getTotalPrice()));
+		return e;
+	}
+
+	/**
+	Builds a DOM element for a product.
+	param p the product
+	return a DOM element describing the product
+	*/
+	private Element createProduct(Product p)
+	{
+		Element e = doc.createElement("product");
+		e.appendChild(createTextElement("description", p.getDescription()));
+		e.appendChild(createTextElement("price", "" + p.getPrice()));
+		return e;
+	}
+	
+	private Element createTextElement(String name, String text)
+	{
+		Text t = doc.createTextNode(text);
+		Element e = doc.createElement(name);
+		e.appendChild(t);
+		return e;
+	}
+}
+========================================================================================
+
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+
+public class InvoiceBuilderDemo 
+{
+	public static void main(String [] args) throws Exception
+	{
+		Address billingAddress = new Address("Sam’s Small Appliances", "100 Main Street", "Anytown", "CA", "98765");
+		Address shippingAddress = new Address("ACME Computer Supplies Inc.</", "1195 W. Fairfield Rd.</", "Sunnyvale", "CA", "94085");
+		
+		Invoice samsInvoice = new Invoice(billingAddress, shippingAddress);
+		samsInvoice.add(new Product("Toaster", 29.95), 3);
+		samsInvoice.add(new Product("Hair dryer", 24.95), 1);
+		samsInvoice.add(new Product("Car vacuum", 19.99), 2);
+		
+		InvoiceBuilder builder = new InvoiceBuilder();
+		Document doc = builder.build(samsInvoice);
+		DOMImplementation impl = doc.getImplementation();
+		DOMImplementationLS implLS = (DOMImplementationLS) impl.getFeature("LS", "3.0");
+		LSSerializer ser = implLS.createLSSerializer();
+		ser.getDomConfig().setParameter("format-pretty-print", true);
+		String out = ser.writeToString(doc);
+		System.out.println(out);
+	}
+}
+========================================================================================
+output
+=====
+
+<?xml version="1.0" encoding="UTF-16"?>
+<invoice>
+    <shipto>
+        <name>ACME Computer Supplies Inc.</name>
+        <street>1195 W. Fairfield Rd.</street>
+        <city>Sunnyvale</city>
+        <state>CA</state>
+        <zip>94085</zip>
+    </shipto>
+    <billto>
+        <name>Sam’s Small Appliances</name>
+        <street>100 Main Street</street>
+        <city>Anytown</city>
+        <state>CA</state>
+        <zip>98765</zip>
+    </billto>
+    <items>
+        <item>
+            <product>
+                <description>Toaster</description>
+                <price>29.95</price>
+            </product>
+            <quantity>3</quantity>
+            <totalPrice>89.85</totalPrice>
+        </item>
+        <item>
+            <product>
+                <description>Hair dryer</description>
+                <price>24.95</price>
+            </product>
+            <quantity>1</quantity>
+            <totalPrice>24.95</totalPrice>
+        </item>
+        <item>
+            <product>
+                <description>Car vacuum</description>
+                <price>19.99</price>
+            </product>
+            <quantity>2</quantity>
+            <totalPrice>39.98</totalPrice>
+        </item>
+    </items>
+    <amountDue>154.78</amountDue>
+</invoice>
+========================================================================================

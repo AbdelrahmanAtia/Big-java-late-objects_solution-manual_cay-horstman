@@ -1,0 +1,241 @@
+•• P23.8 Write a parser to parse invoices using the invoice structure described in How To 23.1. The parser should parse the XML file into an Invoice object and print out the invoice in the format used in Chapter 12.
+========================================================================================
+solution
+======
+
+
+import java.util.ArrayList;
+
+public class Invoice
+{
+	private Address address;
+	private ArrayList<LineItem> items;
+	
+	public void setItems(ArrayList<LineItem> items)
+	{
+		this.items = items;
+	}
+	
+	public void setAddress(Address address)
+	{
+		this.address = address;
+	}
+	
+	
+	public String format()
+	{
+		String r = " I N V O I C E\n\n" + address.format() + String.format("\n\n%-30s%5s%8s%8s\n", "Item", "Qty", "Price", "Total");
+		for (LineItem item : items)
+		{
+			r = r + item.format() + "\n";
+		}
+		r = r + String.format("\nAMOUNT DUE: $%8.2f", getAmountDue());
+		return r;
+	}
+
+	public double getAmountDue()
+	{
+		double amountDue = 0;
+		for (LineItem item : items)
+		{
+			amountDue = amountDue + item.getTotalPrice();
+		}
+		return amountDue;
+	}
+}
+========================================================================================
+
+/**
+Describes a quantity of an article to purchase.
+*/
+public class LineItem
+{
+	private int quantity;
+	private Product theProduct;
+	
+	/**
+	Constructs an item from the product and quantity.
+	param aProduct the product
+	param aQuantity the item quantity
+	*/
+	public LineItem(Product aProduct, int aQuantity)
+	{
+		theProduct = aProduct;
+		quantity = aQuantity;
+	}
+	
+	/**
+	Computes the total cost of this line item.
+	return the total price
+	*/
+	public double getTotalPrice()
+	{
+		return theProduct.getPrice() * quantity;
+	}
+	
+	/**
+	Formats this item.
+	return a formatted string of this line item
+	*/
+	public String format()
+	{
+		return String.format("%-30s%5d%8.2f%8.2f", theProduct.getDescription(), quantity, theProduct.getPrice(), getTotalPrice());
+	}
+
+}
+========================================================================================
+/**
+Describes a mailing address.
+*/
+public class Address
+{
+	private String name;
+	private String street;
+	private String city;
+	private String state;
+	private String zip;
+	
+	/**
+	Constructs a mailing address.
+	param aName the recipient name
+	param aStreet the street
+	param aCity the city
+	param aState the two-letter state code
+	param aZip the ZIP postal code
+	*/
+	public Address(String aName, String aStreet, String aCity, String aState, String aZip)
+	{
+		name = aName;
+		street = aStreet;
+		city = aCity;
+		state = aState;
+		zip = aZip;
+	}
+	
+	/**
+	Formats the address.
+	return the address as a string with three lines
+	*/
+	public String format()
+	{
+		return name + "\n" + street + "\n" + city + ", " + state + " " + zip;
+	}
+}
+========================================================================================
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class InvoiceParser 
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	
+	public InvoiceParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		dbfactory.setValidating(true);    // to turn xml validator on
+		dbfactory.setIgnoringElementContentWhitespace(true);
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	
+	public Invoice parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+		
+	// parse address element
+		String name = path.evaluate("invoice/address/name", doc);
+		String street = path.evaluate("invoice/address/street", doc);
+		String city = path.evaluate("invoice/address/city", doc);
+		String state = path.evaluate("invoice/address/state", doc);
+		String zip = path.evaluate("invoice/address/zip", doc);
+		Address addr = new Address(name, street, city, state, zip);
+	
+	//parse items element
+		ArrayList<LineItem> items = new ArrayList<LineItem>();
+		int itemCount = Integer.parseInt(path.evaluate("count(invoice/items/item)", doc));
+		for (int i = 1; i <= itemCount; i++)
+		{
+			String description = path.evaluate("invoice/items/item[" + i + "]/product/description", doc);
+			double price = Double.parseDouble(path.evaluate("invoice/items/item[" + i + "]/product/price", doc));
+			Product pr = new Product(description, price);
+			int quantity = Integer.parseInt(path.evaluate("invoice/items/item[" + i + "]/quantity", doc));
+			LineItem it = new LineItem(pr, quantity);
+			items.add(it);
+		}
+		
+		Invoice inv = new Invoice();
+		inv.setAddress(addr);
+		inv.setItems(items);
+		return inv;
+	}
+}
+========================================================================================
+public class InvoiceParserDemo 
+{
+	public static void main(String[] args) throws Exception
+	{
+		InvoiceParser parser = new InvoiceParser();
+		Invoice inv = parser.parse("invoice.xml");
+		System.out.println(inv.format());
+	}
+}
+========================================================================================
+xml file
+=====
+<?xml version="1.0"?>
+<invoice>
+	<address>
+		<name>ACME Computer Supplies Inc.</name>
+		<street>1195 W. Fairfield Rd.</street>
+		<city>Sunnyvale</city>
+		<state>CA</state>
+		<zip>94085</zip>
+	</address>
+	<items>
+		<item>
+			<product>
+				<description>Ink Jet Refill Kit</description>
+				<price>29.95</price>
+			</product>
+			<quantity>8</quantity>
+		</item>
+		<item>
+			<product>
+				<description>4-port Mini Hub</description>
+				<price>19.95</price>
+			</product>
+			<quantity>4</quantity>
+		</item>
+	</items>
+</invoice>
+========================================================================================
+output
+=====
+
+ I N V O I C E
+
+ACME Computer Supplies Inc.
+1195 W. Fairfield Rd.
+Sunnyvale, CA 94085
+
+Item                            Qty   Price   Total
+Ink Jet Refill Kit                8   29.95  239.60
+4-port Mini Hub                4   19.95   79.80
+
+AMOUNT DUE: $  319.40
+========================================================================================

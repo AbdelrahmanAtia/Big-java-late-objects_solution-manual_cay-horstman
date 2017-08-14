@@ -1,0 +1,56 @@
+••• P23.7 Write a DTD file that describes documents that contain information about countries:
+name of the country, its population, and its area. Create an XML file that has five different countries. The DTD and XML should be in different files. Write a program that uses the XML file you wrote and prints:
+• The country with the largest area.
+• The country with the largest population.
+• The country with the largest population density (people per square kilometer).
+========================================================================================
+solution
+=====
+
+>> an error occur when i reference a dtd file from xml file. 
+
+i got this error >>  The markup declarations contained or pointed to by the document type declaration must be well-formed.	
+========================================================================================
+xml file
+---------
+<?xml version="1.0"?>
+<!DOCTYPE countries SYSTEM "countries.dtd">
+<countries>
+   <country>
+	  <name>egypt</name>
+	  <population>1000</population>
+	  <area unit = "km">1000000</area>
+   </country>
+   <country>
+	  <name>turkey</name>
+	  <population>3000</population>
+	  <area unit = "km">10000</area>
+   </country>
+   <country>
+	  <name>russia</name>
+	  <population>2500</population>
+	  <area unit = "km">6000</area>
+   </country>
+   <country>
+	  <name>syria</name>
+	  <population>1500</population>
+	  <area unit = "km">2000</area>
+   </country>
+   <country>
+	  <name>palestin</name>
+	  <population>500</population>
+	  <area unit = "km">2100</area>
+   </country>
+</countries>
+========================================================================================
+dtd file
+---------
+<!DOCTYPE countries [
+<!ELEMENT countries (country*)>
+<!ELEMENT country (name, population, area)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT population (#PCDATA)>
+<!ELEMENT area (#PCDATA)>
+<!ATTLIST area unit CDATA "km">
+]>
+========================================================================================

@@ -1,0 +1,95 @@
+• Graphics P23.13 Write a program that can read an XML document of the form
+<ellipse>
+<x>5</x>
+<y>10</y>
+<width>20</width>
+<height>30</height>
+</ellipse>
+and draw the shape in a window.
+========================================================================================
+solution
+=====
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class EllipseParser
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	
+	public EllipseParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	
+	public Ellipse parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+		
+		int x =Integer.parseInt(path.evaluate("ellipse/x", doc));
+		int y =Integer.parseInt(path.evaluate("ellipse/y", doc));
+		int width =Integer.parseInt(path.evaluate("ellipse/width", doc));
+		int height =Integer.parseInt(path.evaluate("ellipse/height", doc));	
+		
+		Ellipse e = new Ellipse(x, y, width, height);
+		return e;
+	}
+}
+========================================================================================
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Ellipse extends JComponent
+{
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	
+	public Ellipse(int x, int y, int width, int height)
+	{
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		g.drawOval(x, y, width, height);	
+	}
+}
+========================================================================================
+import javax.swing.JFrame;
+
+public class EllipseParserDemo 
+{
+	public static void main(String [] args) throws Exception
+	{
+		EllipseParser parser = new EllipseParser();
+		Ellipse ellipse = parser.parse("ellipse.xml");
+		
+		JFrame frame = new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		frame.add(ellipse);
+		frame.setVisible(true);
+	}
+}
+========================================================================================

@@ -1,0 +1,306 @@
+••• P23.18 Following Exercise P12.9, design an XML format for the appointments in an appointment calendar. Write a program that first reads in a file with appointments, then another file of the format
+<commands>
+<add>
+<appointment>
+. . .
+</appointment>
+</add>
+. . .
+<remove>
+<appointment>
+. . .
+</appointment>
+</remove>
+</commands>
+Your program should process the commands and then produce an XML file that consists of the updated appointments.
+========================================================================================
+solution
+=====
+
+appointments xml file
+==============
+<?xml version="1.0">
+<appointments>
+	<appointment>meet the manager</appointment>
+	<appointment>meet the supervisor</appointment>
+	<appointment>meet the employees</appointment>
+</appointments>
+========================================================================================
+commands xml file
+============
+<?xml version="1.0">
+<commands>
+	<add>
+		<appointment>meet the CEO</appointment>
+		<appointment>meet the customer</appointment>
+	</add>
+	<remove>
+		<appointment>meet the employees</appointment>
+	</remove>
+</commands>
+========================================================================================
+public class Appointment 
+{
+	private String text;
+	
+	public Appointment(String text)
+	{
+		this.text = text;
+	}
+	
+	public String getAppointment()
+	{
+		return text;
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.SAXException;
+
+public class UpdatedAppointmentsBuilderDemo 
+{
+	public static void main(String [] args) throws ParserConfigurationException, XPathExpressionException, SAXException, IOException
+	{
+		AppointmentsParser appParser = new AppointmentsParser();
+		ArrayList<Appointment> appointments = appParser.parse("appointments.xml");
+		
+		CommandsParser commParser = new CommandsParser();
+		ArrayList<Command> commands = commParser.parse("commands.xml");
+		
+		for(Command c : commands)
+		{
+			if(c.getOrder().equals("add"))
+				appointments.add(new Appointment(c.getCommand()));
+			else if(c.getOrder().equals("remove"))
+			{
+				int index = 0;
+				for(int i = 0; i < appointments.size(); i++)
+				{
+					if(appointments.get(i).getAppointment().equals(c.getCommand()))
+						index = i;
+				}
+				appointments.remove(index);
+			}
+		}
+		
+		UpdatedAppointmentsBuilder builder = new UpdatedAppointmentsBuilder();
+		Document doc = builder.build(appointments);
+		DOMImplementation impl = doc.getImplementation();
+		DOMImplementationLS implLS = (DOMImplementationLS) impl.getFeature("LS", "3.0");
+		LSSerializer ser = implLS.createLSSerializer();
+		ser.getDomConfig().setParameter("format-pretty-print", true);
+		String out = ser.writeToString(doc);
+		
+		PrintWriter outputFile = new PrintWriter(new File("UpdatedAppointments.xml"));
+		outputFile.write(out);
+		outputFile.close();
+		System.out.println(out);
+	}
+}
+========================================================================================
+public class Command 
+{
+	private String text;
+	private String order;
+	
+	public Command(String text, String order)
+	{
+		this.text = text;
+		this.order = order;
+	}
+	public String getOrder()
+	{
+		return order;
+	}
+	public String getCommand()
+	{
+		return text;
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class CommandsParser 
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	/**
+	Constructs a parser that can parse accounts.
+	*/
+	public CommandsParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	/**
+	Parses an XML file containing accounts.
+	param fileName the name of the file
+	return an array list containing all accounts in the XML file
+	*/
+	public ArrayList <Command> parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+
+		ArrayList<Command> commands = new ArrayList<Command>();
+		int addCommandsCount = Integer.parseInt(path.evaluate("count(/commands/add/appointment)", doc));
+		for (int i = 1; i <= addCommandsCount; i++)
+		{
+			String appointment = path.evaluate("/commands/add/appointment[" + i + "]", doc);
+			Command c = new Command(appointment, "add");
+			commands.add(c);
+		}
+		
+		int removeCommandsCount = Integer.parseInt(path.evaluate("count(/commands/remove/appointment)", doc));
+		for (int i = 1; i <= removeCommandsCount; i++)
+		{
+			String appointment = path.evaluate("/commands/remove/appointment[" + i + "]", doc);
+			Command c = new Command(appointment, "remove");
+			commands.add(c);
+		}
+		return commands;
+	}
+}
+========================================================================================
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
+
+public class UpdatedAppointmentsBuilder
+{
+
+	private DocumentBuilder builder;
+	private Document doc;
+
+	public UpdatedAppointmentsBuilder() throws ParserConfigurationException, XPathExpressionException, SAXException, IOException
+	{		
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		builder = dbfactory.newDocumentBuilder();
+	}
+	
+	public Document build(ArrayList<Appointment> appointments)
+	{
+		doc = builder.newDocument();
+		doc.appendChild(createAppointments(appointments));
+		return doc;
+	}
+
+	private Node createAppointments(ArrayList<Appointment> appointments)
+	{
+		Element e = doc.createElement("appointments");
+		for(Appointment appointment : appointments)
+		{
+			e.appendChild(createTextElement("appointment", appointment.getAppointment()));
+		}
+		return e;
+	}
+	
+	private Element createTextElement(String name, String text)
+	{
+		Text t = doc.createTextNode(text);
+		Element e = doc.createElement(name);
+		e.appendChild(t);
+		return e;
+	}
+}
+========================================================================================
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.SAXException;
+
+public class UpdatedAppointmentsBuilderDemo 
+{
+	public static void main(String [] args) throws ParserConfigurationException, XPathExpressionException, SAXException, IOException
+	{
+		AppointmentsParser appParser = new AppointmentsParser();
+		ArrayList<Appointment> appointments = appParser.parse("appointments.xml");
+		
+		CommandsParser commParser = new CommandsParser();
+		ArrayList<Command> commands = commParser.parse("commands.xml");
+		
+		for(Command c : commands)
+		{
+			if(c.getOrder().equals("add"))
+				appointments.add(new Appointment(c.getCommand()));
+			else if(c.getOrder().equals("remove"))
+			{
+				int index = 0;
+				for(int i = 0; i < appointments.size(); i++)
+				{
+					if(appointments.get(i).getAppointment().equals(c.getCommand()))
+						index = i;
+				}
+				appointments.remove(index);
+			}
+		}
+		
+		UpdatedAppointmentsBuilder builder = new UpdatedAppointmentsBuilder();
+		Document doc = builder.build(appointments);
+		DOMImplementation impl = doc.getImplementation();
+		DOMImplementationLS implLS = (DOMImplementationLS) impl.getFeature("LS", "3.0");
+		LSSerializer ser = implLS.createLSSerializer();
+		ser.getDomConfig().setParameter("format-pretty-print", true);
+		String out = ser.writeToString(doc);
+		
+		PrintWriter outputFile = new PrintWriter(new File("UpdatedAppointments.xml"));
+		outputFile.write(out);
+		outputFile.close();
+		System.out.println(out);
+	}
+}
+========================================================================================
+output xml file
+=========
+<?xml version="1.0" encoding="UTF-16"?>
+<appointments>
+    <appointment>meet the manager</appointment>
+    <appointment>meet the supervisor</appointment>
+    <appointment>meet the CEO</appointment>
+    <appointment>meet the customer</appointment>
+</appointments>
+========================================================================================

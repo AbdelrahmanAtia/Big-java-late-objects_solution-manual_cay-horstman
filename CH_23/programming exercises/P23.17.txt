@@ -1,0 +1,100 @@
+••• Graphics P23.17 Repeat Exercise P23.16, using a DTD for validation.
+========================================================================================
+solution
+=====
+
+we need to modify only the drawingParser class.
+========================================================================================
+import java.io.File;
+import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class drawingParser 
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	
+	public drawingParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		dbfactory.setValidating(true);
+		dbfactory.setIgnoringElementContentWhitespace(true);
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	
+	public Drawing parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+		
+		// rectangle data
+		int xRectangle =Integer.parseInt(path.evaluate("drawing/rectangle/x", doc));
+		int yRectangle =Integer.parseInt(path.evaluate("drawing/rectangle/y", doc));
+		int widthRectangle =Integer.parseInt(path.evaluate("drawing/rectangle/width", doc));
+		int heightRectangle =Integer.parseInt(path.evaluate("drawing/rectangle/height", doc));	
+		
+		//line data
+		int x1 = Integer.parseInt(path.evaluate("drawing/line/x1", doc));
+		int y1 = Integer.parseInt(path.evaluate("drawing/line/y1", doc));
+		int x2 = Integer.parseInt(path.evaluate("drawing/line/x2", doc));
+		int y2 = Integer.parseInt(path.evaluate("drawing/line/y2", doc));
+		
+		//message data
+		String text = path.evaluate("drawing/message/text", doc);
+		int x = Integer.parseInt(path.evaluate("drawing/message/x", doc));
+		int y = Integer.parseInt(path.evaluate("drawing/message/y", doc));
+		
+		Drawing d = new Drawing(xRectangle, yRectangle, widthRectangle, heightRectangle, x1, y1, x2, y2, text, x, y);
+
+		return d;
+	}
+}
+========================================================================================
+xml file
+=====
+
+<?xml version="1.0"?>
+<!DOCTYPE drawing [
+<!ELEMENT drawing (rectangle, line, message)>
+<!ELEMENT rectangle (x, y, width, height)>
+<!ELEMENT line (x1, y1, x2, y2)>
+<!ELEMENT message (text, x, y)>
+<!ELEMENT x (#PCDATA)>
+<!ELEMENT y (#PCDATA)>
+<!ELEMENT width (#PCDATA)>
+<!ELEMENT height (#PCDATA)>
+<!ELEMENT x1 (#PCDATA)>
+<!ELEMENT y1 (#PCDATA)>
+<!ELEMENT x2 (#PCDATA)>
+<!ELEMENT y2 (#PCDATA)>
+<!ELEMENT text (#PCDATA)>
+]>
+<drawing>
+	<rectangle>
+		<x>5</x>
+		<y>10</y>
+		<width>20</width>
+		<height>30</height>
+	</rectangle>
+	<line>
+		<x1>5</x1>
+		<y1>10</y1>
+		<x2>25</x2>
+		<y2>40</y2>
+	</line>
+	<message>
+		<text>Hello, World!</text>
+		<x>20</x>
+		<y>30</y>
+	</message>
+</drawing>
+========================================================================================
