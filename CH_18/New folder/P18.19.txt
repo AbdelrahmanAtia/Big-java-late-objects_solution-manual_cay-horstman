@@ -1,0 +1,12 @@
+• P 18.19 Provide a static method void append(ArrayList<T> a, ArrayList<T> b) that appends the elements of b to a.
+========================================================================================
+solution
+---------
+
+
+public static <T> void append(ArrayList<T> a, ArrayList<T> b)
+{
+	for(T e : b)
+		a.add(e);
+}
+========================================================================================

@@ -1,0 +1,62 @@
+•• P 18.3 Implement a static generic method PairUtil.swap whose argument is a Pair object, using the generic class declared in Section 18.2. 
+The method should return a new pair, with the first and second element swapped.
+========================================================================================
+solution
+----------
+
+ /**
+ This class collects a pair of elements of different types.
+ this is the generic class described in section 18.2
+ */
+ public class Pair<T, S>
+ {
+	 private T first;
+	 private S second;
+	
+	 public Pair(T firstElement, S secondElement)
+	 {
+		 first = firstElement;
+		 second = secondElement;
+	 }
+	
+	  public T getFirst() 
+	  { 
+		  return first; 
+	  }
+	
+	  public S getSecond() { return second; }
+	 
+	  public String toString() 
+	  { 
+		  return "(" + first + ", " + second + ")"; 
+	  }	
+ }
+========================================================================================
+public class PairUtil 
+{
+	// the required swap method
+
+	public static <T> Pair swap (T p)
+	{
+		return new Pair (((Pair) p).getSecond() , ((Pair) p).getFirst());
+	}
+
+}
+========================================================================================
+public class PairUtilTest 
+{
+	public static void main(String [] args)
+	{
+		Pair<Integer , String> p = new Pair(5 , "hello");
+		
+		System.out.println(PairUtil.swap(p));
+		
+	}
+}
+========================================================================================
+
+output
+----------
+
+(hello, 5)
+========================================================================================

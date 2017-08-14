@@ -1,0 +1,44 @@
+• P 18.1 Modify the generic Pair class so that both values have the same type.
+========================================================================================
+solution
+----------
+
+public class PairModified <T>
+{
+	private T first;
+	private T second;
+	
+	public PairModified(T first , T second)
+	{
+		this.first = first;
+		this.second = second;
+	}
+	
+	public T getFirst()
+	{
+		return first;
+	}
+	
+	public T getSecond()
+	{
+		return second;
+	}
+	
+	public String toString() 
+	{ 
+		return "(" + first + ", " + second + ")"; 
+	}
+}
+========================================================================================
+public class PairModifiedTest 
+{
+	public static void main(String [] args)
+	{
+		PairModified<Integer> p = new PairModified<Integer>(17, 19);
+		System.out.println(p.getFirst());
+		System.out.println("Expected: 17");
+		System.out.println(p.getSecond());
+		System.out.println("Expected: 19"); 
+	}
+}
+========================================================================================

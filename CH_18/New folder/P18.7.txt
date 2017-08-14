@@ -1,0 +1,36 @@
+•• P 18.7 Implement a generic version of the binary search algorithm.
+========================================================================================
+solution
+----------
+
+
+public class BinarySearcher 
+{
+	public <T extends Measurable<T>> int search(T[] a, int low, int high, T value)
+	{
+		if (low <= high)
+		{
+			int mid = (low + high) / 2;
+
+			if (a[mid] == value)
+			{
+				return mid;
+			}
+			else if (a[mid].getMeasure() < value.getMeasure() )
+			{
+	
+				return search(a, mid + 1, high, value);
+			}
+			else
+			{
+				return search(a, low, mid - 1, value);
+			}
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+}
+========================================================================================

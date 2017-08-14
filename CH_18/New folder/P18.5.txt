@@ -1,0 +1,27 @@
+•• P 18.5 Repeat Exercise P18.4, but require that the array elements implement the Comparable interface.
+========================================================================================
+solution
+----------
+
+	public static <T extends Comparable<T>> Pair minmax(T [] a)
+	{
+		T smallest = a[0];
+		T largest = a[0];
+		for (int i = 1; i < a.length; i++)
+		{
+			T obj = a[i];
+			if (obj.compareTo(smallest) < 0)
+			{
+				smallest = obj;
+			}
+			
+			if (obj.compareTo(largest) > 0)
+			{
+				largest = obj;
+			}
+			
+		}
+		return new Pair(smallest , largest);
+		
+	}
+========================================================================================
