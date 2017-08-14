@@ -1,0 +1,105 @@
+• P 19.2 Letter frequencies. If you encrypt a file using the cipher of Exercise P19.1, it will have all of its letters jumbled up, and will look as if 
+there is no hope of decrypting it without knowing the keyword. Guessing the keyword seems hopeless, too. There are just too many possible 
+keywords. However, someone who is trained in decryption will be able to break this cipher in no time at all. The average letter frequencies
+
+of English letters are well known. The most common letter is E, which occurs about 13 percent of the time. Here are the average 
+frequencies of English letters:
+
+A     8%       H     4%      O     7%       V    1%
+B     1%       I      7%      P     3%       W    2%
+C     3%       J      1%      Q    1%        X    1%
+D     4%       K     1%       R    8%        Y    2%
+E     13%      L     4%       S    6%        Z    1%
+F      3%      M     3%       T    9%
+G      2%      N     8%       U    3%
+
+Write a program that reads an input file and prints the letter frequencies in that file. Such a tool will help a code breaker. If the most 
+frequent letters in an encrypted file are H and K, then there is an excellent chance that they are the encryptions of E and T.
+========================================================================================
+solution
+---------
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class Letter_Frequencies
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		Scanner in = new Scanner(new File("war and peace.txt"));
+		Map <Character , Integer> freq = new TreeMap<>();
+		
+		//this loop fills all the map keys with characters from A to Z
+		char ch = 'A';
+		for(int i = 0 ; i < 26 ; i++)
+			freq.put((char)(ch + i), 0);
+		
+		
+		
+		while(in.hasNext())
+		{
+			String word = in.next();
+			updateFreq(word , freq);
+		}
+		
+		int sum = 0;
+		for(char c : freq.keySet())
+		{
+			//  sum is the count of all characters in the file
+			sum = sum + freq.get(c);
+		}
+		
+		for(char c : freq.keySet())
+		{
+			System.out.println(c + "  " + (freq.get(c) / (sum* 1.0)) *100 );
+		}		
+	}
+/**
+ * this method updates the frequencies of characters in the map
+ * @param word is a word through which we update the map
+ * @param freq is the map of characters and their frequencies
+ */
+	private static void updateFreq(String word, Map<Character, Integer> freq) {
+
+		word = word.toUpperCase();
+		for(int i = 0 ; i < word.length() ; i++)
+		{
+			if(freq.containsKey(word.charAt(i)))
+				freq.put(word.charAt(i),freq.get(word.charAt(i))+1 );
+			
+		}
+	}
+}
+========================================================================================
+output
+--------
+A  8.125456835203918
+B  1.3702287419351775
+C  2.4229669053548206
+D  4.678308910778305
+E  12.452141073875197
+F  2.1709362629851943
+G  2.029851312995795
+H  6.606548999629785
+I  6.872225368869707
+J  0.10180898830185454
+K  0.8075106080694104
+L  3.817481085835973
+M  2.4381156398224237
+N  7.283930792037541
+O  7.627209816696358
+P  1.7864431878949352
+Q  0.09215809741387766
+R  5.85603402176355
+S  6.442483854534179
+T  8.939849635955738
+U  2.5877440014175734
+V  1.064010720399452
+W  2.3416067309426545
+X  0.16058449592289412
+Y  1.8298721968908311
+Z  0.09449171447285568
+========================================================================================

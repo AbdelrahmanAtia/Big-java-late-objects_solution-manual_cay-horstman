@@ -1,0 +1,236 @@
+•• Graphics P 19.10 Implement a graphical user interface for the BankSimulator program in Section 19.3.
+========================================================================================
+solution
+----------
+public class View 
+{
+	public static void main(String [] args)
+	{
+		BankSimulatorGraphical x = new BankSimulatorGraphical();
+	}
+
+}
+========================================================================================
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class BankSimulatorGraphical 
+{
+	private JFrame frame;
+	private JTextField accountNumberField;
+	private JTextField amountField;
+	private JLabel accountNumberLabel;
+	private JLabel amountLabel;
+	private JPanel panel;
+	private JLabel label;	
+	private JButton button;
+	private BankData data;
+
+	
+	public BankSimulatorGraphical()
+	{
+		frame = new JFrame();
+		frame.setSize(300 , 250);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		data = new BankData();
+		accountNumberField = new JTextField();
+		amountField = new JTextField();
+		accountNumberLabel = new JLabel(" Account number: ");
+		amountLabel = new JLabel(" Amount to deposit: ");
+		label = new JLabel("");
+		button = new JButton("OK");
+		
+		creatFields();
+	}
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			
+			try 
+			{
+				data.open("bank.dat");
+				int accountNumber = Integer.parseInt(accountNumberField.getText());
+				double amount = Double.parseDouble(amountField.getText());
+				int position = data.find(accountNumber);
+				BankAccount account;
+				if (position >= 0)
+				{
+					 account = data.read(position);
+					 account.deposit(amount);
+					 label.setText("New balance: " + account.getBalance());
+				}
+				else // Add account
+				{
+					 account = new BankAccount(accountNumber, amount);
+					 position = data.size();
+					 label.setText("Adding new account.");
+				}
+				data.write(position, account);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+				 try {
+					data.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	private void creatFields()
+	{
+		panel = new JPanel();
+		frame.add(panel , BorderLayout.NORTH);
+		panel.setLayout(new GridLayout(3 , 3));
+		
+		panel.add(accountNumberLabel);
+		panel.add(accountNumberField);
+		panel.add(amountLabel);
+		panel.add(amountField);
+		panel.add(new JLabel(""));
+		panel.add(button);
+		ActionListener listerenr = new ClickListener();
+		button.addActionListener(listerenr);
+		frame.add(label , BorderLayout.SOUTH);
+		frame.setVisible(true);
+	}
+}
+========================================================================================
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+ /**
+ This class is a conduit to a random access file
+ containing bank account records.
+ */
+ public class BankData {
+ private RandomAccessFile file;
+
+ public static final int INT_SIZE = 4;
+ public static final int DOUBLE_SIZE = 8;
+ public static final int RECORD_SIZE = INT_SIZE + DOUBLE_SIZE;
+
+ /**
+ Constructs a BankData object that is not associated with a file.
+ */
+ public BankData()
+ {
+	 file = null;
+ }
+
+ /**
+ Opens the data file.
+ @param filename the name of the file containing bank
+ account information
+ */
+ public void open(String filename)
+ throws IOException
+ {
+	 if (file != null) { file.close(); }
+	 file = new RandomAccessFile(filename, "rw");
+ }
+
+ /**
+ Gets the number of accounts in the file.
+ @return the number of accounts
+ */
+ public int size()
+ throws IOException
+ {
+	 return (int) (file.length() / RECORD_SIZE);
+ }
+
+ /**
+ Closes the data file.
+ */
+ public void close()
+ throws IOException
+ {
+	 if (file != null) { file.close(); }
+	 file = null;
+ }
+
+ /**
+ Reads a bank account record.
+ @param n the index of the account in the data file
+ @return a bank account object initialized with the file data
+ */
+ public BankAccount read(int n)   throws IOException
+ {
+	 file.seek(n * RECORD_SIZE);
+	 int accountNumber = file.readInt();
+	 double balance = file.readDouble();
+	 return new BankAccount(accountNumber, balance);
+ }
+
+ /**
+ Finds the position of a bank account with a given number.
+ @param accountNumber the number to find
+ @return the position of the account with the given number,
+ or –1 if there is no such account
+ */
+ public int find(int accountNumber) throws IOException
+ {
+	 for (int i = 0; i < size(); i++)
+	 {
+		 file.seek(i * RECORD_SIZE);
+		 int a = file.readInt();
+		 if (a == accountNumber) { return i; }
+		 // Found a match
+	 }
+	 return -1; // No match in the entire file
+ }
+
+ /**
+ Writes a bank account record to the data file.
+ @param n the index of the account in the data file
+ @param account the account to write
+ */
+ public void write(int n, BankAccount account)  throws IOException
+ {
+	 file.seek(n * RECORD_SIZE);
+	 file.writeInt(account.getAccountNumber());
+	 file.writeDouble(account.getBalance());
+ }
+}
+========================================================================================
+public class BankAccount 
+{
+	private int accountNumber;
+	private double balance;
+	public BankAccount(int accountNumber, double balance)
+	{
+		this.accountNumber = accountNumber;
+		this.balance = balance;
+		
+	}
+	public int getAccountNumber() {
+		
+		return accountNumber;
+	}
+	public double getBalance() {
+
+		return balance;
+	}
+	public void deposit(double amount) {
+
+		balance = balance + amount;
+	}
+}
+========================================================================================

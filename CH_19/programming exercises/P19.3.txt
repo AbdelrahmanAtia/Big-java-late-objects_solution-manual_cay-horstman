@@ -1,0 +1,118 @@
+•• P 19.3 Vigenère cipher. The trouble with a monoalphabetic cipher is that it can be easily broken by frequency analysis. The so-called Vigenère cipher overcomes this problem by encoding a letter into one of several cipher letters, depending on its position in the input document. Choose a keyword, for example TIGER. Then encode the first letter of the input text like this:
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+T U V W X Y Z A B C D E F G H I J K L M N O P Q R S
+
+That is, the encoded alphabet is just the regular alphabet shifted to start at T, the first letter of the keyword TIGER. The second letter is encrypted according to this map:
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+I J K L M N O P Q R S T U V W X Y Z A B C D E F G H
+
+The third, fourth, and fifth letters in the input text are encrypted using the alphabet sequences beginning with characters G, E, and R. Because the key is only five letters long, the sixth letter of the input text is encrypted in the same way as the first.
+Write a program that encrypts or decrypts an input text using this cipher. Use command line arguments as in Exercise P19.1.
+========================================================================================
+solution
+----------
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class VigenèreCipher 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		
+		Scanner in = new Scanner(System.in);
+		System.out.print("enter the key word : ");
+		String keyWord = in.next();
+		System.out.print("enter E to encrypt or D to decrypt :");
+		String c = in.next();
+		
+		Scanner sc = new Scanner(new File("input.txt"));
+		PrintWriter out = new PrintWriter(new File("output.txt"));
+		if(c.equals("E") || c.equals("e"))
+		{
+			while(sc.hasNext())
+			{
+				String str = sc.next();
+				out.print(encrypt(str , keyWord) + " ");
+			}
+		}
+		if(c.equals("D") || c.equals("d"))
+		{
+			while(sc.hasNext())
+			{
+				String str = sc.next();
+				out.print(decrypt(str , keyWord) + " ");
+			}
+		}
+		while(sc.hasNext())
+		{
+			String str = sc.next();
+			
+				out.print(encrypt(str , keyWord) + " ");
+			if(c.equals("D") || c.equals("d"))
+				out.print(decrypt(str , keyWord) + " ");
+
+		}
+		
+		in.close();
+		out.close();
+	}
+
+	private static String encrypt(String str, String keyWord) 
+	{
+
+		str = str.toUpperCase();
+		String encrypted_word = "";
+		for(int i = 0 ; i < str.length() ; i++)
+		{
+			int index = str.charAt(i) -'A' + 1;
+		//	System.out.println(i);
+			
+			if(i <= (keyWord.length()-1))
+			{
+				if((keyWord.charAt(i) + index - 1) <=90)
+					encrypted_word = encrypted_word + (char) (keyWord.charAt(i) + index - 1);
+				else
+					encrypted_word = encrypted_word + (char) (keyWord.charAt(i) + index - 1 - 26);
+			}
+			else
+			{
+				int j = i - keyWord.length();
+				if((keyWord.charAt(j) + index - 1) <=90)
+					encrypted_word = encrypted_word + (char) (keyWord.charAt(j) + index - 1);
+				else
+					encrypted_word = encrypted_word + (char) (keyWord.charAt(j) + index - 1 - 26);
+			}
+		}
+		return encrypted_word ;
+	}
+	private static String decrypt(String str, String keyWord)
+	{
+		str = str.toUpperCase();
+		int index = 0;
+		String decrypted_word = "";
+		for(int i = 0 ; i < str.length() ; i++)
+		{
+			int offset = str.charAt(i) - keyWord.charAt(i % keyWord.length());
+			if(offset >= 0)
+			{
+				index = offset + 1;
+				decrypted_word = decrypted_word + (char)('A' +index - 1) ;
+			}
+			else
+			{
+				index = offset + 26 + 1;
+				decrypted_word = decrypted_word + (char) ('A' +index - 1) ;
+			}
+		}
+		return decrypted_word;
+	}
+}
+========================================================================================
+
+
+

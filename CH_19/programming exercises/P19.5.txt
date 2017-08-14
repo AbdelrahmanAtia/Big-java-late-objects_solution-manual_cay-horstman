@@ -1,0 +1,44 @@
+• P 19.5 Write a program that opens a binary file and prints all ASCII characters from that file, that is, all bytes with values between 32 and 
+126. Print a new line after every 64 characters. What happens when you use your program with word processor documents?
+
+With Java class files?
+========================================================================================
+solution
+----------
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+public class P13_5 
+{
+	public static void main(String [] args) throws IOException
+	{
+		InputStream in = new FileInputStream("Data.class");
+		boolean done = false;
+		int count = 0;
+		while(!done)
+		{
+			int next = in.read();
+			if(next == -1)
+				done = true;
+			else if(next >= 32 && next <= 126)
+			{
+				System.out.print((char)next);
+
+				count++;
+			}
+			if(count == 64)
+			{
+				System.out.println("");
+				count = 0;
+			}
+		}
+		in.close();
+	}
+}
+========================================================================================
+What happens when you use your program with word processor documents? ???
+
+With Java class files?         ???
+========================================================================================

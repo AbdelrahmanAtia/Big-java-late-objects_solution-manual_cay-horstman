@@ -1,0 +1,87 @@
+•• P 19.1 Random monoalphabet cipher. The Caesar cipher, which shifts all letters by a fixed amount, is far too easy to crack. Here is a 
+better idea. For the key, don’t use numbers but words. Suppose the key word is FEATHER. Then first remove duplicate letters, yielding 
+FEATHR, and append the other letters of the alphabet in reverse order. Now encrypt the letters as follows:
+
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 
+F E A T H R Z Y X W V U S Q P O N M L K J I G D C B
+
+Write a program that encrypts or decrypts a file using this cipher. The key word is specified with the -k command line option. The -d 
+
+command line option specifies decryption. For example,
+
+java Encryptor -d -k FEATHER encrypt.txt output.txt
+
+decrypts a file using the keyword FEATHER. It is an error not to supply a keyword.
+========================================================================================
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Random_Monoalphabet_Cipher {
+
+	public static void main(String[] args) throws FileNotFoundException {
+		Scanner in = new Scanner(System.in);
+		
+		System.out.print("enter the key word : ");
+		String key = in.next();
+		
+		ArrayList <Character> a = new ArrayList<>();
+		char ch = 'A';
+		//this loop fills array a with all characters from A to Z
+		for(int i = 0 ; i < 26 ; i++)
+		{
+			a.add((char) (ch + i));
+		}
+
+		ArrayList <Character> b = new ArrayList<>();
+		
+		//this loop fills array b with characters of the key and removes repeated characters
+		for(int i = 0 ; i < key.length() ; i++)
+		{
+			if(! b.contains(key.charAt(i)))
+				b.add(key.charAt(i));
+		}
+		
+		//this loop appends the other letters of the alphabet in reverse order
+		int j = 25; //index of the last element of array a
+		for(int i = 0 ; i <26 ; i++ )
+		{
+			if(!b.contains(a.get(j)))
+				b.add(a.get(j));
+			
+			j--;
+		}
+
+		Scanner sc = new Scanner(new File("encrypt.txt"));
+		PrintWriter out = new PrintWriter(new File("output.txt"));
+		while(sc.hasNext())
+		{
+
+			String encrypted_str = encrypt(sc.next() , a , b);
+
+			out.print(encrypted_str);
+		}
+		
+		sc.close();
+		out.close();
+		
+	}
+
+	private static String encrypt(String str, ArrayList<Character> a, ArrayList<Character> b) 
+	{
+		str = str.toUpperCase();
+
+		String encrypted_str = "";
+		for(int i = 0 ; i < str.length() ; i++)
+		{
+			int char_index = a.indexOf(str.charAt(i));
+
+			encrypted_str = encrypted_str + b.get(char_index);
+		}
+		return encrypted_str+" ";
+	}
+
+}
+========================================================================================

@@ -1,0 +1,187 @@
+••• P 19.8 Write a program that manipulates a database of product records. Records are stored in a binary file. Each record consists of these items:
+• Product name: 30 characters at two bytes each = 60 bytes
+• Price: one double = 8 bytes
+• Quantity: one int = 8 bytes
+The program should allow the user to add a record, find a record that matches a product name, and change the price and quantity of a product by a given amount.
+========================================================================================
+solution
+----------
+
+
+public class Product 
+{
+	public String product_name;
+	private double price;
+	private int quantity;
+	
+	public Product( String product_name , double price , int quantity)
+	{
+		this.product_name = product_name;
+		this.price = price;
+		this.quantity = quantity;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+}
+========================================================================================
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class ProductsData 
+{
+	public static final int INT_SIZE = 4;
+	public static final int DOUBLE_SIZE = 8;
+	public static final int CHAR_SIZE = 2;
+	public static final int NAME_LENGTH = 5;
+
+
+	public static final int RECORD_SIZE = INT_SIZE + DOUBLE_SIZE + NAME_LENGTH *  CHAR_SIZE;
+	
+	 private RandomAccessFile file;
+	 public ProductsData()
+	 {
+		 file = null;
+	 }
+	 
+	 public void open(String filename) throws IOException
+	 {
+		 if (file != null) { file.close(); }
+		 file = new RandomAccessFile(filename, "rw");
+	 }
+	 
+	 public int size() throws IOException
+	 {
+		 return (int) (file.length() / RECORD_SIZE);
+	 }
+	 public void close() throws IOException
+	 {
+		 if (file != null) { file.close(); }
+		 file = null;
+	 }
+	 public Product read(int n)   throws IOException
+	 {
+		 file.seek(n * RECORD_SIZE);
+		 String product_name = "";
+		 for(int i = 0 ; i < 5 ; i++)
+			 product_name = product_name + file.readChar();
+
+		 double price = file.readDouble();
+		 int quantity = file.readInt();
+		 
+		 return new Product(product_name , price , quantity);
+	 }
+	 public int find( String product_name) throws IOException
+	 {
+		 for (int i = 0; i < size(); i++)
+		 {
+			 file.seek(i * RECORD_SIZE);
+			 String str = "";
+			 for(int j = 0 ; j < 5 ; j++)
+				 str = str + file.readChar();
+			 if (product_name.equals(str)) { return i; }
+			 // Found a match
+		 }
+		 return -1; // No match in the entire file
+	 }
+	 
+	 public void write(int n, Product p)  throws IOException
+	 {
+		 file.seek(n * RECORD_SIZE );
+		 for(int i = 0 ; i < p.product_name.length() ; i++)
+		 {
+			 file.writeChar(p.product_name.charAt(i));
+		 }
+		 
+		 file.writeDouble(p.getPrice());
+		 file.writeInt(p.getQuantity());
+	 }	
+}
+========================================================================================
+
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class ProductsSimulator
+{
+	public static void main(String [] args) throws IOException
+	{
+		Scanner in = new Scanner(System.in);
+		ProductsData data = new ProductsData();
+		try
+		 {
+			 data.open("bank.dat");
+			
+			 boolean done = false;
+			 while (!done)
+			 {
+				 System.out.print("Product name: ");
+				 String product_name = in.next();
+				 System.out.print("Product price: ");
+				 double price = in.nextDouble();
+				 System.out.print("Product quantity: ");
+				 int quantity = in.nextInt();
+				
+				 int position = data.find(product_name);
+				 Product p;
+				 if (position >= 0)
+				 {
+					 p = data.read(position);
+					 p.setPrice(price + p.getPrice());
+					 p.setQuantity(quantity + p.getQuantity());
+					 System.out.println("New Price: " + p.getPrice() + "   New Quantity: " + p.getQuantity());
+				 }
+				 else // Add account
+				 {
+					 p = new Product(product_name ,  price ,  quantity);
+					 position = data.size();
+					 System.out.println("Adding new account.");
+				 }
+				 data.write(position, p);
+				
+				 System.out.print("Done? (Y/N) ");
+				 String input = in.next();
+				 if (input.equalsIgnoreCase("Y")) { done = true; }
+			 }
+		 }
+		 finally
+		 {
+			 data.close();
+		 }
+	 }
+}
+========================================================================================
+sample output
+-------------------
+Product name: jolly
+Product price: 20
+Product quantity: 5
+Adding new account.
+Done? (Y/N) n
+Product name: pepsi
+Product price: 12
+Product quantity: 2
+Adding new account.
+Done? (Y/N) n
+Product name: jolly
+Product price: 10
+Product quantity: 2
+New Price: 30.0   New Quantity: 7
+Done? (Y/N) n
+Product name: jolly
+Product price: -4
+Product quantity: -1
+New Price: 26.0   New Quantity: 6
+Done? (Y/N) y
+========================================================================================
