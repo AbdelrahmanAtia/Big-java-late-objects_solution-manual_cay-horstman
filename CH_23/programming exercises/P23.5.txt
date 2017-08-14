@@ -1,0 +1,133 @@
+•• P23.5 Repeat Exercise P23.4, using a DTD for validation.
+========================================================================================
+solution
+=====
+
+public class Account 
+{
+	private int number;
+	private double balance;
+	
+	public Account(int number, double balance)
+	{
+		this.number = number;
+		this.balance = balance;
+	}
+	
+	public int getAccountNumber()
+	{
+		return number;
+	}
+	
+	public double getBalance()
+	{
+		return balance;
+	}
+	
+	public String format()
+	{
+		return String.format("%-10d%20.2f", number, balance);
+	}
+}
+========================================================================================
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class AccountParser 
+{
+	private DocumentBuilder builder;
+	private XPath path;
+	/**
+	Constructs a parser that can parse accounts.
+	*/
+	public AccountParser() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		dbfactory.setValidating(true);
+		dbfactory.setIgnoringElementContentWhitespace(true);
+		builder = dbfactory.newDocumentBuilder();
+		XPathFactory xpfactory = XPathFactory.newInstance();
+		path = xpfactory.newXPath();
+	}
+	/**
+	Parses an XML file containing accounts.
+	param fileName the name of the file
+	return an array list containing all accounts in the XML file
+	*/
+	public ArrayList <Account> parse(String fileName) throws SAXException, IOException, XPathExpressionException
+	{
+		File f = new File(fileName);
+		Document doc = builder.parse(f);
+
+		ArrayList<Account> bank = new ArrayList<Account>();
+		int accountsCount = Integer.parseInt(path.evaluate("count(/bank/account)", doc));
+		for (int i = 1; i <= accountsCount; i++)
+		{
+			int number =  Integer.parseInt(path.evaluate("/bank/account[" + i + "]/number", doc));
+			double balance = Double.parseDouble(path.evaluate("/bank/account[" + i + "]/balance", doc));
+			Account account = new Account(number, balance);
+			bank.add(account);
+		}
+		return bank;
+	}
+}
+========================================================================================
+import java.util.ArrayList;
+
+public class AccountParserDemo 
+{
+	public static void main(String[] args) throws Exception
+	{
+		AccountParser parser = new AccountParser();
+		ArrayList <Account> bank = parser.parse("bank.xml");
+		double totalValue = 0;
+		for (Account account : bank)
+		{
+			
+			totalValue = totalValue + account.getBalance();
+		}
+		System.out.println("\ntotal value = " + totalValue);
+	}
+}
+========================================================================================
+xml file
+=====
+<?xml version="1.0"?>
+<!DOCTYPE bank [
+<!ELEMENT bank (account*)>
+<!ELEMENT account (number, balance)>
+<!ELEMENT number (#PCDATA)>
+<!ELEMENT balance (#PCDATA)>
+]>
+<bank>
+  <account>
+    <number>3</number>
+    <balance>1295.32</balance>
+  </account>
+   <account>
+    <number>5</number>
+    <balance>179811.36</balance>
+  </account>
+   <account>
+    <number>11</number>
+    <balance>2456987.23</balance>
+  </account>
+</bank>
+========================================================================================
+output
+=====
+
+total value = 2638093.91
+========================================================================================
