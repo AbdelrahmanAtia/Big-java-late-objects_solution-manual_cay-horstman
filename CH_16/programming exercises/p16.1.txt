@@ -1,0 +1,23 @@
+••• P 16.1 Add a method reverse to our implementation of the LinkedList class that reverses the links in a list. Implement this method by 
+
+directly rerouting the links, not by using an iterator.
+========================================================================================
+solution
+=====
+public void reverse()
+{
+	Node last = first;
+	first=first.next;
+	last.next=null;
+		
+	while(first != null )
+	{
+		Node temp = first;
+		first = first.next;
+		temp.next = last;
+		last=temp;
+	}
+
+	first=last;		
+}
+========================================================================================

@@ -1,0 +1,62 @@
+• P 16.23 Complete the implementation of a stack in Section 16.3.2, using an array for storing the elements.
+========================================================================================
+solution
+=====
+
+public class ArrayStack 
+{
+	private Object [] buffer;
+	private int currentSize;
+	public ArrayStack()
+	{
+		final int INITIAL_SIZE=10;
+		buffer=new Object[INITIAL_SIZE];
+		currentSize=0;
+	}
+	
+	public boolean isEmpty()
+	{
+		return currentSize==0;
+	}
+	
+	public int size()
+	{
+		return currentSize;
+	}
+	
+	public void push(Object element)
+	{
+		growBufferIfNecessary();
+		currentSize++;
+		buffer[currentSize-1]=element;
+		System.out.println("pushed "+ element);
+		
+	}
+	
+	public Object pop()
+	{
+		if(currentSize==0)
+			throw new IndexOutOfBoundsException();
+		
+		Object element=buffer[currentSize-1];
+		currentSize--;
+		System.out.println("poped "+ element);
+		return element;
+	}
+
+	public void growBufferIfNecessary() 
+	{
+		
+		if(currentSize==buffer.length)
+		{
+			Object [] newBuffer=new Object[2 * buffer.length];
+			for(int i = 0 ; i < buffer.length ; i++)
+			{
+				newBuffer[i]=buffer[i];
+			}
+			System.out.println("growed buffer ");
+			buffer=newBuffer;
+		}
+	}
+}
+========================================================================================

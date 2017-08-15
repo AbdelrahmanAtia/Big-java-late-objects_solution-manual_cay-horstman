@@ -1,0 +1,29 @@
+• P 16.7 Add methods Object get(int n) and void set(int n, Object newElement) to the LinkedList class. Use a helper method
+
+private static Node getNode(int n)
+
+that starts at first and follows n links.
+========================================================================================
+solution
+----------
+
+public void set(int n, Object newElement)
+{
+	Node temp = getNode(n);
+	temp.data = newElement;
+}
+	
+public Object get(int n)
+{
+	return getNode(n).data;
+}
+private static Node getNode(int n)
+{
+	Node temp = first;
+	for(int i = 0 ; i<n ; i++)
+		temp = temp.next;
+		
+	return temp;
+		
+}
+========================================================================================

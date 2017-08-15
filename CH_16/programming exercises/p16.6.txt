@@ -1,0 +1,23 @@
+• P 16.6 Add an instance variable currentSize to our implementation of the LinkedList class. Modify the add, addLast, and remove methods of 
+both the linked list and the list iterator to update the currentSize variable so that it always contains the correct size. Change the size method 
+
+of Exercise P16.4 so that it simply returns the value of this instance variable.
+========================================================================================
+solution
+=====
+
+public class LinkedList
+{
+    private int currentSize;
+    .........
+    public int size()
+   {
+         return currentSize ;
+
+   }
+}
+
+
+
+>>increment the currentSize in the add , addLast methods , and decrement it in the remove method
+========================================================================================

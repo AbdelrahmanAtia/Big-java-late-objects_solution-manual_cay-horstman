@@ -1,0 +1,25 @@
+•• P 16.10 Add a method boolean contains(Object obj) that checks whether our LinkedList implementation contains a given object. 
+Implement this method by directly traversing the links, not by using an iterator. Use the equals method to determine whether obj equals 
+
+node.data for a given node.
+========================================================================================
+solution
+---------
+
+boolean contains(Object obj)
+{
+	Node temp = first;
+	boolean found = false;
+	while(temp != null && !found)
+	{
+		if(temp.data.equals(obj))
+			found = true;
+		else
+			temp = temp.next;
+	}
+		
+	 return found;
+}
+========================================================================================
+>> note that here we used equals instead of == because object data type might be a string , so we used equals method instead of ==
+ 

@@ -1,0 +1,31 @@
+•• P 16.2 Consider a version of the LinkedList class of Section 16.1 in which the addFirst
+method has been replaced with the following faulty version:
+public void addFirst(Object element)
+{
+    Node newNode = new Node();
+    first = newNode;
+    newNode.data = element;
+    newNode.next = first;
+}
+
+Develop a program ListTest with a test case that shows the error. That is, the program should print a failure message with this 
+implementation but not with the correct implementation.
+========================================================================================
+solution
+=====
+public class ListTest 
+{
+	public static void main(String [] args)
+	{
+		LinkedList l=new LinkedList();
+		l.addFirst(1);
+		l.addFirst(2);
+		System.out.println(l.size());   
+		System.out.println("the program enters an infinite loop because the first node refers to itself not null ");
+		
+	}
+
+}
+========================================================================================
+
+note >> not sure from the solution

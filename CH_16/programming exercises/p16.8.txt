@@ -1,0 +1,24 @@
+• P 16.8 Solve Exercise P16.7 by using a recursive helper method
+private static Node getNode(Node start, int distance)
+========================================================================================
+solution
+======
+
+public void set(int n, Object newElement)
+{
+	Node temp = getNode(first , n);
+	temp.data = newElement;
+}
+	
+public Object get(int n)
+{
+	return getNode(first , n).data;
+}
+private static Node getNode(Node start, int distance)
+{
+	Node temp = start;
+	for(int i = 0; i<distance ; i++)
+		temp = temp.next;
+	return temp;
+}
+========================================================================================

@@ -1,0 +1,50 @@
+• P 16.24 Complete the implementation of a queue in Section 16.3.3, using a sequence of nodes for storing the elements.
+========================================================================================
+solution
+======
+
+import java.util.NoSuchElementException;
+public class LinkedListQueue 
+{
+	private Node first;
+	private Node last;
+	public LinkedListQueue()
+	{
+		first=null;
+		last=null;
+	}
+	
+	public void push(Object element)
+	{
+		Node newNode=new Node();
+		newNode.data=element;
+		if(first==null)
+		{
+			first=newNode;
+			last=newNode;
+		}
+		else
+		{
+			last.next=newNode;
+			last=newNode;
+		}
+		
+	}
+	
+	public Object pop()
+	{
+		if(first==null) { throw new NoSuchElementException();}
+		Object element=first.data;
+		first=first.next;
+		return element;
+	}
+	
+	class Node
+	{
+		private Object data;
+		private Node next;
+	}
+}
+========================================================================================
+
+
