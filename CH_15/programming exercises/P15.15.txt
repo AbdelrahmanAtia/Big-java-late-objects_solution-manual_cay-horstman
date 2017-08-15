@@ -1,0 +1,76 @@
+•• P 15.15 Try to find two words with the same hash code in a large file. Keep a Map<Integer, HashSet<String>>. When you read in a 
+word, compute its hash code h and put the word in the set whose key is h. Then iterate through all keys and print the sets whose 
+
+size is > 1.
+========================================================================================
+solution
+=====
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class P15_15 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		
+		Scanner in = new Scanner (new File("C:\\Users\\toshiba\\Desktop\\input.txt"));
+		Map <Integer, HashSet<String>> m = new TreeMap<Integer, HashSet<String>>();
+		while(in.hasNext())
+		{
+			String word=in.next();
+			int hashCode = computeHashCode(word);
+			HashSet<String> words = new HashSet<String>();
+			words.add(word);
+			
+			//check if there is a hash code equal to the recently computed hashcode
+			if(m.get(hashCode) != null)
+			{
+				HashSet <String> temp = m.get(hashCode);
+				for(String element : temp)
+					words.add(element);
+			}
+			
+			m.put(hashCode , words);
+		}
+		
+		for(int key : m.keySet())
+		{
+			if(m.get(key).size() > 1)
+			{
+				System.out.println(m.get(key));
+			}
+		}
+	}
+
+	private static int computeHashCode(String word)
+	{
+		final int HASH_MULTIPLIER = 31;
+		int h = 0;
+		for (int i = 0; i < word.length(); i++)
+		{
+			h = HASH_MULTIPLIER * h + word.charAt(i);
+		}
+		return h;
+	}
+}
+========================================================================================
+test
+------
+if input file contain
+
+eat hello
+aet elloha
+Ugh
+VII
+
+then output will contain
+-----------------------------
+[Ugh, VII]
+
+//as Ugh and VII have the same hash code
+========================================================================================

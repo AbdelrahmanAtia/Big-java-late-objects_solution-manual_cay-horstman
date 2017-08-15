@@ -1,0 +1,63 @@
+•• P 15.5 A homeowner rents out parking spaces in a driveway during special events. The driveway is a “last-in, first-out” stack. Of course, 
+when a car owner retrieves a vehicle that wasn’t the last one in, the cars blocking it must temporarily move to the street so that the 
+requested vehicle can leave. Write a program that models this behavior, using one stack for the driveway and one stack for the street. Use 
+integers as license plate numbers. Positive numbers add a car, negative numbers remove a car, zero stops the simulation. Print out the stack 
+after each operation is complete.
+========================================================================================
+solution
+=====
+
+package CH_16;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class P15_5 
+{
+	public static void main(String [] args)
+	{
+		int plateNumber = 0;
+		Scanner in=new Scanner(System.in);
+		Stack <Integer> driveway =new Stack <Integer> ();
+		Stack <Integer> street = new  Stack <Integer> ();
+		while(true)
+		{
+			System.out.println("eneter the  license plate number: ");
+			plateNumber=in.nextInt();
+			if(plateNumber > 0)
+			{
+				driveway.push(plateNumber);
+				System.out.println("driveway = "+driveway);
+				
+			}
+			else if(plateNumber < 0)
+			{
+				while(!driveway.isEmpty())
+				{
+					int top=driveway.peek();
+					if(top==Math.abs(plateNumber))
+					{
+						driveway.pop();
+						break;
+					}
+					else
+						street.push(driveway.pop());
+						
+				}
+				while(!street.isEmpty())
+				{
+					driveway.push(street.pop());
+				}
+				System.out.println("driveway = "+driveway);
+
+			}
+			else
+				break;
+		}
+		
+		System.out.println("driveway = "+driveway);
+		System.out.println("simulation terminated");
+		
+	}
+}
+========================================================================================

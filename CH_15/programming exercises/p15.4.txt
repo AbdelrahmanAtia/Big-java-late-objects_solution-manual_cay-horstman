@@ -1,0 +1,31 @@
+• P 15.4 Your task is to break a number into its individual digits, for example, to turn 1729 into 1, 7, 2, and 9. It is easy to get the last digit of a number n as n % 10. But that gets the numbers in reverse order. Solve this problem with a stack. Your program should ask the user for an integer, then print its digits separated by spaces.
+========================================================================================
+solution
+----------
+import java.util.Scanner;
+import java.util.Stack;
+
+public class p15_4 
+{
+	public static void main(String [] args)
+	{
+		Scanner in=new Scanner(System.in);
+		int n=in.nextInt();
+		Stack <Integer> s=new Stack();
+		int i=0;
+
+		do
+		{
+			int rem=n%10;
+			n=n/10;
+			s.push(rem);
+		}
+		while(n>0);
+		
+		while(!s.isEmpty())
+		{
+			System.out.print(s.pop() +" ");
+		}
+	}
+}
+========================================================================================

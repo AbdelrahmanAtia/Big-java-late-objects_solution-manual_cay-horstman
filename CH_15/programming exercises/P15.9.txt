@@ -1,0 +1,61 @@
+•• P 15.9 Write a program that keeps a map in which both keys and values are strings—the names of students and their course grades. 
+
+Prompt the user of the program to add or remove students, to modify grades, or to print all grades. The printout should be sorted by name 
+
+and formatted like this:
+
+Carl: B+
+Joe: C
+Sarah: A
+========================================================================================
+solution
+----------
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class P15_9
+{
+	public static void main(String [] args)
+	{
+		Scanner in=new Scanner(System.in);
+		String name , grade , str = "";
+		Map <String , String>courseGrades=new TreeMap<>();
+
+		while(!str.equals("Q")) 
+		{
+			System.out.println("A)dd R)emove M)odify P)rint Q)uit");
+			str=in.next();
+			if(str.equals("A") || str.equals("M"))
+			{
+				System.out.print("Enter the student's name: ");
+				name=in.next();
+				System.out.print("Enter the student's grade:");
+				grade=in.next();
+				
+				courseGrades.put(name, grade);
+				
+			}
+			else if(str.equals("R"))
+			{
+				System.out.print("Enter the student's name: ");
+				name=in.next();
+				courseGrades.remove(name);
+			}
+			else if(str.equals("P"))
+			{
+				for(String key : courseGrades.keySet())
+				{
+					System.out.println(key +": "+courseGrades.get(key));
+				}
+			}
+			else if(str.equals("Q"))
+			{
+				// exit
+			}
+			else
+				System.out.println("undefined input");
+		}
+	}
+}
+========================================================================================

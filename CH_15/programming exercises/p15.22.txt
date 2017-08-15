@@ -1,0 +1,108 @@
+• P 15.22 Add a % (remainder) operator to the expression calculator of Section 15.6.3.
+========================================================================================
+solution
+======
+notes:
+1- % has a higher precedence than + or -
+
+2- % has a higher precedence than * or / if it came before them , and a lower one if it came after them. and the same applies for * and / .
+
+ 			=========================
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class P15_22 
+{
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		Scanner in=new Scanner(System.in);
+		Stack <String> numbers=new Stack<>();
+		Stack <String> operators=new Stack<>();
+		boolean done=false;
+		while(!done)
+		{
+			String input=in.next();
+			
+			if(input.equals("*") || input.equals("/") )
+			{
+				while(!operators.isEmpty() && operators.peek().equals("%") )
+				{
+						evaluateTheTop(numbers , operators);
+				}
+				operators.push(input);
+			}
+			else if(input.equals("%"))
+			{
+				while(!operators.isEmpty() && (operators.peek().equals("*") || operators.peek().equals("/")))
+				{
+					evaluateTheTop(numbers , operators);
+				}
+				operators.push(input);
+
+			}
+			
+			else if(input.equals("("))
+			{
+				operators.push(input);
+
+			}
+			else if(input.equals(")"))
+			{
+				while(!operators.peek().equals("("))
+				{
+					evaluateTheTop(numbers , operators);
+
+				}
+				operators.pop();
+			}
+			else if(input.equals("+") || input.equals("-"))
+			{
+				while(!operators.isEmpty() && (operators.peek().equals("*") || operators.peek().equals("/")))
+				{
+						evaluateTheTop(numbers , operators);
+				}
+				
+					operators.push(input);
+				
+			}
+			else if(input.equals("="))
+			{
+				while(!operators.isEmpty())
+				{
+					evaluateTheTop(numbers , operators);
+				}
+				System.out.println(" "+numbers.pop());
+			}
+			else if(input.equals("Q") || input.equals("q"))
+			{
+				done=true;
+			}
+			else
+			{
+				// Not an operator--push the input in the numbers stack
+				numbers.push(input);
+			}
+		}
+	}
+
+	public static void evaluateTheTop(Stack<String> numbers, Stack<String> operators) 
+	{
+		int arg1=Integer.parseInt(numbers.pop());
+		int arg2=Integer.parseInt(numbers.pop());
+		String sign=operators.pop();
+		if(sign.equals("+"))
+			numbers.push( (arg1 + arg2) +"");
+		else if(sign.equals("-"))
+			numbers.push( (arg2 - arg1) +"");
+		else if(sign.equals("*"))
+			numbers.push( (arg1 * arg2) +"");
+		else if(sign.equals("/"))
+			numbers.push( (arg2 / arg1) +"");
+		else if(sign.equals("%"))
+			numbers.push( (arg2 % arg1) +"");
+
+	}
+}
+========================================================================================

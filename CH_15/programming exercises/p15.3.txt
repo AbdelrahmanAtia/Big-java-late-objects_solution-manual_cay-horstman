@@ -1,0 +1,54 @@
+•• P 15.3 Use a stack to reverse the words of a sentence. Keep reading words until you have a word that ends in a period, adding them onto 
+a stack. When you have a word with a period, pop the words off and print them. Stop when there are no more words in the input. For example, you should turn the input
+Mary had a little lamb. Its fleece was white as snow.
+ into 
+Lamb little a had mary. Snow as white was fleece its.
+Pay attention to capitalization and the placement of the period.
+========================================================================================
+solution
+----------
+
+import java.util.Scanner;
+import java.util.Stack;
+public class P15_3 
+{
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		Stack<String> s=new Stack<>();
+		while(in.hasNext())
+		{
+			String str=in.next();
+			s.push(str);
+			if(str.charAt(str.length()-1)=='.')
+			{
+				//to remove the dot at the end of the last word in the phrase
+				String last=s.pop();
+				s.push(last.substring(0, last.length()-1));
+				while(!s.isEmpty())
+				{
+					System.out.print(s.pop()+" ");
+				}
+				
+			}
+			if(Character.isUpperCase(str.charAt(0)))
+			{
+				s.pop();
+				s.push(str+".");
+			}
+		}
+	}
+}
+========================================================================================
+input:
+--------
+Mary had a little lamb. Its fleece was white as snow.
+
+output:
+---------
+lamb little a had Mary. snow as white was fleece Its. 
+
+========================================================================================
+
+
+

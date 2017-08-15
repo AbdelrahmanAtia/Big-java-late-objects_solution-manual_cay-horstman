@@ -1,0 +1,39 @@
+•• P 15.1 Write a method
+public static void downsize(LinkedList<String> employeeNames, int n)
+that removes every nth employee from a linked list.
+========================================================================================
+solution
+=====
+public static void downsize(LinkedList<String> employeeNames, int n)
+	{
+		ListIterator <String> iterator=employeeNames.listIterator();
+		while(iterator.hasNext())
+		{
+			iterator.next();
+			iterator.remove();
+
+			int counter=0;
+			while(iterator.hasNext() && counter < n-1)
+			{
+				iterator.next();
+				counter++;
+			}
+		}
+	}
+========================================================================================
+another solution
+===========
+
+public static void downsize(LinkedList<String> employeeNames, int n)
+	{
+		ListIterator <String> iterator=employeeNames.listIterator();
+		int counter=0;
+		while(iterator.hasNext())
+		{
+			iterator.next();
+			if(counter % n ==0)
+				iterator.remove();
+			counter++;
+		}
+	}
+========================================================================================
