@@ -1,0 +1,20 @@
+•• P 17.22 Modify the implementation of the MinHeap class so that the parent and child index positions and elements are computed directly, without calling helper methods.
+========================================================================================
+solution
+---------
+
+replace the following methods 
+
+getLeftChildIndex(int index)     >> with     2 * index
+
+getRightChildIndex(int index)   >> with    2 * index + 1
+
+getParentIndex(int index)         >> with    index / 2
+
+getLeftChild(int index)              >> with    elements.get(2 * index)
+
+getRightChild(int index)             >> with   elements.get(2 * index + 1)
+
+getParent(int index)                  >> with   elements.get(index / 2)
+
+========================================================================================

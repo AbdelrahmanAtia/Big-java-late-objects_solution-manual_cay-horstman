@@ -1,0 +1,27 @@
+• P 17.10 Write a method of the BinarySearchTree class Comparable smallest()
+
+that returns the smallest element of a tree. You will also need to add a method to the Node class.
+========================================================================================
+solution
+=====
+
+// in the BinarySearchTree  class
+
+public Comparable smallest()
+{
+	return root.smallest(root);
+}
+
+// in the Node class
+
+public Comparable smallest(Node smallestNode)
+{
+	while(smallestNode.left != null)
+	{
+		smallestNode = smallestNode.left;
+	}
+	return smallestNode.data;
+}
+========================================================================================
+>>  why we used comparable as a return data type?
+========================================================================================

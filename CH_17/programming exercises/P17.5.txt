@@ -1,0 +1,38 @@
+• P 17.5 Add a method swapChildren that swaps all left and right children to the BinaryTree class.
+========================================================================================
+solution
+======
+
+	public void swap()
+	{
+		swap(root);
+	}
+
+	private static void swap(Node n)
+	{
+		if(n.left != null && n.right != null)
+		{
+			Node temp = n.left;
+			n.left = n.right;
+			n.right = temp;
+			swap(n.left);
+			swap(n.right);
+		}
+		else if(n.left != null && n.right == null)
+		{
+			n.right = n.left;
+			n.left = null;
+			swap(n.right);
+		}
+		else if(n.left == null && n.right != null)
+		{
+			n.left = n.right;
+			n.right = null;
+			swap(n.left);
+		}
+		else if(n.left == null && n.right == null)
+		{
+			return;
+		}	
+	}
+========================================================================================

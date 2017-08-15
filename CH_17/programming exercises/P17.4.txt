@@ -1,0 +1,28 @@
+• P 17.4 Add a method countNodesWithOneChild to the BinaryTree class.
+========================================================================================
+solution
+=========
+
+    private static int countNodesWithOneChild(Node n)
+	{
+		if(n.left == null  && n.right != null)
+		{
+			return 1 + countNodesWithOneChild(n.right);
+		}
+		else if(n.left != null  && n.right == null)
+		{
+			return 1 + countNodesWithOneChild(n.left);
+		}
+		else if(n.left != null  && n.right != null)
+		{
+			return countNodesWithOneChild(n.left) + countNodesWithOneChild(n.right);
+		}
+		else
+			return 0;
+		
+	}
+	public int countNodesWithOneChild() 
+	{
+		return countNodesWithOneChild(root); 
+	}
+========================================================================================

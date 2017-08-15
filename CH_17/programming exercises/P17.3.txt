@@ -1,0 +1,25 @@
+• P 17.3 Write a method that counts the number of all leaves in a tree.
+========================================================================================
+solution
+=====
+>> in the node class
+----------------------------
+public int countLeaves()
+{
+	if(children.size() == 0)
+		return 1;
+	int sum=0;
+	for (Node child : children) { sum = sum + child.countLeaves(); }
+		return  sum;
+			
+}	
+
+>> in the tree class
+-------------------------
+
+public int countLeaves()
+{
+	if(root == null) { return 0; }
+	else { return root.countLeaves(); }
+}
+========================================================================================
