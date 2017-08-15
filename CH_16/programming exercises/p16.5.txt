@@ -1,0 +1,21 @@
+•• P 16.5 Solve Exercise P16.4 recursively by calling a recursive helper method
+
+private static int size(Node start)
+
+Hint: If start is null, then the size is 0. Otherwise, it is one larger than the size of start.next.
+========================================================================================
+solution
+=====
+
+public int size()
+{
+	return size(first);
+}
+private static int size(Node start)
+{
+	if(start==null)
+		return 0;
+
+	return 1+size(start.next);
+}
+========================================================================================
