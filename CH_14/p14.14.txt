@@ -1,0 +1,68 @@
+••• P14.14 Write a program that sorts an ArrayList<Country> in decreasing order so that the most largest country is at the beginning of the 
+array. Use a Comparator.
+========================================================================================
+solution
+=====
+
+public class Country implements Comparable
+{
+	private int area;
+	private String name;
+	
+	public Country(int area , String name)
+	{
+		this.area=area;
+		this.name=name;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public int compareTo(Object otherObject)
+	{
+		Country other=(Country) otherObject;
+		if(area > other.area)                   //for decreasing order i changed only < sign to > sign
+			return -1;
+		else if (area == other.area)
+			return 0;
+		else
+			return 1;
+	}
+}
+
+========================================================================================
+test  class
+-----------
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Test
+{
+	public static void main(String [] args)
+	{
+		Country x1=new Country(2000,"russia");
+		Country x2=new Country(3000,"turkey");
+		Country x3=new Country(4000,"egypt");
+		Country x4=new Country(1000,"america");
+		
+		ArrayList<Country> countries=new ArrayList<>();
+		countries.add(x1);
+		countries.add(x2);
+		countries.add(x3);
+		countries.add(x4);
+		System.out.print("unsoretd : ");
+
+		for(Country element : countries)
+			System.out.print(element.getName() + "  ");
+		
+		Collections.sort(countries);
+		System.out.println("");
+		System.out.print("soretd   : ");
+		for(Country element : countries)
+			System.out.print(element.getName() + "  ");
+		
+	}
+}
+========================================================================================

@@ -1,0 +1,77 @@
+• P14.1 Modify the selection sort algorithm to sort an array of integers in descending order.
+
+solution
+=====
+>> to do this we have two answers:
+
+1-  modify selection sorter class in section (14.1) to search for the greatest element in the array portion and swap it with the first element in the portion.
+2- instead of replacing the min element in the array portion with the first element in it , we can replace it with the last element in the array portion.
+
+
+
+implementation of first solution:
+----------------------------------------
+package chapter_14;
+
+public class SelectionSorter 
+{
+	public static void sort(int [] a)
+	{
+		for(int i=0;i<a.length-1;i++)
+		{
+			int maxPos=maxPosition(a,i);
+			ArrayUtil.swap(a, i, maxPos);
+		}		
+	}
+	
+	public static int maxPosition(int [] a , int from)
+	{
+		int maxPos=from;
+	
+		for(int i=from+1 ; i<a.length;i++)
+		{
+			if(a[i] > a[maxPos])
+			{
+				maxPos=i;
+			}
+		}
+		
+		return maxPos;
+	}
+
+}
+==============================================================================================
+implementation of second solution
+------------------------------------------
+package chapter_14;
+
+public class SelectionSorter 
+{
+	public static void sort(int [] a)
+	{
+		for(int i=a.length-1;i>=0;i--)
+		{
+			int minPos=minPosition(a,i);
+			ArrayUtil.swap(a, i, minPos);
+			
+		}		
+	}
+	
+	
+	public static int minPosition(int [] a , int from)
+	{
+		int minPos=from;
+	
+		for(int i=from-1 ; i>=0;i--)
+		{
+			if(a[i] < a[minPos])
+			{
+				minPos=i;
+			}
+		}
+		
+		return minPos;
+	}
+
+}
+==============================================================================================

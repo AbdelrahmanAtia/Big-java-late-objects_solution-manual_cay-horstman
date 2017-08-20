@@ -1,0 +1,182 @@
+•• P14.6 Implement a program that measures the performance of the insertion sort algorithm described in Special Topic 14.2.
+========================================================================================
+solution
+=====
+
+import java.util.Random;
+
+ /**
+ This class contains utility methods for array manipulation.
+ */
+ public class ArrayUtil
+ {
+	 private static Random generator = new Random();
+	
+	 /**
+	 Creates an array filled with random values.
+	 @param length the length of the array
+	 @param n the number of possible random values
+	 @return an array filled with length numbers between
+	 0 and n - 1
+	 */
+	 public static int[] randomIntArray(int length, int n)
+	 {
+		 int[] a = new int[length];
+		 for (int i = 0; i < a.length; i++)
+		 {
+			 a[i] = generator.nextInt(n);
+		 }
+		
+		 return a;
+	 }
+	
+	 /**
+	 Swaps two entries of an array.
+	 @param a the array
+	 @param i the first position to swap
+	 @param j the second position to swap
+	 */
+	 public static void swap(int[] a, int i, int j)
+	 {
+		 int temp = a[i];
+		 a[i] = a[j];
+		 a[j] = temp;
+	 }
+ }
+========================================================================================
+ /**
+ A stopwatch accumulates time when it is running. You can
+ repeatedly start and stop the stopwatch. You can use a
+ stopwatch to measure the running time of a program.
+ */
+ public class StopWatch
+ {
+	 private long elapsedTime;
+	 private long startTime;
+	 private boolean isRunning;
+	
+	 /**
+	 Constructs a stopwatch that is in the stopped state
+	 and has no time accumulated.
+	 */
+	 public StopWatch()
+	 {
+		 reset();
+	 }
+	
+	 /**
+	 Starts the stopwatch. Time starts accumulating now.
+	 */
+	 public void start()
+	 {
+		 if (isRunning) { return; }
+		 isRunning = true;
+		 startTime = System.currentTimeMillis();
+	 }
+	
+	 /**
+	 Stops the stopwatch. Time stops accumulating and is
+	 is added to the elapsed time.
+	 */
+	 public void stop()
+	 {
+		 if (!isRunning) { return; }
+		 isRunning = false;
+		 long endTime = System.currentTimeMillis();
+		 elapsedTime = elapsedTime + endTime - startTime;
+	 }
+	
+	 /**
+	 Returns the total elapsed time.
+	 @return the total elapsed time
+	 */
+	 public long getElapsedTime()
+	 {
+		 if (isRunning)
+		 {
+			 long endTime = System.currentTimeMillis();
+			 return elapsedTime + endTime - startTime;
+		 }
+		 else
+		 {
+			 return elapsedTime;
+		 }
+	 }
+	
+	 /**
+	 Stops the watch and resets the elapsed time to 0.
+	 */
+	 public void reset()
+	 {
+		 elapsedTime = 0;
+		 isRunning = false;
+	 }
+ }
+========================================================================================
+public class InsertionSorter
+{
+	/**
+	Sorts an array, using insertion sort.
+	@param a the array to sort
+	*/
+	public static void sort(int[] a)
+	{
+		for (int i = 1; i < a.length; i++)
+		{
+			int next = a[i];
+			// Move all larger elements up
+			int j = i;
+			while (j > 0 && a[j - 1] > next)
+			{
+				a[j] = a[j - 1];
+				j--;
+			}
+			// Insert the element
+			a[j] = next;
+		}
+	}
+}
+========================================================================================
+import java.util.Scanner;
+/**
+ This program measures how long it takes to sort an
+ array of a user-specified size with the selection
+ sort algorithm.
+ */
+ public class InsertionSortTimer
+ {
+	 public static void main(String[] args)
+	 {
+		Scanner in = new Scanner(System.in);
+		int n=0;
+		System.out.println("  n        Milliseconds");
+		for(int i=1;i<=6;i++)
+		{
+			n=10000*i;
+			 // Construct random array
+			 int[] a = ArrayUtil.randomIntArray(n , 100 );
+			 
+			 // Use stopwatch to time selection sort
+			
+			 StopWatch timer = new StopWatch();
+			
+			 timer.start();
+			 InsertionSorter.sort(a);
+			 timer.stop();
+			
+			 System.out.println(n + "          " + timer.getElapsedTime());
+		}
+	 }
+ }
+========================================================================================
+sample output
+==========
+
+  n        Milliseconds
+10000          59
+20000          220
+30000          188
+40000          348
+50000          543
+60000          773
+========================================================================================

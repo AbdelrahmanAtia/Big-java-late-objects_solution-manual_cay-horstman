@@ -1,0 +1,48 @@
+•• P14.8 Implement the algorithm described in Section 14.7.4, but only remember the value
+with the highest frequency so far:
+int mostFrequent = 0;
+int highestFrequency = -1;
+for (int i = 0; i < a.length; i++)
+Count how often a[i] occurs in a[i + 1]...a[n - 1]
+If it occurs more often than highestFrequency
+highestFrequency = that count
+mostFrequent = a[i]
+========================================================================================
+solution
+=====
+
+public class Frequent 
+{
+	public static void main(String [] args)
+	{
+		int [] a = {2,1,2,3,3,3,2,2};
+		int mostFrequent = 0;
+		int highestFrequency = -1;
+		for (int i = 0; i < a.length  ; i++)
+		{
+				int frequency=1+ count(a[i] , a , i+1 , a.length-1) ;
+
+				if(frequency > highestFrequency)
+				{
+					highestFrequency=frequency;
+					mostFrequent=a[i];
+				}	
+		}
+		System.out.println("mostFrequent = " +mostFrequent);
+		System.out.println("highestFrequency = " +highestFrequency);
+	}
+	
+	public static int count(int val , int[] a , int start , int end) 
+	{
+		int counter=0;
+		for(int j = start ; j <=end  ; j++)
+		{
+			if(val == a[j]) 
+			{
+				counter++;
+			}
+		}
+		return counter;
+	}
+}
+========================================================================================

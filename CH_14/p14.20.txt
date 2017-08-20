@@ -1,0 +1,54 @@
+•• P14.20 Sort an array list of strings by increasing length. Hint: Supply a Comparator.
+========================================================================================
+solution
+=====
+
+import java.util.Comparator;
+
+public class StringComparator implements Comparator
+{
+
+	public int compare(Object arg0, Object arg1) 
+	{
+		int len1=( (String) arg0 ).length();
+		int len2=((String) arg1) .length();
+		
+		if(len1 != len2)
+			return len1-len2;
+		
+		return 0;
+	}
+}
+========================================================================================
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class StringComparatorDemo 
+{
+	public static void main(String [] args)
+	{
+		ArrayList<String> strings=new ArrayList<>();
+		
+		System.out.println(">>unSorted strings :");
+		System.out.println("");
+
+		strings.add("ronaldo");  
+		strings.add("messi");   
+		strings.add("abou trika");  
+		strings.add("elneny");  
+
+		for(String element : strings)
+			System.out.println(element);
+		
+		Collections.sort(strings , new StringComparator());
+
+		System.out.println("");
+		System.out.println("");
+		System.out.println(">>Sorted strings :");
+		System.out.println("");
+
+		for(String element : strings)
+			System.out.println(element);
+	}
+}
+========================================================================================

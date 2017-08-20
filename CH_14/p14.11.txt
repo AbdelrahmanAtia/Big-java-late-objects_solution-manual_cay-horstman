@@ -1,0 +1,139 @@
+• P14.11 Implement the radix sort algorithm described in Exercise R14.20 to sort arrays of numbers between 0 and 999.
+========================================================================================
+solution
+---------
+import java.util.ArrayList;
+
+public class RadixSort
+{
+	public static void main(String [] args)
+	{
+		ArrayList<String> arr=new ArrayList<>();
+		
+		for(int i=0 ; i<20 ; i++)
+		{
+			int n=(int) ((Math.random())*1000);
+			String str="" ;
+			
+			// add trailing zeros 
+			if((n+"") .length()==2)
+				str="0"+n;
+			
+			else if ((n+"").length() ==1)
+				str="00"+n;
+			else
+				str=n+"";
+			
+			arr.add(str);
+		}
+		sort(arr);
+		
+		
+		for(String element : arr)
+			System.out.println(Integer.parseInt(element));
+		
+	}
+
+	public static void sort(ArrayList<String> arr) 
+	{
+		ArrayList<String> arr0=new ArrayList<>();
+		ArrayList<String> arr1=new ArrayList<>();
+		ArrayList<String> arr2=new ArrayList<>();
+		ArrayList<String> arr3=new ArrayList<>();
+		ArrayList<String> arr4=new ArrayList<>();
+		ArrayList<String> arr5=new ArrayList<>();
+		ArrayList<String> arr6=new ArrayList<>();
+		ArrayList<String> arr7=new ArrayList<>();
+		ArrayList<String> arr8=new ArrayList<>();
+		ArrayList<String> arr9=new ArrayList<>();
+
+		
+		for(int i=2 ; i>=0 ; i--)
+		{
+			// fill auxiliary arrays with elements of array arr
+			for(String element : arr)
+			{
+				if(element.charAt(i)=='0')
+					arr0.add(element);
+				
+				else if(element.charAt(i)=='1')
+					arr1.add(element);
+				
+				else if(element.charAt(i)=='2')
+					arr2.add(element);
+				
+				else if(element.charAt(i)=='3')
+					arr3.add(element);
+				
+				else if(element.charAt(i)=='4')
+					arr4.add(element);
+				
+				else if(element.charAt(i)=='4')
+					arr4.add(element);
+				
+				else if(element.charAt(i)=='5')
+					arr5.add(element);
+				
+				else if(element.charAt(i)=='6')
+					arr6.add(element);
+				
+				else if(element.charAt(i)=='7')
+					arr7.add(element);
+				
+				else if(element.charAt(i)=='8')
+					arr8.add(element);
+				
+				else if(element.charAt(i)=='9')
+					arr9.add(element);
+				
+			}
+			
+			// fill array arr with the elements in the previously defined auxiliary arrays in order
+			
+			arr.clear();
+			
+			for(String element : arr0)
+				arr.add(element);
+		
+			for(String element : arr1)
+				arr.add(element);
+			
+			for(String element : arr2)
+				arr.add(element);
+			
+			for(String element : arr3)
+				arr.add(element);
+			
+			for(String element : arr4)
+				arr.add(element);
+			
+			for(String element : arr5)
+				arr.add(element);
+			
+			for(String element : arr6)
+				arr.add(element);
+			
+			for(String element : arr7)
+				arr.add(element);
+			
+			for(String element : arr8)
+				arr.add(element);
+			
+			for(String element : arr9)
+				arr.add(element);
+			
+			arr0.clear();
+			arr1.clear();
+			arr2.clear();
+			arr3.clear();
+			arr4.clear();
+			arr5.clear();
+			arr6.clear();
+			arr7.clear();
+			arr8.clear();
+			arr9.clear();	
+			
+		}
+	}
+}
+========================================================================================

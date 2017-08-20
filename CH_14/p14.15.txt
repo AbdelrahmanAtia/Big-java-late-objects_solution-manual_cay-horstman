@@ -1,0 +1,41 @@
+•• P14.15 Consider the binary search algorithm in Section 14.8. If no match is found, the search method returns -1. Modify the method so that if a is not 
+found, the method returns -k - 1, where k is the position before which the element should be inserted. (This is the same behavior as Arrays.binarySearch.)
+==============================================================================================
+solution
+=====
+note >> k  : the index of the first element greater than the value 
+note >> if value  is  greater than the largest element  in the array then this method will return  (  - a.length()  ==-k-1 )
+note >> if returned value is negative , then value does not belong to the array
+ 
+
+public class BinarySearcher 
+{
+	public static int search(int [] a , int low , int high  , int value)
+	{
+		if(low <= high)
+		{
+			int mid=(low + high) / 2 ;
+
+			if(value==a[mid])
+			{
+				return mid;
+			}
+			else if(a[mid] <= value)
+			{
+				return search(a , mid+1 , high , value);
+			}
+			else
+			{
+				return search(a , low , mid-1 , value);
+			}
+		}
+		else
+		{
+			int k=low;
+			return -k-1;
+		}
+		
+	}
+}
+==============================================================================================
+

@@ -1,0 +1,122 @@
+• P14.2 Modify the selection sort algorithm to sort an array of coins by their value.
+==============================================================================================
+solution
+=====
+>> creat a class Coin
+>> modify the SelectionSorter class in section (14.1) to sort an array of coins by their values instead of sorting an array of integers.
+>> modify swap method in ArrayUtil class to be able to swap two objects instead of two integers
+
+==============================================================================================
+package chapter_14;
+
+public class Coin
+{
+	private String name;
+	private double value;
+	
+	public Coin(double  aValue,String aName )
+	{
+		name=aName;
+		value=aValue;
+	}
+	
+	public double getValue()
+	{
+		return value;
+	}
+	
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+}
+==============================================================================================
+package chapter_14;
+
+public class SelectionSorter 
+{
+	public static void sort(Coin[] a)
+	 {
+	 for (int i = 0; i < a.length - 1; i++)
+	 {
+		 int minPos = minimumPosition(a, i);
+		 ArrayUtil.swap(a, minPos, i);
+	 }
+ }
+	
+	
+	private static int minimumPosition(Coin[] a, int from)
+	 {
+		 int minPos = from;
+		 for (int i = from + 1; i < a.length; i++)
+		 {
+			 if (a[i].getValue() < a[minPos].getValue()) { minPos = i; }
+		 }
+		 
+	      return minPos;
+	 }
+}
+==============================================================================================
+package chapter_14;
+
+import java.util.Random;
+
+public class ArrayUtil 
+{
+	private static Random generator=new Random();	
+	/**
+	 * creates an array filled with random values
+	 * @param length the length of the array
+	 * @param n the range of possible random values
+	 * @return an array filled with length random numbers between 0 and n-1
+	 */
+	public static int[] randomIntArray(int length,int n)
+	{
+		int [] a=new int[length];
+		for(int i=0; i<length;i++)
+		{
+			a[i]=generator.nextInt(n);
+		}
+		return a;
+	}
+	/**
+	 * swaps two elements in an array
+	 * @param a the array
+	 * @param i the first position to swap
+	 * @param j the second position to swap
+	 */
+	
+	public static void swap(Coin [] a , int i , int j)
+	{
+		Coin temp=a[i];
+		a[i]=a[j];
+		a[j]=temp;
+	}
+}
+==============================================================================================
+package chapter_14;
+
+public class CoinSorterTest 
+{
+	public static void main(String [] args)
+	{
+		Coin [] a={
+				     new Coin(0.05  , "Dime") ,
+				     new Coin(0.01  , "Nickle"),
+				     new Coin(0.03   , "pennies") 
+				    
+		          };
+		
+		SelectionSorter.sort(a);
+		for(Coin element: a)
+		{
+			System.out.println("Name= " + element.getName() + "    Value= " + element.getValue());
+		}
+		
+	}
+
+}
+==============================================================================================
+ 

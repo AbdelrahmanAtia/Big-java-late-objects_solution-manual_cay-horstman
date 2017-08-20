@@ -1,0 +1,32 @@
+• P14.7 Implement the bubble sort algorithm described in Exercise R14.19.
+========================================================================================
+solution
+----------
+import java.util.Arrays;
+
+public class P14_7
+{
+	public static void main(String [] args)
+	{
+		int [] values={5,4,3,2,1,0,-1,6};
+		boolean swapped=true;
+		int temp , j=1;
+		while(swapped)
+		{
+			swapped=false;
+			for(int i=0 ; i<values.length-j ; i++)
+			{
+				if(values[i] > values[i+1])
+				{
+					temp=values[i+1];
+					values[i+1]=values[i];
+					values[i]=temp;
+					swapped=true;
+				}
+			}
+			j++;
+		}
+		System.out.println(Arrays.toString(values));
+	}
+}
+========================================================================================

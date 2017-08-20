@@ -1,0 +1,37 @@
+•• P14.3 Write a program that automatically generates the table of sample run times for the selection sort algorithm. The program should ask for the smallest 
+and largest value of n and the number of measurements and then make all sample runs.
+==============================================================================================
+solution
+=====
+>> we can modify the SelectionSortTimer class in section 14.2 as following:
+
+
+package chapter_14;
+
+import java.util.Scanner;
+
+public class SelectionSortTimer 
+{
+	public static void main(String[]args)
+	{
+		Scanner in=new Scanner(System.in);
+		StopWatch timer=new StopWatch();
+
+		System.out.print("enter the smallest value of  n: ");
+		int smallestN=in.nextInt();
+		System.out.print("enter the largest  value  of n: ");
+		int largestN=in.nextInt();
+		System.out.println("n              Milliseconds");
+		for(int i=smallestN;i<=largestN;i+=10000)
+		{
+			int [] a=ArrayUtil.randomIntArray(i, 100);
+			timer.start();
+			SelectionSorter.sort(a);
+			timer.stop();
+			System.out.println(i+"           "+timer.getElapsedTime());
+			timer.reset();
+		}
+	}
+
+}
+==============================================================================================
