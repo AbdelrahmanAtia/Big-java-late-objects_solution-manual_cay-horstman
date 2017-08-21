@@ -1,0 +1,39 @@
+•• P13.7 Use recursion to implement a method    public static int indexOf(String text, String str)
+
+that returns the starting position of the first substring of the text that matches str.  Return –1 if str is not a substring of the text.
+
+For example, s.indexOf("Mississippi", "sip") returns 6.
+
+Hint: This is a bit trickier than Exercise P13.6, because you must keep track of how far the match is from the beginning of the text. Make that value a 
+
+parameter variable of a helper method.
+==============================================================================================
+solution
+=====
+import java.util.Scanner;
+public class Recursion
+{
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		String string=in.next();
+		String sub=in.next();
+		System.out.println(find(string , sub));
+	}
+	private static int find(String string, String sub) {
+		
+		return find(string,sub,0);
+	}
+	
+	private static int find(String string , String sub ,int i)
+	{
+		if(string.substring(i).length() < sub.length())
+			return -1;
+		
+		if(sub.equals(string.substring(i,i+ sub.length())))
+			return i;
+		
+		return find(string , sub , i+1);
+	}
+}
+==============================================================================================

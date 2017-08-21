@@ -1,0 +1,53 @@
+•• P13.25 The recursive computation of Fibonacci numbers can be speeded up significantly by keeping track of the values that have already been computed. 
+
+Provide an implementation of the fib method that uses this strategy. Whenever you return a new value, also store it in an auxiliary array. However, before 
+
+embarking on a computation, consult the array to find whether the result has already been computed. Compare the running time of your improved 
+
+implementation with that of the original recursive implementation and the loop implementation.
+==============================================================================================
+solution
+=====
+import java.util.ArrayList;
+import java.util.Scanner;
+public class Recursion
+{
+	static int i=3;
+    static long []values;
+
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		long n=in.nextInt();
+
+		values=new long[(int) (n+1)];
+		for(int i=1;i<=n;i++)
+			System.out.println("fib("+ i+")="+fib(i));
+	
+	}
+	private static long fib(long n) {
+		long f;
+		if(values[(int) n]>0)
+			return values[(int) n];
+			
+		if(n<=2)
+			return 1;
+		else
+		  f=fib(n-1)+fib(n-2);
+		  values[i]= f;
+		  i++;
+		return f ;
+	}
+}
+==============================================================================================
+comparison
+---------------
+ >> modified recursion   >> Took 1987595 ns= 1.987 ms
+
+ >> itirative                   >> Took 1995719 ns=1.995  ms
+
+ >>original recursion      >>Took 140991157599 ns=140.99 sec
+
+so this code and the itirative code have the same speed , while the original recursion is too slow.
+==============================================================================================
+

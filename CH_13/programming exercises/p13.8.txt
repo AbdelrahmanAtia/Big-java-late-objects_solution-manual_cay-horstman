@@ -1,0 +1,38 @@
+• P13.8 Using recursion, find the largest element in an array.
+
+Hint: Find the largest element in the subset containing all but the last element. Then compare that maximum to the value of the last element.
+==============================================================================================
+solution
+=====
+public class DataSet
+{
+	private int[] array;
+	public DataSet(int [] anArray)
+	{
+		array=anArray;
+	}
+	
+	public int getMax()
+	{
+		return findMax(array,array.length);
+	}
+	
+	public int findMax(int [] a , int size)
+	{
+		if(size==0)
+			return Integer.MIN_VALUE;
+		return 	Math.max(a[size-1], findMax(a,size-1) );
+	}
+}
+==============================================================================================
+
+public class test 
+{
+	public static void main(String[]args)
+	{
+		int [] values={1,5,9,8,14,2,5};
+		DataSet component=new DataSet(values);
+		System.out.println(component.getMax());
+	}
+}
+==============================================================================================

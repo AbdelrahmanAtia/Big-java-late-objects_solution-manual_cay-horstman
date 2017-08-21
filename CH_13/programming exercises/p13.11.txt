@@ -1,0 +1,30 @@
+•• P13.11 The following method was known to the ancient Greeks for computing square roots. Given a value x > 0 and a guess g for the square root, a 
+
+better guess is (x + g/x) / 2. Write a recursive helper method public static squareRootGuess(double x, double g). If g2 is approximately equal to x, return g, 
+
+otherwise, return squareRootGuess with the better guess. Then write a method public static squareRoot(double x) that uses the helper method.
+==============================================================================================
+solution
+=====
+note : the given formula is wrong , this is the right one >> (g+x/g)/2
+==============================================================================================
+import java.util.Scanner;
+public class p13_11 
+{
+	public static void main(String[]args)
+	{
+		Scanner in=new Scanner(System.in);
+		double x=in.nextDouble();
+		double g=in.nextDouble();
+		System.out.println(squareRootGuess(x,g));
+	}
+	public static double squareRootGuess(double x ,double g)
+	{
+		double approximateSolution=Math.pow(g,2);
+		if(approximateSolution ==x   || Math.abs(x-approximateSolution)<=0.00000000000001)
+			return g;
+		
+		return squareRootGuess( x , (g + x/(g*1.0)) / 2.0);
+	}
+}
+==============================================================================================

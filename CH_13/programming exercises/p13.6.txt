@@ -1,0 +1,27 @@
+•• P13.6 Use recursion to implement a method public static boolean find(String text, String str) that tests whether a given text contains a string. For example, 
+find("Mississippi", "sip") returns true.
+
+Hint: If the text starts with the string you want to match, then you are done. If not, consider the text that you obtain by removing the first character.
+==============================================================================================
+solution
+=====
+
+import java.util.Scanner;
+public class Recursion
+{
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		String string=in.next();
+		String sub=in.next();
+		System.out.println(find(string , sub));
+	}
+	private static Boolean find(String string, String sub) {
+		if(sub.equals(string.substring(0, sub.length())))
+			return true;
+		if(string.length()<=sub.length())
+			return false;
+		return find(string.substring(1),sub);
+	}
+}
+==============================================================================================

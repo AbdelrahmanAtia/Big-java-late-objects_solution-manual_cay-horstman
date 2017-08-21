@@ -1,0 +1,36 @@
+• P13.1 Given a class Rectangle with instance variables width and height, provide a recursive getArea method. Construct a rectangle whose width is one less 
+than the original and call its getArea method.
+==============================================================================================
+solution
+=====
+public class Rectangle 
+{
+	private int width;
+	private int height;
+	
+	public Rectangle(int aWidth , int aHeight)
+	{
+		width=aWidth;
+		height=aHeight;
+	}
+	public int getArea()
+	{
+		if(width==0)
+			return 0;
+		Rectangle smallRectangle=new Rectangle(width-1 , height);
+		int smallArea=smallRectangle.getArea();
+		return height+smallArea;
+	}
+}
+==============================================================================================
+public class RectangleTester
+{
+	public static void main(String[]args)
+	{
+		Rectangle r=new Rectangle(5,3);
+		int area=r.getArea();
+		System.out.println("Area: "+area);
+	    System.out.println("Expected: 15");
+	}
+}
+==============================================================================================

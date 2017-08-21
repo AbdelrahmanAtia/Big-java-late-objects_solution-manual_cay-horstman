@@ -1,0 +1,35 @@
+•• P13.2 Given a class Square with instance variable width, provide a recursive getArea method. Construct a square whose width is one less than the original 
+and call its getArea method .
+==============================================================================================
+solution
+=====
+
+public class Square
+{
+	private int width;
+	public Square(int aWidth)
+	{
+		width=aWidth;
+	}
+	public int getArea()
+	{
+		if(width==1)
+			return 1;
+		Square smallSquare=new Square(width-1);
+		int smallArea=smallSquare.getArea();
+		return width + width-1 +smallArea;
+	}
+}
+==============================================================================================
+public class SquareTester 
+{
+	public static void main(String[]args)
+	{
+		Square s=new Square(5);
+		int area=s.getArea();
+		System.out.println("Area: "+area);
+		System.out.println("Expected: 25");
+	}
+}
+==============================================================================================
+

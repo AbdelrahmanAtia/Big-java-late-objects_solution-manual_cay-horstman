@@ -1,0 +1,24 @@
+• P13.3 Write a recursive method String reverse(String text) that reverses a string. For example, reverse("Hello!") returns the string "!olleH". Implement a 
+recursive solution by removing the first character, reversing the remaining text, and combining the two.
+==============================================================================================
+solution
+=====
+
+import java.util.Scanner;
+public class Recursion
+{
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		String text=in.next();
+		System.out.println(reverse(text));
+	}
+	private static String reverse(String text) {
+		
+		if(text.length()==1)
+			return text;
+		
+		return reverse(text.substring(1))+text.charAt(0);
+	}
+}
+==============================================================================================

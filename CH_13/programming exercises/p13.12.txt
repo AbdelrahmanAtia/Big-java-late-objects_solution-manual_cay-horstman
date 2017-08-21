@@ -1,0 +1,34 @@
+••• P13.12 Implement a SubstringGenerator that generates all substrings of a string. For example, the substrings of the string "rum" are the seven strings
+
+"r", "ru", "rum", "u", "um", "m", ""
+
+Hint: First enumerate all substrings that start with the first character. There are n of them if the string has length n. Then enumerate the substrings of the 
+
+string that you obtain by removing the first character.
+==============================================================================================
+solution
+=====
+
+import java.util.Scanner;
+public class p13_12 
+{
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		String str=in.next();
+		enumerate(str);
+	}
+	private static void enumerate(String str) {
+		
+		if(str.length()==0)
+			System.out.println("");
+		else
+		{
+			for(int i=0;i<str.length();i++)
+				System.out.println(str.substring(0,i+1));
+
+			enumerate(str.substring(1));
+		}
+	}
+}
+==============================================================================================

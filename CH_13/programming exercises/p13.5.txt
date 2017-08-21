@@ -1,0 +1,24 @@
+P13.5 Implement the reverse method of Exercise P13.3 as an iteration.
+==============================================================================================
+solution
+=====
+
+import java.util.Scanner;
+public class p13_5 
+{
+	public static void main(String[]args)
+	{
+		Scanner in=new Scanner(System.in);
+		String input=in.next();
+		System.out.println(reverse(input));
+	}
+	private static String reverse(String input) {
+		String str="";
+		for(int i=0;i<input.length();i++)
+		{
+			str=input.charAt(i)+str;
+		}
+		return str;
+	}
+}
+==============================================================================================

@@ -1,0 +1,42 @@
+• P13.9 Using recursion, compute the sum of all values in an array.
+==============================================================================================
+solution
+=====
+public class p13_9 
+{
+	static int sum=0;
+	public static void main(String[]args)
+	{
+		int[]values={1,2,5,7,9,8};
+		int i=0;
+		System.out.println(sumOf(values,i));
+	}
+	private static int sumOf(int[] values, int i) {
+		
+		if(i>=values.length)    return sum;
+		
+		sum=sum+values[i];
+		return sumOf(values,i+1);
+	}
+}
+==============================================================================================
+another solution "recommended"
+===========
+
+public class p13_9
+{
+	public static void main(String []args)
+	{
+		int [] values={1,2,3,4,5};
+		System.out.println(sumOfArray(values,values.length));
+	}
+	
+	public static int sumOfArray(int [] a,int size)
+	{
+		if(size==0)
+			return 0;
+		
+		return a[size-1]+sumOfArray(a,size-1);
+	}
+}
+==============================================================================================

@@ -1,0 +1,51 @@
+••• P13.13 Implement a SubsetGenerator that generates all subsets of the characters of a string. For example, the subsets of the characters of the string 
+
+"rum" are the eight strings "rum", "ru", "rm", "r", "um", "u", "m", "" Note that the subsets don’t have to be substrings—for example, "rm" isn’t a substring of 
+
+"rum".
+==============================================================================================
+solution
+======
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class setGenerator 
+{
+	public static void main(String []args)
+	{
+		Scanner in=new Scanner(System.in);
+		String word=in.next();
+		ArrayList <String> subSets=generateSets(word);
+		subSets.add("");
+		for(String element:subSets)
+			System.out.println(element);
+	}
+	public static ArrayList<String>  generateSets(String str)
+	{
+		if(str.length()==1)
+		{
+			ArrayList <String> sets=new ArrayList<>();
+			sets.add(str);
+			return sets;
+		}
+		
+			char ch=str.charAt(0);
+			ArrayList<String> subSets=(generateSets(str.substring(1)));
+			ArrayList<String> values=new ArrayList<>();
+			
+			for(String element:subSets)
+				values.add(element);
+			
+
+			for(int i=0;i<subSets.size();i++)
+				subSets.set(i, ch+subSets.get(i));
+			
+			subSets.add(ch+"");
+			
+			for(String element:values)
+				subSets.add(element);
+			
+			return subSets;
+	}
+}
+==============================================================================================

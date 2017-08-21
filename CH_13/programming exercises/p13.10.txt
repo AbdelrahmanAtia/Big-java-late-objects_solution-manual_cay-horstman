@@ -1,0 +1,34 @@
+•• P13.10 Using recursion, compute the area of a polygon. Cut off a triangle and use the fact that a triangle with corners (x1, y1), (x2, y2), (x3, y3) has area
+
+\ X1 * Y2 + X2 * Y3 + X3 * Y1 - Y1 * X2 -Y2 * X3 -Y3 * X1 \ /2 .
+==============================================================================================
+solution
+=====
+
+import java.util.Scanner;
+public class p13_10 
+{
+	public static void main(String []args)
+	{
+		//Enter the vertices in order, either clockwise or counter-clockwise starting at any vertex.
+		Scanner in=new Scanner(System.in);
+		double [] X=new double[6];
+		double [] Y=new double[6];
+		for(int i=0;i<6;i++)
+		{
+			X[i]=in.nextDouble();
+			Y[i]=in.nextDouble();
+		}
+		int i=1;
+		System.out.println(area(X ,Y,i));
+	}
+	public static double area(double [] X , double [] Y, int i )
+	{
+		double sum=0;
+		 if(i==5)
+			return 0;
+		 sum=Math.abs(X[0] * Y[i] + X[i] * Y[i+1] + X[i+1] * Y[0] -Y[0] * X[i] - Y[i] * X[i+1] - Y[i+1] * X[0]) /2.0 ; 		
+		return sum+area(X ,Y,i+1);
+	}
+}
+==============================================================================================
