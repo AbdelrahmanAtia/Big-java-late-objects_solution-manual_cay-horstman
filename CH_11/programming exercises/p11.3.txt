@@ -1,0 +1,93 @@
+• P11.3 Write an application with three radio buttons labeled “Red”, “Green”, and “Blue” that changes the background color of a panel in the center of the 
+frame to red, green, or blue.
+==============================================================================================
+solution
+=====
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+public class p11_1 extends JFrame
+{
+	private JPanel panel;
+
+	private JRadioButton redRadioButton;
+	private JRadioButton greenRadioButton;
+	private JRadioButton blueRadioButton;
+	public p11_1()
+	{
+		setSize(400,400);
+		creatColorPanel();
+		creatControlPanel();
+	}
+	private void creatColorPanel() 
+	{
+		panel=new JPanel();
+		add(panel,BorderLayout.CENTER);
+	}
+	public class ClickListener implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent e)
+		{
+			setSampleColor();
+		}
+	}
+	private void creatControlPanel()
+	{
+		ActionListener listtener=new ClickListener();
+		
+	    redRadioButton=new JRadioButton("Red");
+	    redRadioButton.addActionListener(listtener);
+	    
+        greenRadioButton=new JRadioButton("Green");
+        greenRadioButton.addActionListener(listtener);
+
+		blueRadioButton=new JRadioButton("Blue");
+		blueRadioButton.addActionListener(listtener);
+
+		
+		JPanel panel=new JPanel();
+		panel.add(redRadioButton);
+		panel.add(greenRadioButton);
+		panel.add(blueRadioButton);
+		
+		ButtonGroup group=new ButtonGroup();
+		group.add(redRadioButton);
+		group.add(greenRadioButton);
+		group.add(blueRadioButton);
+		
+		add(panel,BorderLayout.SOUTH);
+	}
+	
+	private void setSampleColor()
+	{
+		if(redRadioButton.isSelected())
+			panel.setBackground(new Color(255,0,0));
+		if(greenRadioButton.isSelected())
+			panel.setBackground(new Color (0,255,0));
+		if(blueRadioButton.isSelected())
+			panel.setBackground(new Color(0,0,255));
+		
+		repaint();
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+public class p11_1Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new p11_1();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

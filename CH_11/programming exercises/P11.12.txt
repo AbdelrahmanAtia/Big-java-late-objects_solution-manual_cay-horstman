@@ -1,0 +1,46 @@
+• P11.12 Write a program that uses a timer to print the current time once a second. Hint: The following code prints the current time:
+Date now = new Date();
+System.out.println(now);
+The Date class is in the java.util package.
+==============================================================================================
+solution
+=====
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
+public class Time 
+{
+	private Date now;
+	public Time()
+	{
+		ActionListener listener=new TimerListener();
+		final int DELAY=1000;
+		Timer t=new Timer(DELAY,listener);
+		t.start();
+		JOptionPane.showMessageDialog(null, "Quit?");
+	      System.exit(0);
+	}
+	
+	public class TimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			now = new Date();
+			System.out.println(now);
+		}
+	}
+}
+==============================================================================================
+public class TimeViewer 
+{
+	public static void main(String[]args)
+	{
+		Time comp=new Time();
+	}
+}
+==============================================================================================

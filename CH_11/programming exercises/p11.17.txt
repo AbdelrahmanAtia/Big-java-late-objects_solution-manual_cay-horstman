@@ -1,0 +1,293 @@
+••• P11.17 Write a program that displays a scrolling message in a panel. Use a timer for the scrolling effect. In the timer’s action listener, move the starting 
+
+position of the message and repaint. When the message has left the window, reset the starting position to the other corner. Provide a user interface to 
+
+customize the message text, font, foreground and background colors, and the scrolling speed and direction.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class MessageComponent extends  JComponent
+{
+	private int x;
+	private int y;
+	private String text;
+	private String faceName;
+	private int style;
+	private int size;
+	private Color color;
+	private String direction;
+	public MessageComponent()
+	{
+		x=0;
+		y=200;
+		text="";
+		faceName="Serif" ;
+		style=Font.BOLD;
+		color=new Color(0,0,0);
+		size=30;
+	}
+	public void paintComponent(Graphics g)
+	{
+		Font font=new Font(faceName, style,size);
+		g.setFont(font);
+		g.setColor(color);
+		
+		g.drawString(text, x, y);
+	}
+	public void moveMesaageBy(int dx,int dy,String newString,String newText , Color newColor,String newDirection)
+	{
+		direction=newDirection;
+		faceName=newString;
+		text=newText;
+		color=newColor;
+		if(direction.equals("Forward"))
+		{
+			x=x+dx;
+			y=y+dy;
+		}
+		if(direction.equals("BackWard"))
+		{
+			x=x-dx;
+			y=y-dy;
+		}
+		
+		if(x>=800)    x=0;
+		if(x<-70)     x=800;
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+
+public class Message extends JFrame
+{
+	private MessageComponent scene;
+	private JComboBox combobox;
+	private String text;
+	private String faceName;
+	private String direction;
+
+	private int dx;
+	private JPanel panel;
+	private JPanel panel1;
+	private JPanel panel2;
+	private JPanel panel3;
+	private JTextField textField;
+	
+	private JCheckBox redCheckBox;
+	private JCheckBox greenCheckBox;
+	private JCheckBox blueCheckBox;
+	
+	private Color color;
+	
+	public class TimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			scene.moveMesaageBy(dx,0,faceName,text,color,direction);
+		}
+	}
+	public Message()
+	{
+		direction="Forward";
+		faceName="";
+		text="hello!";
+		color=new Color(0,0,0);
+	
+		dx=1;
+		
+		scene=new MessageComponent();
+		creatFrame();
+		add(scene);
+		
+		panel=new JPanel();
+		panel.setLayout(new GridLayout(1,3));
+		
+		panel1=new JPanel();
+		panel1.setLayout(new GridLayout(2,1));
+		
+		panel2=new JPanel();
+		panel2.setLayout(new GridLayout(2,1));
+		
+		panel3=new JPanel();
+		panel3.setLayout(new GridLayout(2,1));
+		
+		panel.add(panel1);
+		panel.add(panel2);
+		panel.add(panel3);
+		
+		add(panel,BorderLayout.SOUTH);
+		
+
+		creatTextField();
+		creatComboBox();
+		creatColorCheckBoxes();
+		creatSpeedButons();
+		creatDirectionButtons();
+		
+		ActionListener listener=new TimerListener();
+        final int DELAY=10;
+		Timer t=new Timer(DELAY,listener);
+		t.start();	
+	}
+
+	private void creatFrame() {
+		setSize(800,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+	
+	private void creatTextField() 
+	{
+		class textFieldListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				text=textField.getText();
+			}
+		}
+		textField=new JTextField(20);
+		ActionListener listener=new textFieldListener();
+		textField.addActionListener(listener);
+		panel1.add(textField);	
+	}
+	
+	private void creatComboBox() 
+	{
+		class faceNameListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				faceName=(String)combobox.getSelectedItem();
+			}
+		}
+		combobox=new JComboBox();
+		combobox.addItem("Serif");
+		combobox.addItem("SansSerif");
+		combobox.addItem("MonoSpaced");	
+		panel1.add(combobox);
+		ActionListener listener=new faceNameListener();
+		combobox.addActionListener(listener);
+	}
+	
+	private void creatColorCheckBoxes() 
+	{
+		class ColorListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+
+				int red=0,green=0,blue=0;
+				if(redCheckBox.isSelected())
+					red=255;
+				if(greenCheckBox.isSelected())
+					green=255;
+				if(blueCheckBox.isSelected())
+					blue=255;
+				
+				color=new Color(red , green ,blue);
+			}
+		}
+		ActionListener listtener=new ColorListener();
+		
+	    redCheckBox=new JCheckBox("Red");
+	    redCheckBox.addActionListener(listtener);
+	    
+        greenCheckBox=new JCheckBox("Green");
+        greenCheckBox.addActionListener(listtener);
+
+		blueCheckBox=new JCheckBox("Blue");
+		blueCheckBox.addActionListener(listtener);
+
+		JPanel panel=new JPanel();
+		panel.setLayout(new GridLayout(1,3));
+		panel.add(redCheckBox);
+		panel.add(greenCheckBox);
+		panel.add(blueCheckBox);
+		
+		panel2.add(panel);
+	}
+	private void creatSpeedButons()
+	{
+		class ClickListener1 implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+				dx++;
+			}
+		}
+		class ClickListener2 implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+				if(dx>=1)
+				      dx--;
+			}
+		}
+		ActionListener listener1=new ClickListener1();
+		JButton button1=new JButton("Faster");
+		button1.addActionListener(listener1);
+		
+		ActionListener listener2=new ClickListener2();
+		JButton button2=new JButton("Slower");
+		button2.addActionListener(listener2);	
+		
+		JPanel panel=new JPanel();
+		panel.setLayout(new GridLayout(1,2));
+		
+		panel.add(button1);
+		panel.add(button2);
+		panel2.add(panel);
+		
+	}
+	private void creatDirectionButtons()
+	{
+		class ClickListener1 implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+				direction="Forward";
+			}
+		}
+		class ClickListener2 implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+				direction="BackWard";
+			}
+		}
+		
+		JPanel panel=new JPanel();
+		panel.setLayout(new GridLayout(2,1));
+		
+		ActionListener listener1=new ClickListener1();
+		JButton button1=new JButton("Forward");
+		button1.addActionListener(listener1);
+		panel3.add(button1);
+		
+		ActionListener listener2=new ClickListener2();
+		JButton button2=new JButton("BackWard");
+		button2.addActionListener(listener2);
+		panel3.add(button2);	
+		
+	}
+}
+==============================================================================================
+public class MessageViewer
+{
+	public static void main(String[]args)
+	{
+		Message comp=new Message();
+	}
+}
+==============================================================================================

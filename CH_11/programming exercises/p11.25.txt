@@ -1,0 +1,174 @@
+•• Business P 11.25 Write a program with a graphical interface that allows the user to convert an amount of money between U.S. dollars (USD), euros (EUR), 
+
+and British pounds (GBP). The user interface should have the following elements: a text box to enter the amount to be converted, two combo boxes to allow 
+
+the user to select the currencies, a button to make the conversion, and a label to show the result. Display a warning if the user does not choose different 
+
+currencies. Use the following conversion rates:
+
+1 EUR is equal to 1.42 USD.
+1 GBP is equal to 1.64 USD.
+1 GBP is equal to 1.13 EUR.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Currency extends JFrame
+{
+	private JTextField textField;
+	private JComboBox box1;
+	private JComboBox box2;
+	private JLabel label1;
+	private JLabel label2;
+	private JLabel label3;
+	private JLabel label4;
+	private JLabel label5;
+	private JButton button;
+	private JPanel panel;
+	private double amount;
+	private String from;
+	private String to;
+	private double result;
+	public Currency()
+	{
+		from="USD";
+		to="USD";
+		creatFrame();
+		creatTextField();
+		creatComboBoxes();
+		creatLabels();
+		creatButton();
+		creatPanel();
+	}
+
+	private void creatPanel() {
+		panel=new JPanel();
+		panel.setBackground(Color.RED);
+		panel.add(label1);
+		panel.add(textField);
+		panel.add(label2);
+		panel.add(box1);
+		panel.add(label3);
+		panel.add(box2);
+		panel.add(button);
+		panel.add(label4);
+		panel.add(label5);
+		
+		add(panel);
+		
+	}
+
+	private void creatButton() {
+		class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				if(from.equals("USD") && to.equals("EUR"))
+					result=amount/(1.42);
+				
+				else if(from.equals("EUR") && to.equals("USD"))
+					result=amount*(1.42);
+				
+				else if(from.equals("USD") && to.equals("GBP"))
+					result=amount/(1.64);
+				
+				else if(from.equals("GBP") && to.equals("USD"))
+					result=amount*(1.64);
+				
+				else if(from.equals("EUR") && to.equals("GBP"))
+					result=amount/(1.13);
+				
+				else if(from.equals("GBP") && to.equals("EUR"))
+					result=amount*(1.13);
+				else
+					JOptionPane.showMessageDialog(null, "choose diffrent currencies" );
+				
+				
+				label5.setText(result+"");
+			}
+			
+		}
+		button=new JButton("convert");
+		button.setBackground(Color.YELLOW);
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+		
+	}
+
+	private void creatLabels() {
+		label1=new JLabel("amount");
+		label2=new JLabel("convert from");
+		label3=new JLabel("to");
+		label4=new JLabel("result: ");
+		label5=new JLabel();
+		
+	}
+
+	private void creatComboBoxes() {
+		class ClickLisstener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				from=(String) box1.getSelectedItem();
+				to=(String) box2.getSelectedItem();
+			}
+		}
+		box1=new JComboBox();
+		box1.addItem("USD");
+		box1.addItem("EUR");
+		box1.addItem("GBP");
+		box1.setBackground(Color.YELLOW);
+		box2=new JComboBox();
+		box2.addItem("USD");
+		box2.addItem("EUR");
+		box2.addItem("GBP");
+		box2.setSelectedItem("USD");
+		box2.setBackground(Color.YELLOW);
+
+
+		ActionListener listener=new ClickLisstener();
+		box1.addActionListener(listener);
+		box2.addActionListener(listener);
+		
+	}
+
+	private void creatTextField() {
+		class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				amount=Double.parseDouble(textField.getText());
+			}
+		}
+		textField=new JTextField(10);
+		textField.setText("0.0");
+		textField.setBackground(Color.YELLOW);
+		ActionListener listener=new ClickListener();
+		textField.addActionListener(listener);
+	}
+
+	private void creatFrame() {
+		setSize(400,200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+	}
+}
+
+==============================================================================================
+public class CurrencyTester 
+{
+	public static void main(String []args)
+	{
+		Currency x=new Currency();
+	}
+}
+==============================================================================================

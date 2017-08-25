@@ -1,0 +1,158 @@
+•• Business P 11.26 Write a program with a graphical interface that implements a login window with text fields for the user name and password. When the 
+login is successful, hide the login window and open a new window with a welcome message. Follow these rules for validating the password:
+
+1. The user name is not case sensitive.
+
+2. The password is case sensitive.
+
+3. The user has three opportunities to enter valid credentials.
+
+Otherwise, display an error message and terminate the program. When the program starts, read the file users.txt. Each line in that file contains a username 
+and password,  separated by a space. You should make a users.txt file for testing your program.
+==============================================================================================
+solution
+=====
+import java.io.FileNotFoundException;
+
+public class LoginViewer 
+{
+	public static void main(String []args) throws FileNotFoundException
+	{
+		Login x=new Login();
+	}
+}
+==============================================================================================
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+public class Login
+{
+	private ArrayList <String> names;
+	private ArrayList <String> passwords;
+	private JFrame frame;
+	private JLabel  nameLabel;
+	private JLabel passLabel;
+	private JTextField nameField;
+	private JTextField passField;
+	private JPanel panel;
+	private JButton button;
+	private WelcomeWindow X;
+	private int i;
+	public Login() throws FileNotFoundException
+	{
+		i=0;
+		names=new ArrayList<>();
+		passwords=new ArrayList<>();
+		creatDataBase();
+		creatFrame();
+		creatLoginWindow();
+	}
+	 class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			String name=nameField.getText().toLowerCase();
+			String password=passField.getText();
+			if(names.contains(name) && passwords.contains(password))
+			{
+				 X=new WelcomeWindow();
+				 frame.setVisible(false);
+
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "invalid name or password");
+				i++;
+			}
+			if(i==3)
+				System.exit(0);
+		}
+		
+	}
+	private void creatLoginWindow() {
+		button=new JButton("login");
+		nameLabel=new JLabel("Name");
+		passLabel=new JLabel("PassWord");
+		nameField=new JTextField(10);
+		passField=new JTextField(10);
+		
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);	
+		
+		panel=new JPanel();
+		panel.add(nameLabel);
+		panel.add(nameField);
+		panel.add(passLabel);
+		panel.add(passField);
+		panel.add(button);
+		frame.add(panel);
+	}
+	private void creatFrame() {
+		frame=new JFrame();
+		frame.setSize(400, 100);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+	private void creatDataBase() throws FileNotFoundException {
+
+		File x=new File("C:\\Users\\toshiba\\Desktop\\users.txt");
+		Scanner in=new Scanner(x);
+		while(in.hasNextLine())
+		{
+			String line=in.nextLine();
+			for(int i=0;i<line.length();i++)
+			{
+				if(Character.isWhitespace(line.charAt(i)))
+				{
+					names.add(line.substring(0,i));
+					passwords.add(line.substring(i+1));
+					break;
+				}
+			}
+    	}
+		in.close();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+public class WelcomeWindow
+{
+	private JFrame frame;
+	private JLabel label;
+	public WelcomeWindow()
+	{
+		creatFrame();
+		creatLabel();
+	}
+
+	private void creatLabel() {
+		
+		label=new JLabel("WELCOME");
+		String faceName="Brush Script Std";
+		int style=Font.BOLD;
+		int size=72;
+		Font f=new Font(faceName , style ,size);
+		label.setFont(f);
+		frame.add(label,BorderLayout.CENTER);
+	}
+
+	private void creatFrame() {
+		frame=new JFrame();
+		frame.setSize(500, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

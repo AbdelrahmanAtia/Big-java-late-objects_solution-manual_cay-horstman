@@ -1,0 +1,145 @@
+• P11.19 Write a program that prompts the user to enter the x- and y?positions of a center point and a radius, using text fields.When the user clicks a “Draw” 
+button, draw a circle with that center and radius in a component.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class CircleComponent extends JComponent
+{
+	private int radius;
+	private int xPosition;
+	private int yPosition;
+	public CircleComponent()
+	{
+		xPosition=0;
+		yPosition=0;
+		radius=0;
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawOval(xPosition, yPosition, 2*radius,2* radius);
+	}
+	
+	public void creatCircle(int x , int y ,int r)
+	{
+		xPosition=x-r;
+		yPosition=y-r;
+		radius=r;
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Circle extends JFrame
+{
+	private CircleComponent component;
+	private JPanel panel;
+	
+	private JLabel radiusLabel;
+	private JTextField raiusField;
+	
+	private JLabel xLabel;
+	private JTextField xField;
+	
+	private JLabel yLabel;
+	private JTextField yField;
+	
+	private int r;
+	private int x;
+	private int y;
+	
+	public Circle()
+	{
+		x=0;y=0;r=0;
+		component=new CircleComponent();
+		creatFrame();
+		creatTextFields();
+		creatDrawButton();
+	}
+	
+
+	private void creatFrame() {
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		add(component);
+		
+	}
+	public class textListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			try
+			{
+				 r=Integer.parseInt(raiusField.getText());
+				 x=Integer.parseInt(xField.getText());
+				 y=Integer.parseInt(yField.getText());
+			}
+			catch (RuntimeException  NumberFormatException )
+			{
+				//do nothing
+			}
+		}
+	}
+	private void creatTextFields() {
+		panel=new JPanel();
+		ActionListener listener=new textListener();
+		
+		radiusLabel=new JLabel("Radius");
+		raiusField=new JTextField(5);
+		raiusField.addActionListener(listener);
+		
+		xLabel=new JLabel("x-Position");
+		xField=new JTextField(5);
+		xField.addActionListener(listener);
+		
+		yLabel=new JLabel("y-Position");
+		yField=new JTextField(5);
+		yField.addActionListener(listener);	
+		
+		panel.add(radiusLabel);
+		panel.add(raiusField);
+		panel.add(xLabel);
+		panel.add(xField);
+		panel.add(yLabel);
+		panel.add(yField);
+		add(panel , BorderLayout.NORTH);
+	}
+	
+
+	private void creatDrawButton() 
+	{
+		class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e) {
+				component.creatCircle(x, y, r);
+			}
+		}
+		ActionListener listener=new ClickListener();
+		JButton button=new JButton("Draw");
+		button.addActionListener(listener);
+		panel.add(button);
+	}	
+}
+==============================================================================================
+
+public class circleViewer 
+{
+	public static void main(String[]args)
+	{
+		Circle x=new Circle();
+	}
+}
+==============================================================================================

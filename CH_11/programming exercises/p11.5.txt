@@ -1,0 +1,80 @@
+• P11.5 Write an application with a combo box containing three items labeled “Red”, “Green”, and “Blue” that change the background color of a panel in the 
+center of the frame to red, green, or blue.
+==============================================================================================
+solution
+=====
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class p11_5 extends JFrame
+{
+	private JComboBox comboBox;
+	private JPanel panel;
+	private int R;
+	private int G;
+	private int B;
+	public p11_5()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		creatPanel();
+		creatComboBox();
+	}
+	private void creatPanel() 
+	{
+		panel=new JPanel();
+		add(panel,BorderLayout.CENTER);
+	}
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+		
+			String selectedItem=(String)comboBox.getSelectedItem();
+			if(selectedItem.equals("Red"))
+			{
+				R=255; G=0; B=0;
+			}
+			else if(selectedItem.equals("Green"))
+			{
+				R=0; G=255;  B=0;
+			}
+			else
+			{
+				R=0;G=0;B=255;
+			}
+			setSample();
+		}
+	}
+	private void creatComboBox()
+	{
+		comboBox=new JComboBox();
+		comboBox.addItem("Red");
+		comboBox.addItem("Green");
+		comboBox.addItem("Blue");
+		add(comboBox,BorderLayout.NORTH);
+		
+		ActionListener listener=new ClickListener();
+		comboBox.addActionListener(listener);
+	}
+	
+	private void setSample()
+	{
+		panel.setBackground(new Color(R,G,B));
+	}
+}
+==============================================================================================
+public class p11_5Viewer 
+{
+	public static void main(String[]args)
+	{
+		p11_5 x=new p11_5();
+	}
+}
+==============================================================================================

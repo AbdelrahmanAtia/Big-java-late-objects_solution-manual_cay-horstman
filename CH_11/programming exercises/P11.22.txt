@@ -1,0 +1,98 @@
+••• P11.22 Write a program that allows the user to specify a triangle with three mouse presses. After the first mouse press, draw a small dot. After the second 
+mouse press, draw a line joining the first two points. After the third mouse press, draw the entire triangle. The fourth mouse press erases the old triangle and 
+
+starts a new one.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import java.util.ArrayList;
+
+import javax.swing.JComponent;
+
+public class Triangle extends JComponent
+{
+	private ArrayList <Integer> xPositions;
+	private ArrayList <Integer> yPositions;
+	
+
+	public Triangle()
+	{
+		xPositions=new ArrayList<>();
+		yPositions=new ArrayList<>();
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		int size=xPositions.size();
+		if(size==1)
+			g.fillOval(xPositions.get(0), yPositions.get(0), 10, 10);
+		
+		if(size==2)
+			g.drawLine(xPositions.get(0), yPositions.get(0), xPositions.get(1),yPositions.get(1));
+		
+		if(size==3)
+		{
+			g.drawLine(xPositions.get(0), yPositions.get(0), xPositions.get(1),yPositions.get(1));
+			g.drawLine(xPositions.get(1), yPositions.get(1), xPositions.get(2),yPositions.get(2));
+			g.drawLine(xPositions.get(2), yPositions.get(2), xPositions.get(0),yPositions.get(0));
+		}
+		
+		if(size==4)
+		{
+			xPositions.clear();
+			yPositions.clear();
+		}
+	}
+	
+	public void drawElement(int x,int y)
+	{
+		xPositions.add(x);
+		yPositions.add(y);
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JFrame;
+
+public class TriangleComponent extends JFrame
+{
+	private Triangle scene;
+	class MousePressListener implements MouseListener
+	{
+		public void mousePressed(MouseEvent event) 
+		{
+			scene.drawElement(event.getX(),event.getY());
+		}
+		public void mouseClicked(MouseEvent arg0) {}
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mouseReleased(MouseEvent arg0) {}
+	}
+	public TriangleComponent()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		scene=new Triangle();
+		add(scene);
+		
+		MouseListener listener=new MousePressListener();
+		scene.addMouseListener(listener);
+	}
+}
+==============================================================================================
+
+public class TriangleViewer
+{
+	public static void main(String[]args)
+	{
+		TriangleComponent x=new TriangleComponent();
+	}
+}
+==============================================================================================

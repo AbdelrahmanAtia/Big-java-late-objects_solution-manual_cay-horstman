@@ -1,0 +1,117 @@
+••• P11.11 Write a program that lets users design charts such as the following:
+
+Golden Gate                 
+Brooklyn
+Delaware Memorial
+Mackinac
+
+Use appropriate components to ask for the length, label, and color, then apply them when the user clicks an “Add Item” button.
+==============================================================================================
+solution
+=====
+
+// note the part of this problem concerning color is not obvious.
+==============================================================================================
+import java.awt.Graphics;
+import java.util.ArrayList;
+import javax.swing.JComponent;
+
+public class ChartComponent extends JComponent
+{
+	private ArrayList <Integer> values;
+	private ArrayList <String> names;
+	private int x;
+	private int y;
+	public ChartComponent()
+	{
+		x=0; y=10;
+		values=new ArrayList<>();
+		names=new ArrayList<>();
+	}
+	public void paintComponent(Graphics g)
+	{
+		y=10;
+		for(int i=0;i<values.size();i++)
+		{
+			g.drawRect(0, y, values.get(i), 20);
+			g.drawString(names.get(i), 10 , y+15);
+			y=y+40;
+		}
+	}
+	
+	public void setLength(int length , String name)
+	{
+		values.add(length);
+		names.add(name);
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class Chart extends JFrame
+{
+	private JPanel panel;
+	
+	private JTextField lengthField;
+	private JLabel lengthLabel;
+	
+	private JTextField nameField;
+	private JLabel nameLabel;
+	
+	private JButton button;
+	private  ChartComponent component;
+	public Chart()
+	{
+		setSize(400, 400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		component=new ChartComponent();
+		add(component);
+		panel=new JPanel();
+		add(panel,BorderLayout.NORTH);
+		creatTextFields();
+		creatButton();
+	}
+	private void creatTextFields() {
+		  lengthLabel=new JLabel("Length");
+		  lengthField=new JTextField(10);
+		  
+		  nameLabel=new JLabel("Name");
+		  nameField=new JTextField(10);
+		  
+		  panel.add(lengthLabel);
+		  panel.add(lengthField);
+		  panel.add(nameLabel);
+		  panel.add(nameField);	 
+	}
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			component.setLength(Integer.parseInt(lengthField.getText()) , nameField.getText());
+		}
+	}
+	private void creatButton() {
+		ActionListener listener=new ClickListener();
+		button=new JButton("Add");
+		button.addActionListener(listener);
+		panel.add(button);
+	}
+}
+==============================================================================================
+public class ChartViewer 
+{
+	public static void main(String[]args)
+	{
+		Chart x=new Chart();
+	}
+}
+==============================================================================================

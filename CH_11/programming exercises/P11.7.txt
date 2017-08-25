@@ -1,0 +1,84 @@
+• P11.7 Write a program that displays a number of rectangles at random positions. Supply menu items “Fewer” and “More” that generate fewer or more 
+random rectangles. Each time the user selects “Fewer”, the count should be halved. Each time the user clicks on “More”, the count should be doubled.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class randomRectangles extends JComponent
+{
+	private int counter;
+	public randomRectangles()
+	{
+		counter=2;
+	}
+	public void paintComponent(Graphics g)
+	{
+		for(int i=0 ;i<counter;i++)
+		{
+			g.drawRect((int)(Math.random()*400), (int)(Math.random()*400), 30, 20);
+		}
+	}
+	public void changeSceneBy(String str)
+	{
+		if(str.equals("Fewer"))
+				counter=counter / 2;
+		
+		else
+			counter=counter * 2 ;
+		
+		if(counter==0)
+			counter=1;
+		
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+public class randomRectanglesViewer extends JFrame
+{
+	private randomRectangles component;
+	public randomRectanglesViewer()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		component=new randomRectangles();
+		
+		JPanel panel=new JPanel();
+		panel.add(creatButton("Fewer"));
+		panel.add(creatButton("More"));
+		add(panel,BorderLayout.NORTH);
+		add(component , BorderLayout.CENTER);
+	}
+
+	private JButton creatButton(final String label) {
+		class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) {
+				component.changeSceneBy(label);
+			}
+		}
+		JButton button=new JButton(label);
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+		return button;
+	}
+}
+==============================================================================================
+
+public class Viewer 
+{
+	public static void main(String[]args)
+	{
+		randomRectanglesViewer x=new randomRectanglesViewer();
+	}
+}
+
+==============================================================================================

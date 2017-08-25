@@ -1,0 +1,79 @@
+•• P11.20 Write a program that allows the user to specify a circle by typing the radius in a text   field and then clicking on the center. Note that you don’t 
+need a “Draw” button.
+==============================================================================================
+solution
+=====
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class circleDrawer extends JComponent
+{
+	private int xLeft;
+	private int yTop;
+	private int diameter;
+	public circleDrawer()
+	{
+		xLeft=0;
+		yTop=0;
+		diameter=0;
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawOval(xLeft, yTop, diameter, diameter);
+	}
+	
+	public void drawCircle(int x , int y , double radius )
+	{
+		xLeft=(int)  (x-radius);
+		yTop =(int)  (y-radius);
+		diameter=(int) (2 * radius);
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+public class Circle extends JFrame
+{
+	private circleDrawer scene;
+	private JTextField textField;
+	class ClickListener implements MouseListener
+	{
+		public void mousePressed(MouseEvent event) 
+		{
+			int x=event.getX();
+			int y=event.getY();
+			double radius=Double.parseDouble(textField.getText());
+			scene.drawCircle(x,y,radius);
+		}
+		public void mouseClicked(MouseEvent arg0) {}
+		public void mouseEntered(MouseEvent arg0) {}
+		public void mouseExited(MouseEvent arg0) {}
+		public void mouseReleased(MouseEvent arg0) {}
+	}
+	public Circle()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		scene=new circleDrawer();
+		add(scene);
+        textField=new JTextField(20);
+        add(textField , BorderLayout.NORTH);
+		MouseListener listener=new ClickListener();
+		scene.addMouseListener(listener);	
+	}
+}
+==============================================================================================
+public class viewer
+{
+	public static void main(String[]args)
+	{
+		Circle x=new Circle();
+	}
+}
+==============================================================================================

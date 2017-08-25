@@ -1,0 +1,99 @@
+• P11.6 Write an application with a Color menu and menu items labeled “Red”, “Green”, and “Blue” that change the background color of a panel in the 
+
+center of the frame to red, green, or blue.
+==============================================================================================
+solution
+======
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+
+public class p11_1 extends JFrame
+{
+	private JPanel panel;
+	private String colorName;
+
+
+	public p11_1()
+	{
+		setSize(400,400);
+		creatColorPanel();
+		creatMenuBar();
+	}
+	
+	private void creatColorPanel() 
+	{
+		panel=new JPanel();
+		panel.setBackground(new Color(0,0,0));
+		add(panel,BorderLayout.CENTER);
+	}
+	private void creatMenuBar()
+	{
+		JMenuBar menuBar=new JMenuBar();
+		setJMenuBar(menuBar);
+		menuBar.add(creatMenu());
+	}
+
+	private JMenu creatMenu() 
+	{
+
+		JMenu menu=new JMenu("Color");
+		menu.add(creatColorItem("Red"));
+		menu.add(creatColorItem("Green"));
+		menu.add(creatColorItem("Blue"));
+		return menu;
+	}
+
+	private JMenuItem creatColorItem(String name) 
+	{
+
+		class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				colorName=name;
+				setSampleColor();
+			}
+		}
+		
+		ActionListener listener=new ClickListener();
+		JMenuItem item=new JMenuItem(name);
+		item.addActionListener(listener);
+		
+		return item;
+	}
+	
+	private void setSampleColor()
+	{
+		if(colorName.equals("Red"))
+			panel.setBackground(new Color(255,0,0));
+		
+		if(colorName.equals("Green"))
+			panel.setBackground(new Color(0,255,0));
+		
+		if(colorName.equals("Blue"))
+			panel.setBackground(new Color(0,0,255));
+	
+		
+		repaint();
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+public class p11_1Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new p11_1();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

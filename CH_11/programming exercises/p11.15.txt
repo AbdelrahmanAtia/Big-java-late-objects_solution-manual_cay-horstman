@@ -1,0 +1,79 @@
+•• P11.15 Write a program that animates a car so that it moves across a frame.
+==============================================================================================
+solution
+======
+
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class CarComponent extends JComponent
+{
+	private int x;
+	private int y;
+	public CarComponent()
+	{
+		x=40;
+		y=20;
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawLine(x, y, x+40, y);  
+		g.drawLine(x, y, x-20, y+40);
+		g.drawLine(x+40, y, x+60, y+40);   
+		
+		g.drawLine(x-20, y+40, x-20, y+70);   
+		
+		g.drawLine(x-20, y+70, x+90, y+70);   
+		
+		g.drawLine(x+90, y+70, x+90, y+40);  
+		
+		g.drawLine(x+90, y+40, x+60, y+40);  
+		
+		g.fillOval(x, y+60, 20, 20);
+		g.fillOval(x+40, y+60, 20,20);
+	}
+	
+	public void moveCarBy(int dx,int dy)
+	{
+		x=x+dx;
+		y=y+dy;
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+public class CarViewer extends JFrame
+{
+	private CarComponent component;
+	public class TimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			component.moveCarBy(1,1);
+		}
+	}
+	public CarViewer()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		component=new CarComponent();
+		add(component);
+		ActionListener listener=new TimerListener();
+		final int DELAY=10;
+		Timer t=new Timer(DELAY,listener);
+		t.start();
+	}
+}
+==============================================================================================
+public class Car 
+{
+	public static void main(String []args)
+	{
+		CarViewer x=new CarViewer();
+	}
+}
+==============================================================================================

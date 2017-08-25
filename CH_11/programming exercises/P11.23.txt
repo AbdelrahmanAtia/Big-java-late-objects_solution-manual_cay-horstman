@@ -1,0 +1,184 @@
+Implement a program that allows two players to play tic-tac-toe. Draw the game grid and an indication of whose turn it is (X or O). Upon the next click, check
+
+that the mouse click falls into an empty location, fill the location with the mark of the current player, and give the other player a turn. If the game is won, 
+
+indicate the winner. Also supply a button for starting over
+==============================================================================================
+solution
+=====
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class TicTacToe extends JFrame
+{
+	private int counter;
+	private JPanel panel;
+	private char [] inputs;
+	private int i;
+	public TicTacToe()
+	{
+		setSize(200,200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		counter=0;
+		inputs=new char[9];
+		i=-1;
+		creatPanel();
+	}
+	private void creatPanel() {
+		panel=new JPanel();
+		panel.setLayout(new GridLayout(3,3));
+		for(int i=0;i<9;i++)
+		{
+			panel.add(creatButton());
+		}
+		add(panel,new BorderLayout().CENTER);
+		creatNewButton();
+	}
+	
+	private JButton creatButton() {
+		i++; 
+		final int j=i;
+    	final JButton button=new JButton();
+    	button.setBackground(Color.DARK_GRAY);
+	
+		class ClickListener1 implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				
+				if(counter % 2==0 && button.getText()=="" )
+				{
+					button.setText("X");
+					button.setBackground(Color.red);
+					counter++;
+					inputs[j]='X' ;
+				}
+				if(counter % 2!=0 && button.getText()=="")
+				{
+					button.setText("O");
+					button.setBackground(Color.YELLOW);
+					counter++;
+					inputs[j]='O';
+				}
+					check();
+			}
+		}
+		
+		ActionListener listener1=new ClickListener1() ;
+		button.addActionListener(listener1);
+		return button;
+	}
+
+	
+	public void check()
+	{
+		//vertical check
+		for(int j=0;j<3;j++)
+		{
+			if(inputs[j]==inputs[j+3] && inputs[j]==inputs[j+6] && inputs[j]!=0)
+			{
+				if(inputs[j]==88)
+				          JOptionPane.showMessageDialog(null, "player 1 win");
+				else
+			              JOptionPane.showMessageDialog(null, "player 2 win");
+				
+				toInitialState();
+			}
+		}
+		
+		//horizontal check
+		for(int j=0;j<9;j=j+3)
+		{
+			if(inputs[j]==inputs[j+1] && inputs[j]==inputs[j+2] && inputs[j]!=0)
+			{
+				if(inputs[j]==88)
+			          JOptionPane.showMessageDialog(null, "player 1 win");
+			    else
+		              JOptionPane.showMessageDialog(null, "player 2 win");
+				toInitialState();
+
+			}
+		}
+		
+		//diagonal check
+		if(inputs[0]==inputs[4] && inputs[4]==inputs[8] && inputs[0]!=0)
+		{
+			if(inputs[0]==88)
+		          JOptionPane.showMessageDialog(null, "player 1 win");
+		    else
+	              JOptionPane.showMessageDialog(null, "player 2 win");	
+			toInitialState();
+
+		}
+		
+		if(inputs[2]==inputs[4] && inputs[4]==inputs[6] && inputs[2]!=0)
+		{
+
+			if(inputs[2]==88)
+		          JOptionPane.showMessageDialog(null, "player 1 win");
+		    else
+	              JOptionPane.showMessageDialog(null, "player 2 win");	
+			toInitialState();
+
+		}
+}
+
+	public class ClickListener2 implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent arg0) {
+			counter=0;
+			inputs=new char[9];
+			i=-1;
+			Component[] components=panel.getComponents();
+			for(Component element : components)
+			{
+				((AbstractButton) element).setText("");
+				element.setBackground(Color.darkGray);
+			}
+		}
+	}
+	public void creatNewButton()
+	{
+		JButton button=new JButton("New Game");
+		ActionListener listener2=new ClickListener2();
+		button.addActionListener(listener2);
+		
+		add(button,new BorderLayout().NORTH);
+	}
+	
+	public void toInitialState()
+	{
+		counter=0;
+		inputs=new char[9];
+		i=-1;
+		Component[] components=panel.getComponents();
+		for(Component element : components)
+		{
+			((AbstractButton) element).setText("");
+			element.setBackground(Color.darkGray);
+		}
+	}
+}
+==============================================================================================
+public class TicTacToeViewer 
+{
+	public static void main(String[]args)
+	{
+		TicTacToe component=new TicTacToe();
+	}
+}
+==============================================================================================

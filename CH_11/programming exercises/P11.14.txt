@@ -1,0 +1,97 @@
+•• P11.14 Change the rectangle animation in Section 11.5 so that it shows two rectangles moving in opposite directions.
+==============================================================================================
+solution
+=====
+
+ import java.awt.Graphics;
+ import javax.swing.JComponent;
+
+ /**
+ This component displays a rectangle that can be moved.
+ */
+ public class RectangleComponent extends JComponent
+ {
+	 private static final int RECTANGLE_WIDTH = 20;
+	 private static final int RECTANGLE_HEIGHT = 30;
+	
+	 private int xLeft;
+	 private int yTop;
+	 private int xRight;
+	 private int yBottom;
+	 public RectangleComponent()
+	 {
+		 xLeft = 0;
+		 yTop = 0;
+		 xRight=300;
+		 yBottom=400;
+	 }
+	
+	 public void paintComponent(Graphics g)
+	 {
+		 g.fillRect(xLeft, yTop, RECTANGLE_WIDTH, RECTANGLE_HEIGHT);
+		 g.fillRect(xRight, yBottom,RECTANGLE_WIDTH , RECTANGLE_HEIGHT);
+	 }
+	
+	 /**
+	 Moves the rectangle by a given amount.
+	 @param dx the amount to move in the x-direction
+	 @param dy the amount to move in the y-direction
+	 */
+	 public void moveRectangleBy(int dx, int dy)
+	 {
+		 xLeft = xLeft + dx;
+		 yTop = yTop + dy;
+		 xRight=xRight-dx;
+		 yBottom=yBottom-dy;
+		 repaint();
+	 }
+ }
+==============================================================================================
+ import java.awt.event.ActionEvent;
+ import java.awt.event.ActionListener;
+ import javax.swing.JFrame;
+ import javax.swing.Timer;
+
+ /**
+ This frame contains a moving rectangle.
+ */
+ public class RectangleFrame extends JFrame
+ {
+	 private static final int FRAME_WIDTH = 300;
+	 private static final int FRAME_HEIGHT = 400;
+	
+	 private RectangleComponent scene;
+
+	 class TimerListener implements ActionListener
+	 {
+		 public void actionPerformed(ActionEvent event)
+		 {
+			 scene.moveRectangleBy(1, 1);
+		 }
+	 }
+
+	 public RectangleFrame()
+	 {
+		 scene = new RectangleComponent();
+		 add(scene);
+		
+		 setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		 setVisible(true);
+		
+		 ActionListener listener = new TimerListener();
+		
+		 final int DELAY = 100; // Milliseconds between timer ticks
+		 Timer t = new Timer(DELAY, listener);
+		 t.start();
+	 }
+ }
+==============================================================================================
+
+public class RectangleFrameViewer
+{
+	public static void main(String[]args)
+	{
+		RectangleFrame x=new RectangleFrame();
+	}
+}
+==============================================================================================

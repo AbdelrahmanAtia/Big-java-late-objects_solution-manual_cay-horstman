@@ -1,0 +1,35 @@
+••• P11.10 Enhance the font viewer program to allow the user to select different font faces. Research the API documentation to find out how to find the 
+
+available fonts on the user’s system.
+==============================================================================================
+solution
+=====
+>> the output of this code is the names of all fonts available on the user's system.
+
+import java.awt.GraphicsEnvironment;
+public class p11_10
+{
+	public static void main(String []args)
+	{
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+		String []fontFamilies = ge.getAvailableFontFamilyNames();
+		for(String element:fontFamilies)
+			System.out.println(element);
+	}
+}
+==============================================================================================
+
+we can enhance the creatFaceMenu() method in the fontViewer program so that it has all the font's on the user's system as following:
+
+ public JMenu createFaceMenu()
+ {
+	 JMenu menu = new JMenu("Face");
+	 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	 String []fontFamilies = ge.getAvailableFontFamilyNames();
+	 for(String element:fontFamilies)
+	     menu.add(createFaceItem(element));
+	 return menu;
+ }
+==============================================================================================
+

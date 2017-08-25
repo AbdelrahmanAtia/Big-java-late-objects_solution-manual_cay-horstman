@@ -1,0 +1,71 @@
+•• P11.8 Modify the program of Exercise P11.7 to replace the buttons with a slider to generate more or fewer random rectangles.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class RectangleComponent extends JComponent
+{
+	private int i;
+	public RectangleComponent()
+	{
+		i=0;
+	}
+	public void paintComponent(Graphics g)
+	{
+		for(int j=0;j<i;j++)
+			g.drawRect((int)(Math.random()*400),(int) (Math.random()*400), 20, 30);
+	}
+	public void setSample(int n)
+	{
+		i=100*n;
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class Rectangles extends JFrame
+{
+	private JSlider slider;
+	private RectangleComponent component;
+	public Rectangles()
+	{
+		component=new RectangleComponent();
+		creatFrame();
+		add(component);
+		creatSlider();
+	}
+	private void creatFrame() {
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+	private void creatSlider() {
+		class slideListtener implements ChangeListener
+		{
+			public void stateChanged(ChangeEvent arg0) {
+				int x=slider.getValue();
+				component.setSample(x);
+			}
+		}
+		slider=new JSlider(0,25,0);
+		add(slider,BorderLayout.SOUTH);
+		ChangeListener listener=new slideListtener();
+		slider.addChangeListener(listener);
+	}
+}
+==============================================================================================
+public class RectanglesViewer 
+{
+	public static void main(String[]args)
+	{
+		Rectangles x=new Rectangles();
+	}
+}
+==============================================================================================

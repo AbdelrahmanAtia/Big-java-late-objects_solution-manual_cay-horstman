@@ -1,0 +1,84 @@
+••• P11.13 Change the RectangleComponent for the animation in Section 11.5 so that the rectangle bounces off the edges of the component rather than 
+simply moving outside.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class RectangleComponent extends JComponent
+{
+	private int xLeft;
+	private int yTop;
+	private boolean value;
+	public RectangleComponent()
+	{
+		xLeft=0;
+		yTop=0;
+		value=true;
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		g.drawRect(xLeft, yTop, 20, 10);
+	}
+	
+	public void moveRectangleBy(int x , int y)
+	{
+		if(xLeft>=360)
+			value=false;
+		
+		if(xLeft<=0)
+			value=true;
+		
+		if(value)
+		{
+			xLeft=xLeft+x;
+		    yTop=yTop+y;
+		}
+		else
+		{
+			xLeft=xLeft-x;
+	    	yTop=yTop-y;
+		}
+		repaint();
+	}
+}
+==============================================================================================
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+public class RectangleFrame extends JFrame
+{
+	private RectangleComponent scene;
+	public class TimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			scene.moveRectangleBy(1, 1);
+		}
+	}
+	public RectangleFrame()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		
+		scene=new RectangleComponent();
+		add(scene);
+		ActionListener listener=new TimerListener();
+		final int DELAY=10;
+		Timer t=new Timer(DELAY,listener);
+		t.start();
+	}
+}
+==============================================================================================
+public class componentViewer 
+{
+	public static void main(String[]args)
+	{
+		RectangleFrame x=new RectangleFrame();
+	}
+}
+==============================================================================================

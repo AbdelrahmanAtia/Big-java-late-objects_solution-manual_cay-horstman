@@ -1,0 +1,91 @@
+P11.21 Write a program that allows the user to specify a circle with two mouse presses, the first one on the center and the second on a point on the 
+
+periphery. Hint: In the mouse press handler, you must keep track of whether you already received the center point in a previous mouse press.
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class CircleComponent extends JComponent
+{
+	private int xLeft;
+	private int yTop;
+	private int radius;
+	public CircleComponent()
+	{
+		xLeft=0;
+		yTop=0;
+		radius=0;
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawOval(xLeft, yTop, 2*radius,2* radius);
+	}
+	public void setSample(int r,int xCenter , int yCenter)
+	{
+		xLeft=xCenter-r;
+		yTop=yCenter-r;
+		radius=r;
+		repaint();
+	}
+}
+==============================================================================================
+
+import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+public class Circle extends JFrame
+{
+	private CircleComponent scene;
+	private ArrayList <Integer> xValues;
+	private ArrayList <Integer> yValues;
+	public Circle()
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		scene=new CircleComponent();
+		add(scene);
+		JLabel label=new JLabel();
+		add(label ,BorderLayout.NORTH);
+		xValues=new ArrayList<>();
+		yValues=new ArrayList<>();
+		class ClickListener implements MouseListener
+		{
+			public void mousePressed(MouseEvent event) {
+				xValues.add(event.getX());
+				yValues.add(event.getY());
+				if(yValues.size() %2==0)
+				{
+					int x1=xValues.get(xValues.size()-2);
+					int y1=yValues.get(yValues.size()-2);
+					int x2=xValues.get(xValues.size()-1);
+					int y2=yValues.get(yValues.size()-1);
+					int radius=(int)(Math.sqrt( Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2)));
+					scene.setSample(radius , x1,y1);
+				}
+			}
+			public void mouseClicked(MouseEvent arg0) {}
+			public void mouseEntered(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {}				
+			public void mouseReleased(MouseEvent arg0) {}
+		}
+		MouseListener listener=new ClickListener();
+		scene.addMouseListener(listener);
+	}
+}
+==============================================================================================
+public class CircleViewer 
+{
+	public static void main(String []args)
+	{
+		Circle x=new Circle();
+	}
+}
+==============================================================================================
+
+

@@ -1,0 +1,92 @@
+• P11.4 Write an application with three check boxes labeled “Red”, “Green”, and “Blue” that adds a red, green, or blue component to the background color 
+
+of a panel in the center of the frame. This application can display a total of eight color combinations.
+==============================================================================================
+solution
+=====
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class p11_1 extends JFrame
+{
+	private JPanel panel;
+
+	private JCheckBox redCheckBox;
+	private JCheckBox greenCheckBox;
+	private JCheckBox blueCheckBox;
+	public p11_1()
+	{
+		setSize(400,400);
+		creatColorPanel();
+		creatControlPanel();
+	}
+	private void creatColorPanel() 
+	{
+		panel=new JPanel();
+		panel.setBackground(new Color(0,0,0));
+		add(panel,BorderLayout.CENTER);
+	}
+	public class ClickListener implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent e)
+		{
+			setSampleColor();
+		}
+	}
+	private void creatControlPanel()
+	{
+		ActionListener listtener=new ClickListener();
+		
+	    redCheckBox=new JCheckBox("Red");
+	    redCheckBox.addActionListener(listtener);
+	    
+        greenCheckBox=new JCheckBox("Green");
+        greenCheckBox.addActionListener(listtener);
+
+		blueCheckBox=new JCheckBox("Blue");
+		blueCheckBox.addActionListener(listtener);
+
+		
+		JPanel panel=new JPanel();
+		panel.add(redCheckBox);
+		panel.add(greenCheckBox);
+		panel.add(blueCheckBox);
+		
+		add(panel,BorderLayout.SOUTH);
+	}
+	
+	private void setSampleColor()
+	{
+		int red=0,green=0,blue=0;
+		if(redCheckBox.isSelected())
+			red=255;
+		if(greenCheckBox.isSelected())
+			green=255;
+		if(blueCheckBox.isSelected())
+			blue=255;
+		
+		panel.setBackground(new Color(red,green,blue));
+		
+		repaint();
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+public class p11_1Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new p11_1();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

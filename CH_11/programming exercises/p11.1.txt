@@ -1,0 +1,80 @@
+• P11.1 Write an application with three buttons labeled “Red”, “Green”, and “Blue” that changes the background color of a panel in the center of the frame 
+
+to red, green, or blue.
+==============================================================================================
+solution
+=====
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class p11_1 extends JFrame
+{
+	private JPanel panel;
+	private  int red;
+	private  int green;
+	private  int  blue;
+	public p11_1()
+	{
+		setSize(400,400);
+		creatColorPanel();
+		creatControlPanel();
+	}
+	private void creatColorPanel() 
+	{
+		panel=new JPanel();
+		add(panel,BorderLayout.CENTER);
+	}
+
+	private void creatControlPanel()
+	{
+		JPanel panel=new JPanel();
+		panel.add(creatButton("Red",255,0,0));
+		panel.add(creatButton("Green",0,255,0));
+		panel.add(creatButton("Blue",0,0,255));
+
+		add(panel,BorderLayout.SOUTH);
+	}
+	
+	private JButton creatButton(String name, int R, int G, int B)
+	{
+		class ClickListener implements ActionListener
+		{
+
+			public void actionPerformed(ActionEvent e) 
+			{
+				red=R;
+				green=G;
+				blue=B;
+				setSampleColor();
+			}
+		}
+		ActionListener listener=new ClickListener();
+		JButton button=new JButton(name);
+		button.addActionListener(listener);
+		return button;
+	}
+	private void setSampleColor()
+	{
+		panel.setBackground(new Color(red,green,blue));
+		repaint();
+		
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+public class p11_1Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new p11_1();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

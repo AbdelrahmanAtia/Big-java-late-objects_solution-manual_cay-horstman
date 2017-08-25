@@ -1,0 +1,103 @@
+••• P11.16 Write a program that animates two cars moving across a frame in opposite directions (but at different heights so that they don’t collide.)
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class CarComponent extends JComponent
+{
+	private int x;
+	private int y;
+	private int x1;
+	private int y1;
+	public CarComponent(int num)
+	{
+		if(num==1)
+		{
+			x=40;
+			y=20;
+		}
+		if(num==2)
+		{
+			x=760;
+			y=20;
+		}
+	}
+	public void paintComponent(Graphics g)
+	{
+		g.drawLine(x, y, x+40, y);  
+		g.drawLine(x, y, x-20, y+40);
+		g.drawLine(x+40, y, x+60, y+40);   
+		
+		g.drawLine(x-20, y+40, x-20, y+70);   
+		
+		g.drawLine(x-20, y+70, x+90, y+70);   
+		
+		g.drawLine(x+90, y+70, x+90, y+40);  
+		
+		g.drawLine(x+90, y+40, x+60, y+40);  
+		
+		g.fillOval(x, y+60, 20, 20);
+		g.fillOval(x+40, y+60, 20,20);
+	}
+	
+	public void moveCarBy(int dx,int dy,int number)
+	{
+		if(number ==1)
+		{
+			x=x+dx;
+			repaint();
+		}
+		if(number==2)
+		{
+			x=x-dx;
+			repaint();
+		}
+	}
+}
+==============================================================================================
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+public class CarViewer extends JFrame
+{
+	private CarComponent component1;
+	private CarComponent component2;
+	public class TimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			component1.moveCarBy(1,1,1);
+			component2.moveCarBy(1, 1, 2);
+		}
+	}
+	public CarViewer()
+	{
+		setSize(1000,600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		component1=new CarComponent(1);
+		component2=new CarComponent(2);
+		JPanel panel=new JPanel();
+		panel.setLayout(new GridLayout(2,1));
+		panel.add(component1);
+		panel.add(component2);		
+		add(panel);
+		ActionListener listener=new TimerListener();
+		final int DELAY=10;
+		Timer t=new Timer(DELAY,listener);
+		t.start();
+	}
+}
+==============================================================================================
+public class Car 
+{
+	public static void main(String []args)
+	{
+		CarViewer x=new CarViewer();
+	}
+}
+==============================================================================================
