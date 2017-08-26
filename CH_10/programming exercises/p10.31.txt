@@ -1,0 +1,162 @@
+••• P10.31 Write a program that draws a clock face with a time that the user enters in two text fields (one for the hours, one for the minutes).
+
+Hint: You need to determine the angles of the hour hand and the minute hand. The angle of the minute hand is easy; the minute hand travels 360 degrees 
+
+in 60 minutes. The angle of the hour hand is harder; it travels 360 degrees in 12 × 60 minutes.
+==============================================================================================
+solution
+======
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Clock extends JComponent
+{
+	private double angle1;
+	private double angle2;
+	public Clock()
+	{
+		 angle1 = 0;
+		 angle2=0;
+	}
+	
+	public void paintComponent(Graphics g)
+	{
+		drawClock(g,angle1,angle2);
+	}
+	
+	public void append(int hours,int minutes)
+	{
+		angle1=minutes*6;
+		angle2=hours*30;
+		repaint();
+	}
+	private void drawClock(Graphics g,double minutes_angle ,double hours_angle) 
+	{
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, 400, 400);
+		g.setColor(Color.black);
+		g.fillOval(148, 148, 4, 4);
+		g.drawOval(100, 100, 100, 100);
+		int x1=150;
+		int y1=150;
+		
+		
+		int x2=(int) (x1+45*Math.sin(Math.toRadians(minutes_angle)));
+		int y2=(int) (y1-45*Math.cos(Math.toRadians(minutes_angle)));
+		g.drawLine(x1,y1,x2,y2);  // minutes hand
+		
+		int x3=(int) (x1+30*Math.sin(Math.toRadians(hours_angle)));
+		int y3=(int) (y1-30*Math.cos(Math.toRadians(hours_angle)));
+		g.drawLine(x1, y1, x3, y3);  //hours hand
+		
+
+	}
+}
+==============================================================================================
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+public class Clock1 extends JFrame
+{
+	private JButton button;
+
+	private JTextField hoursField;
+	private JLabel hoursLabel;
+	
+	private JTextField minutesField;
+	private JLabel minutesLabel;
+	
+	private JComponent obj;
+	
+	
+	
+	public Clock1()
+	{
+		obj=new Clock();
+		obj.setPreferredSize(new Dimension(300,300));
+		creatFrame();
+		creatButton();
+		creatHoursField();
+		creatMinutesField();
+		creatComponents();
+	}
+	
+	
+
+	private void creatFrame() 
+	{
+		setSize(400,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0)
+		{
+			int hours=Integer.parseInt(hoursField.getText());
+			int minutes=Integer.parseInt(minutesField.getText());
+			((Clock) obj).append(hours,minutes);
+		}
+	}
+	
+    private void creatButton()
+    {
+		button=new JButton("Go");
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+	}
+
+	private void creatMinutesField() 
+	{
+		minutesField=new JTextField(10);
+		minutesLabel=new JLabel("minutes");
+	}
+
+	private void creatHoursField() 
+	{
+		 hoursField=new JTextField(10);
+		 hoursLabel=new JLabel("hours");
+	}
+	
+	private void creatComponents()
+	{
+		JPanel panel=new JPanel();
+		
+		panel.add(minutesLabel);
+		panel.add(minutesField);
+		
+		panel.add(hoursLabel);
+		panel.add(hoursField);
+		panel.add(button);
+
+		panel.add(obj);
+		add(panel);
+
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+
+public class ClockViewer
+{
+	public static void main(String[]args)
+	{
+		JFrame comp=new Clock1();
+
+	}
+}
+==============================================================================================
+

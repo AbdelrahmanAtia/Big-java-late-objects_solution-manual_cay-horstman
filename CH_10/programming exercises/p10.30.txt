@@ -1,0 +1,66 @@
+•• P10.30Make a bar chart to plot the following data set. Label each bar. Provide a class BarChartViewer and a class BarChartComponent.
+
+Bridge Name                      Longest Span (ft)
+Golden Gate                            4,200
+Brooklyn                                 1,595
+Delaware Memorial                  2,150
+Mackinac                               3,800
+==============================================================================================
+solution
+=====
+
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+
+public class BarChartComponent extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		int maxValue=5200;  int barWidth;
+		final int BAR_HEIGHT=10;
+		
+		barWidth=(int) (getWidth() * 4200 / maxValue);
+		g.fillRect(0, 30, barWidth, BAR_HEIGHT);
+		g.drawString("Golden Gate",barWidth +10 , 40);
+		
+		
+		
+		barWidth=(int) (getWidth() * 1595 / maxValue);
+		g.fillRect(0, 50, (int) (getWidth() * 1595 / maxValue), BAR_HEIGHT);
+		g.drawString("Brooklyn",barWidth +10 , 60);
+
+
+
+		barWidth=(int) (getWidth() * 2150 / maxValue);
+		g.fillRect(0, 70, barWidth, BAR_HEIGHT);
+		g.drawString("Delaware Memorial",barWidth +10 , 80);
+		
+		
+		
+		barWidth=(int) (getWidth() *3800 / maxValue);
+		g.fillRect(0, 90,barWidth , BAR_HEIGHT);
+		g.drawString("Mackinac",barWidth +10 , 100);
+
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+
+public class BarChartViewer
+{
+	public static void main(String[]args)
+	{
+		JComponent component=new BarChartComponent();
+		JFrame frame=new JFrame();
+		frame.setSize(600,600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		frame.add(component);
+		
+	}
+}
+==============================================================================================

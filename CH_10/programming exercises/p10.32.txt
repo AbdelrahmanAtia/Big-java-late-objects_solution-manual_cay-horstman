@@ -1,0 +1,47 @@
+••• P10.32 Write a program that fills the window with a large ellipse, with a black outline and filled with your favorite color. The ellipse should touch the 
+window boundaries, even if the window is resized.
+==============================================================================================
+solution
+=====
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+
+public class p10_32 extends JComponent
+{
+	private int width;
+	private int height;
+	public p10_32(int awidth,int aheight)
+	{
+		width=awidth;
+		height=aheight;
+	}
+	public void paintComponent(Graphics g)
+	{
+	
+		g.fillOval(0,0,width,height);
+		g.setColor(Color.YELLOW);
+		g.fillOval(5, 5, width-10, height-10);
+		
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class p10_32Viewer  
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(200,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component=new p10_32(frame.getWidth(),frame.getHeight());
+		frame.add(component);		
+	}
+}
+==============================================================================================

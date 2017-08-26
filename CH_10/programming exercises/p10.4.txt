@@ -1,0 +1,71 @@
+•• P10.4 Enhance the ButtonViewer1 program in Section 10.2.1 so that it has two buttons labeled A and B, each of which prints a message “Button x was 
+clicked!”, where x is A or B.
+==============================================================================================
+solution
+=====
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+public class p10_4 extends JFrame
+{
+	private static final int FRAME_WIDTH = 100;
+    private static final int FRAME_HEIGHT = 60;
+
+    public p10_4()
+     {
+	     createComponents();
+	     setSize(FRAME_WIDTH, FRAME_HEIGHT);
+     }
+    public class ClickListener1 implements ActionListener
+    {
+
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			System.out.println("Button A was clicked!");
+		}
+    }
+    public class ClickListener2 implements ActionListener
+    {
+
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			System.out.println("Button B was clicked!");
+		}
+    }
+    
+     private void createComponents()
+     {
+	     JButton button1 = new JButton("A");
+	     JButton button2 = new JButton("B");
+
+	     JPanel panel = new JPanel();
+	     panel.add(button1);
+	     panel.add(button2);
+	     add(panel);
+	    
+	     ActionListener listener1 = new ClickListener1();
+	     button1.addActionListener(listener1);
+	     
+	     ActionListener listener2 = new ClickListener2();
+	     button2.addActionListener(listener2);
+     }
+}
+==============================================================================================
+import javax.swing.JFrame;
+
+public class p10_4Viewer 
+{
+	public static void main(String[]args)
+	{
+		 JFrame frame = new p10_4();
+	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 frame.setVisible(true);
+	}
+}
+==============================================================================================

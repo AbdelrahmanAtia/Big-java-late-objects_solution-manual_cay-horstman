@@ -1,0 +1,107 @@
+•• P10.24 Write a program to plot the string “HELLO”, using only lines and circles. Do not call drawString, and do not use System.out. Make classes LetterH, 
+LetterE, LetterL, and LetterO.
+==============================================================================================
+solution
+======
+
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class LetterH extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.drawLine(20,100,20,200);      //left vertical line
+		g.drawLine(45, 100, 45, 200);  //right vertical line
+		g.drawLine(20, 150, 45, 150); //horizontal line
+	}
+}
+
+==============================================================================================
+import java.awt.Graphics;
+import javax.swing.JComponent;
+public class LetterE extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.drawLine(20, 100,45, 100);  // 1st horizontal line
+		g.drawLine(20, 150, 45, 150);  //2nd horizontal line
+		g.drawLine(20,200,45,200);    //3rd horizontal line
+		
+		g.drawLine(20, 100, 20, 200);   // vertical line
+		
+	}
+}
+==============================================================================================
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class LetterL extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		// first L letter
+		g.drawLine(20, 100, 20, 200);  //vertical line
+		g.drawLine(20, 200, 45, 200);  //horizontal line
+		
+		// second L letter
+		
+		g.drawLine(70, 100, 70, 200);   //vertical line
+		g.drawLine(70, 200, 95, 200);    //horizontal line
+	}
+}
+==============================================================================================
+
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class LetterO extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.drawOval(20, 100, 25, 100);
+	}
+}
+==============================================================================================
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+public class viewString 
+{
+	
+	public static void main(String []args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JPanel panel=new JPanel();
+		
+		JComponent H=new LetterH();
+		H.setPreferredSize(new Dimension(50,400));
+		panel.add(H);
+		
+		JComponent E=new LetterE();
+		E.setPreferredSize(new Dimension(50,400));
+		panel.add(E);
+		
+		JComponent L=new LetterL();
+		L.setPreferredSize(new Dimension(100,400));
+		panel.add(L);
+		
+		JComponent O=new LetterO();
+		O.setPreferredSize(new Dimension(50,400));
+		panel.add(O);
+		
+		frame.add(panel);
+	
+	}
+}
+==============================================================================================

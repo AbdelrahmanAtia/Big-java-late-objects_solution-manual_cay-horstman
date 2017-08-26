@@ -1,0 +1,122 @@
+• P10.11 Write a graphical application for computing statistics of a data set. Supply a text field and button for adding floating-point values, and display the 
+current minimum, maximum, and average in a label.
+==============================================================================================
+solution
+=====
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+public class p10_11 extends JFrame
+{
+	private JLabel fieldLabel;
+	private JTextField dataField;
+	private JButton button;
+	private JTextArea textArea;
+	private JLabel minimum;
+	private JLabel maximum;
+	private JLabel average;
+	
+	private double min;
+	private double max;
+	private double sum=0;
+	private double avg;
+	private double n=0;
+	
+	public p10_11()
+	{
+		minimum=new JLabel();
+		maximum=new JLabel();
+		average=new JLabel();
+		sum=0;
+		creatTextField();
+		creatButton();
+		creatArea();
+		creatComponents();
+	}
+
+	
+
+	private void creatTextField() {
+		 fieldLabel=new JLabel("Data");
+		 final int fieldWidth=10;
+		 dataField=new JTextField(fieldWidth);
+		
+	}
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event)
+		{
+			if(n==0)
+			{
+				min=Double.parseDouble(dataField.getText());
+				max=Double.parseDouble(dataField.getText());
+			}
+			else
+			{
+				if(Double.parseDouble(dataField.getText()) >max)
+				    	max=Double.parseDouble(dataField.getText());
+				
+				if(Double.parseDouble(dataField.getText()) <min)
+			        	min=Double.parseDouble(dataField.getText());
+			}
+			textArea.append(dataField.getText()+"\n");
+			sum=sum+Double.parseDouble(dataField.getText());
+
+			dataField.setText("");
+			minimum.setText("min="+min);
+			maximum.setText("max="+max);
+			n++;
+			avg=sum/n;
+			average.setText("average="+avg);
+
+		}
+	}
+
+	private void creatButton() {
+	    button=new JButton("insert");
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+		
+		
+	}
+
+	private void creatArea() {
+		 textArea=new JTextArea(20,20);
+		
+	}
+	
+	private void creatComponents() {
+		
+		JPanel panel=new JPanel();
+		panel.add(fieldLabel);
+		panel.add(dataField);
+		panel.add(button);
+		panel.add(textArea);
+		panel.add(minimum);
+		panel.add(maximum);
+		panel.add(average);
+		add(panel);
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+
+public class p10_11Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame component=new p10_11();
+		component.setSize(250,500);
+		component.setTitle("statistics of a data set");
+		component.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		component.setVisible(true);		
+	}
+}
+==============================================================================================

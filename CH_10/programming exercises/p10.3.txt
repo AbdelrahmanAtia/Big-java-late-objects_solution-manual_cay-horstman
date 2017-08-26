@@ -1,0 +1,74 @@
+•• P10.3 Enhance the ButtonViewer1 program in Section 10.2.1 so that it has two buttons, each of which prints a message “I was clicked n times!” whenever 
+the button is clicked. Each button should have a separate click count.
+==============================================================================================
+
+ import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+ /**
+     This frame demonstrates how to install an action listener.
+ */
+ public class ButtonFrame1 extends JFrame
+ {
+	 private static final int FRAME_WIDTH = 100;
+	 private static final int FRAME_HEIGHT = 60;
+	 private static final int n=3;
+
+	 public ButtonFrame1()
+	 {
+		 createComponents();
+		 setSize(FRAME_WIDTH, FRAME_HEIGHT);
+	 }
+
+	 private void createComponents()
+	 {
+		 JButton button1 = new JButton("Click me!");
+		 JButton button2 = new JButton("Click me!");
+
+		 JPanel panel = new JPanel();
+		 panel.add(button1);
+		 panel.add(button2);
+		 add(panel);
+		
+		 ActionListener listener1=new ClickListener();
+		 ActionListener listener2=new ClickListener();
+
+		 button1.addActionListener( listener1 );
+		 button2.addActionListener( listener2 );
+
+	 }
+ }
+==============================================================================================
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+class ClickListener implements ActionListener 
+{
+	private int n;
+	public ClickListener()
+	{
+		n=1;
+	}
+	public void actionPerformed(ActionEvent event) 
+	{
+		System.out.println("I was clicked "+ n +" times!");
+		n++;
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+
+public class check
+{
+	public static void main(String[]args)
+	{
+		ButtonFrame1 x=new ButtonFrame1();
+		x.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		x.setVisible(true);
+	}
+}
+==============================================================================================

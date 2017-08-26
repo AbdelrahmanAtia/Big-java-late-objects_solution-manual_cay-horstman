@@ -1,0 +1,35 @@
+•• P10.8 Add error handling to the program in Section 10.3.2. If the interest rate is not a floating-point number, or if it less than 0, display an error message, 
+using a JOptionPane (see Special Topic 2.5).
+==============================================================================================
+solution
+=====
+
+>>we need to change only the implementation of the addInterestListener  class as following
+
+public class addInterestListener implements ActionListener
+	{
+
+		
+		public void actionPerformed(ActionEvent arg0) {
+			try
+			{
+				
+				double rate=Double.parseDouble(rateField.getText());
+				if(rate<0)
+				JOptionPane.showMessageDialog(null,"not valid input.enter positive numbres only");
+				else
+				{
+					double interest=balance*rate/100.0;
+					balance=balance+interest;
+					resultArea.append(balance+"\n");
+				}
+			
+		    }
+			catch(NumberFormatException exception)
+			{
+				JOptionPane.showMessageDialog(null,"not valid input.enter numbres only");
+			}
+		}
+		
+	}
+==============================================================================================

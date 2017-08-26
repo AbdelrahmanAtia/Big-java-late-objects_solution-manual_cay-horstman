@@ -1,0 +1,53 @@
+•• P10.20 Extend Exercise P10.19 by supplying a drawHouse method in which you can specifythe position and size. Then populate your frame with a few 
+houses of different sizes.
+==============================================================================================
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class HOUSE extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		drawHouse(g,20,20,40,40);
+		drawHouse(g,20,70,50,50);
+		drawHouse(g,20,130,50,60);
+		drawHouse(g,20,200,50,70);
+		drawHouse(g,20,280,50,80);
+		drawHouse(g,20,370,50,30);
+	}
+
+	private void drawHouse(Graphics g,int x,int y,int width,int height) 
+	{
+		g.setColor(Color.BLUE);
+		g.drawRect(x,y+height/3,width,height*2/3);
+		
+		g.drawLine(x, y+height/3, x+width/2, y);
+		g.drawLine(x+width/2, y, x+width,y+ height/3);
+		
+		g.drawRect(x+width/4,y+ height*2/3, width/4,height/3);
+		g.drawRect(x+width*3/4,y+height*2/3,width/8,height/12);
+		
+	}
+}
+==============================================================================================
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class houseViewer
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent conponent=new HOUSE();
+		
+		frame.add(conponent);
+	}
+}
+==============================================================================================

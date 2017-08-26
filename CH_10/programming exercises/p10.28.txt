@@ -1,0 +1,134 @@
+•• P10.28 Write a program that asks the user to enter an integer n into a text field. When a Draw button is clicked, draw an n-by-n grid in a component.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+	public class p10_28 extends JComponent
+	{
+		
+		private int n;
+		public p10_28()
+		{
+			n=1;
+		}
+	
+		public void paintComponent(Graphics g)
+		{
+			creatRectangles(g);
+		}
+		
+		public void append(int s)
+		{
+			n=s;
+			repaint();
+		}
+
+		private void creatRectangles(Graphics g) 
+		{
+			g.setColor(Color.WHITE);
+			g.fillRect(0,0,400,400);
+			g.setColor(Color.black);
+			int div=400/n;
+			int x=0,y=0;
+			g.drawLine(0,399,399,399);
+			g.drawLine(399, 0, 399, 399);
+			for(int i=0;i<n;i++)
+			{
+				g.drawLine(x,0,x,400);
+				g.drawLine(0, y, 400, y);
+				x=x+div;
+				y=y+div;
+			}
+		}
+	}
+==============================================================================================
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+public class p10_28_1 
+{
+	private int input;
+	private JFrame frame;
+	private JButton button;
+	private JTextField textField;
+	private JPanel panel;
+	private JComponent component;
+	
+	public p10_28_1()
+	{
+		input=0;
+		creatFrame();
+		creatButton();
+		creatTextField();
+		component=new p10_28();
+		component.setPreferredSize(new Dimension(400,400));
+		creatComponents();
+		
+	}
+	
+		private void creatFrame()
+		{
+			frame=new JFrame();
+			frame.setSize(600,600);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+    	}
+		
+		
+		public class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+			 		((p10_28) component).append(Integer.parseInt(textField.getText()));
+			}
+			
+		}
+		
+		private void creatButton()
+		{
+			button=new JButton("draw");
+			ActionListener listener=new ClickListener();
+			button.addActionListener(listener);
+	    }
+		
+		private void creatTextField()
+		{
+			textField=new JTextField(10);
+	    }
+		
+		private void creatComponents() 
+		{
+			
+			panel=new JPanel();
+			panel.add(textField);
+			panel.add(button);
+			
+			panel.add(component);
+			
+			frame.add(panel);
+		
+	    }
+	}
+==============================================================================================
+
+public class p10_28_3 
+{
+	public static void main(String[]args)
+	{
+		p10_28_1 x=new p10_28_1();
+	}
+}
+==============================================================================================

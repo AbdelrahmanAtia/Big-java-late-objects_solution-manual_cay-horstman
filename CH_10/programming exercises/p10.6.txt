@@ -1,0 +1,65 @@
+• P10.6 Enhance the ButtonViewer1 program so that it prints the date and time at which the button was clicked. 
+
+Hint: System.out.println(new java.util.Date()) prints the current date and time.
+==============================================================================================
+solution
+======
+we have only to change the implementation of the actionPerformed method to print 
+ System.out.println(new java.util.Date());
+instead of 
+System.out.println("I was clicked.");
+
+and here are the complete code
+----------------------------------------
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+ public class p10_6 extends JFrame
+{
+	 private static final int FRAME_WIDTH = 100;
+	 private static final int FRAME_HEIGHT = 60;
+	 public p10_6()
+	 {
+		  createComponents();
+		  setSize(FRAME_WIDTH, FRAME_HEIGHT);
+	 }
+	 public class ClickListener implements ActionListener
+	 {
+		  public void actionPerformed(ActionEvent event)
+		  {
+			  System.out.println(new java.util.Date());
+		  }
+	  }
+	 
+	  private void createComponents()
+	  {
+		  JButton button = new JButton("Click me!");
+	      JPanel panel = new JPanel();
+		  panel.add(button);
+		  add(panel);
+		  ActionListener listener = new ClickListener();
+		  button.addActionListener(listener);
+	  }
+ }
+	
+ ==============================================================================================
+import javax.swing.JFrame;
+
+public class p10_6Viewer
+{
+	public static void main(String[] args)
+	 {
+		 JFrame frame = new p10_6();
+		 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		 frame.setVisible(true);
+	 }
+}
+==============================================================================================
+
+

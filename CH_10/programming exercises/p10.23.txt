@@ -1,0 +1,45 @@
+p10.23 Write a program that draws a 3D view of a cylinder.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class Cylinder extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(200,200,50,30);
+		g.drawLine(200, 120, 200, 215);
+		g.drawLine(250, 120, 250, 215);
+		g.fillRect(200, 120, 50, 95);
+
+		g.setColor(Color.white);
+		g.fillOval(200, 105, 50, 30);
+		
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval(202, 107, 46, 26);		
+	}
+}
+==============================================================================================
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class cylinderViewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component=new Cylinder();
+		frame.add(component);
+	}
+}
+==============================================================================================

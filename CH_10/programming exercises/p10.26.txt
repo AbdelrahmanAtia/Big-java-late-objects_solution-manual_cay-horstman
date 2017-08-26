@@ -1,0 +1,56 @@
+•• P10.26 Write a program that displays the Olympic rings. Color the rings in the Olympic colors. Provide a method drawRing that draws a ring of a given 
+position and color.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+
+public class p10_26 extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, 400, 400);
+		
+		drawRing(g,50,50,Color.blue);
+		drawRing(g,130,50,Color.black);
+		drawRing(g,210,50,Color.red);
+		drawRing(g,90,90,Color.yellow);
+		drawRing(g,169,90,Color.green);
+	}
+
+	public void drawRing(Graphics g,int x,int y,Color S)
+	{
+		g.setColor(S);
+		g.fillOval(x, y, 80, 80);
+		g.setColor(Color.white);
+		g.fillOval(x+5, y+5, 70, 70);
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+
+public class p10_26Viewer
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent ring=new p10_26();
+		
+		frame.add(ring);
+	}
+}
+
+==============================================================================================

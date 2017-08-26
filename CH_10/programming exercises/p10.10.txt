@@ -1,0 +1,94 @@
+P10.10 Write a graphical application describing an earthquake, as in Section 3.3. Supply a text field and button for entering the strength of the earthquake. 
+Display the earthquake description in a label.
+==============================================================================================
+solution
+-----------
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class earthquake extends JFrame
+{
+	private static final int FRAME_WIDTH=400;
+	private static final int FRAME_HEIGHT=400;
+	JTextField textField;
+	JButton button;
+	JLabel label;
+	JPanel panel;
+	JLabel fieldLabel;
+	public earthquake()
+	{
+		creatTextField();
+		creatButton();
+		creatLabel();
+		creatPanel();
+		setSize(FRAME_WIDTH,FRAME_HEIGHT);
+	}
+
+	public void creatLabel()
+	{
+		 label=new JLabel("");
+	}
+	public class ClickListener implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent e) 
+		{
+			double strength =Double.parseDouble(textField.getText());
+			if(strength>=8.0)
+				label.setText("Description: Most structures fall");
+			else if(strength>=7.0)
+				label.setText("Description: Many buildings destroyed");
+			else if(strength>=6.0)
+				label.setText("Description: Many buildings considerably damaged, some collapse");
+			else if(strength>=4.5)
+				label.setText("Description: Damage to poorly constructed buildings");
+			else
+				label.setText("Description: No destruction of buildings");
+		}
+	}
+
+	public void creatButton() 
+	{
+		button=new JButton("Enter");
+		
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+	}
+
+	public void creatTextField()
+	{
+		 fieldLabel=new JLabel("Strength ");
+		final int FIELD_WIDTH=10;
+		textField=new JTextField(FIELD_WIDTH);
+
+	}
+	
+	public void creatPanel()
+	{
+		 panel=new JPanel();
+		 panel.add(fieldLabel);
+		 panel.add(textField);
+		 panel.add(button);
+		 panel.add(label);
+		 add(panel);
+	}
+}
+==============================================================================================
+import javax.swing.JFrame;
+
+public class earthquakeDemo 
+{
+	public static void main(String[]args)
+	{
+		earthquake x=new earthquake();
+		x.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		x.setVisible(true);
+	}
+}
+==============================================================================================

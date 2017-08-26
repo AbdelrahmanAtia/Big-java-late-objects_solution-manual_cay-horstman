@@ -1,0 +1,43 @@
+•• P10.18 Draw a “bull’s eye”—a set of concentric rings in alternating black and white colors. Hint: Fill a black circle, then fill a smaller white circle on top, and 
+so on. Your program should be composed of classes BullsEyeComponent and BullsEyeViewer
+==============================================================================================
+solution
+======
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+
+public class BullsEyeComponent extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.fillOval(0, 0, 400, 400);
+		g.setColor(Color.WHITE);
+		g.fillOval(40, 40, 320, 320);
+		g.setColor(Color.BLACK);
+		g.fillOval(80,80,240,240);
+		g.setColor(Color.WHITE);
+		g.fillOval(120,120,160,160);
+		g.setColor(Color.BLACK);
+		g.fillOval(160,160,80,80);
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class BullsEyeViewer 
+{
+	public static void main(String[]args)  
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400, 400);
+		frame.setTitle("bull’s eye");
+		JComponent component=new BullsEyeComponent();
+		frame.add(component);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

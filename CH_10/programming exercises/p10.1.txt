@@ -1,0 +1,72 @@
+• P10.1 Write a program that shows a square frame filled with 100 buttons labeled 1 to 100. Nothing needs to happen when you press any of the buttons.
+
+==============================================================================================
+solutions
+======
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+public class p10_1 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame =new JFrame();
+		frame.setSize(400, 400);
+		frame.setTitle("Buttons");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JPanel panel=new JPanel();
+		JButton button;
+		for(int i=1;i<=100;i++)
+		{
+			button=new JButton(i+"");
+			panel.add(button);
+			frame.add(panel);
+		}
+	}
+}
+==============================================================================================
+>>we can write this code in another way using classes and methods
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+public class p10_1 extends JFrame
+{
+	private JButton button;
+	private JPanel panel;
+	public p10_1()
+	{
+		panel=new JPanel();
+		for(int i=1;i<=100;i++)
+		{
+		     creatButton(i);
+		}
+	}
+	public void creatButton(int i)
+	{
+		button=new JButton(i+"");
+		panel.add(button);
+		add(panel);
+	}	
+}
+
+
+==================================================================================================
+
+
+import javax.swing.JFrame;
+
+public class p10_1Viewr 
+{
+	public static void main(String[] args)
+	{
+		p10_1 frame = new p10_1();
+		frame.setSize(400,400);
+		frame.setTitle("A frame with two components");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}
+==============================================================================================

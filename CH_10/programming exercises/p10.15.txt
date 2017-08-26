@@ -1,0 +1,75 @@
+•• P10.15 Write a graphics program that draws 12 strings, one each for the 12 standard colors, besides Color.WHITE, each in its own color. Provide a class 
+ColorNameViewer and a class ColorNameComponent.
+==============================================================================================
+solution
+=====
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class ColorNameComponent extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.setColor(Color.BLACK);
+		g.drawString("HELLO", 10, 20);
+		
+		g.setColor(Color.BLUE);
+		g.drawString("HELLO", 10, 40);
+		
+		g.setColor(Color.CYAN);
+		g.drawString("HELLO", 10, 60);
+		
+		g.setColor(Color.GRAY);
+		g.drawString("HELLO", 10, 80);
+		
+		g.setColor(Color.darkGray);
+		g.drawString("HELLO", 10, 100);
+		
+		g.setColor(Color.lightGray);
+		g.drawString("HELLO", 10, 120);
+		
+		g.setColor(Color.GREEN);
+		g.drawString("HELLO", 10, 140);
+		
+		g.setColor(Color.MAGENTA);
+		g.drawString("HELLO", 10, 160);
+		
+		g.setColor(Color.ORANGE);
+		g.drawString("HELLO", 10, 180);
+		
+		g.setColor(Color.PINK);
+		g.drawString("HELLO", 10, 200);
+		
+		g.setColor(Color.RED);
+		g.drawString("HELLO", 10, 220);
+		
+		g.setColor(Color.WHITE);
+		g.drawString("HELLO", 10, 240);
+		
+		g.setColor(Color.YELLOW);
+		g.drawString("HELLO", 10, 260);
+		
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+
+public class ColorNameViewer
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component=new ColorNameComponent();
+		
+		frame.add(component);
+	}
+}
+==============================================================================================

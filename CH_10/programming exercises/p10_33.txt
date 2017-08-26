@@ -1,0 +1,133 @@
+•• Business P10.33 Implement a graphical application that simulates a cash register. Provide a text field for the item price and two buttons for adding the 
+item to the sale, one for taxable items and one for nontaxable items. In a text area, display the register tape that lists all items (labeling the taxable items with 
+a *), followed by the amount due. Provide another button for starting a new sale.
+==============================================================================================
+solution
+=====
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+public class p10_33 
+{
+	private JButton button1;
+	private JButton button2;
+	private JButton button3;
+	private JTextField textField;
+	private JTextArea textArea;
+	private JFrame frame;
+	private JLabel label;
+	public p10_33()
+	{
+		creatFrame();
+		creatButton1();
+		creatButton2();
+		creatTextField();
+		creatTextArea();
+		creatButton3();
+
+		creatComponents();
+	}
+	
+	public class ClickListener3 implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent e)
+		{
+			textArea.setText("");
+			textField.setText("");
+		}
+		
+	}
+
+	private void creatButton3() 
+	{
+		button3=new JButton("new sale");
+		ActionListener listener3=new ClickListener3();
+		button3.addActionListener(listener3);
+	}
+
+	private void creatFrame() 
+	{
+		frame=new JFrame();
+		frame.setSize(300,500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+	public class ClickListener1 implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			textArea.append("*)"+textField.getText()+"\n");
+		}
+	}
+	
+
+	private void creatButton1()
+	{
+		 button1=new JButton("add taxable");
+		 ActionListener listener1=new ClickListener1();
+		 button1.addActionListener(listener1);
+		 
+	}
+	
+	public class ClickListener2 implements ActionListener
+	{
+
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			textArea.append(textField.getText()+"\n");
+		}
+	}
+
+	private void creatButton2() 
+	{
+		button2=new JButton("add non taxable");
+		ActionListener listener2=new ClickListener2();
+		button2.addActionListener(listener2);
+	}
+
+	private void creatTextField() 
+	{
+		
+		textField=new JTextField(10);
+		label=new JLabel("item price");
+	}
+
+	private void creatTextArea()
+	{
+		textArea=new JTextArea(20,20);
+	}
+
+	private void creatComponents() 
+	{
+		JPanel panel=new JPanel();
+		panel.add(label);
+		panel.add(textField);
+		panel.add(textArea);
+		panel.add(button1);
+		panel.add(button2);
+		panel.add(button3);
+	
+		frame.add(panel);
+	}
+}
+==============================================================================================
+
+public class p10_33Viewer
+{
+	public static void main(String[]args)
+	{
+		p10_33 component=new p10_33();
+	}
+}
+==============================================================================================

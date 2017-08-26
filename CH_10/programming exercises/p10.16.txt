@@ -1,0 +1,41 @@
+•• P10.16 Write a program that draws two solid squares: one in pink and one in purple. Use a standard color for one of them and a custom color for the 
+other. Provide a class TwoSquareViewer and a class TwoSquareComponent.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class TwoSquareComponent extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.setColor(Color.pink);
+		g.fillRect(100, 150, 100, 100);
+		Color purple=new Color(128,0,128);
+		g.setColor(purple);
+		g.fillRect(200, 150, 100, 100);
+		
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class TwoSquareViewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component=new TwoSquareComponent();
+		frame.add(component);
+	}
+}
+==============================================================================================

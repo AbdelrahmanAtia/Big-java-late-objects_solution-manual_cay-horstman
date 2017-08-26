@@ -1,0 +1,103 @@
+• P10.9 Write a graphical application simulating a bank account. Supply text fields and buttons for depositing and withdrawing money, and for displaying the 
+current balance in a label.
+==============================================================================================
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class BankAcccount extends JFrame
+{
+	private static final double INITIAL_BALANCE=1000.0;
+	private static final int FRAME_WIDTH=400;
+	private static final int FRAME_HEIGHT=400;
+	 
+	private JButton withdraw_button;
+	private JTextField input;
+	private JLabel label;
+	private JPanel panel;
+	private JLabel balanceLabel;
+	private JButton deposit_button;
+	private double balance;
+	public BankAcccount()
+	{
+		balance=INITIAL_BALANCE;
+		creatWithdrawButton();
+		creatDepositButton();
+		creatTextField();
+		creatBalanceLabel();
+		creatPanel();
+		setSize(FRAME_WIDTH,FRAME_HEIGHT);
+	}
+	
+	public class WithdrawListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			balance=balance-Double.parseDouble(input.getText());
+			balanceLabel.setText("balance: "+balance);
+		}
+	}
+
+	private void creatWithdrawButton() 
+	{
+		withdraw_button=new JButton("Withdraw");
+		ActionListener listener1=new WithdrawListener();
+		withdraw_button.addActionListener(listener1);
+	}
+	
+	public class DepositListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			balance=balance+Double.parseDouble(input.getText());
+			balanceLabel.setText("balance: "+balance);
+		}
+	}
+
+	private void creatDepositButton() {
+		deposit_button=new JButton("Deposit");
+		ActionListener listener2=new DepositListener();
+		deposit_button.addActionListener(listener2);
+	}
+
+	private void creatTextField() {
+		final int FIELD_WIDTH=10;
+		label=new JLabel("Amount: ");
+		input=new JTextField(FIELD_WIDTH);
+		input.setText(""+0);
+	}
+
+	private void creatBalanceLabel() {
+		 balanceLabel=new JLabel("balance: "+balance);
+	}
+	
+	private void creatPanel() {
+		panel=new JPanel();
+		panel.add(deposit_button);
+		panel.add(withdraw_button);
+		panel.add(label);
+		panel.add(input);
+		panel.add(balanceLabel);
+		add(panel);
+	}
+}
+
+==============================================================================================
+import javax.swing.JFrame;
+
+public class BankAccountDemo 
+{
+	public static void main(String[]args)
+	{
+		BankAcccount x=new BankAcccount();
+		x.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		x.setVisible(true);
+	}
+}
+==============================================================================================

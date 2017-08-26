@@ -1,0 +1,4 @@
+•• P10.5 Implement a ButtonViewer1 program as in Exercise P10.3 using only a single listener class. Hint: Pass the button label to the constructor of the 
+listener.
+==============================================================================================
+>>the solution is the same as that in exercise p10.3 as i didn't use two listener classes. i used only one listener class

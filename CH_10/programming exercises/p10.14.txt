@@ -1,0 +1,43 @@
+• P10.14 Write a graphics program that draws your name in red, contained inside a blue rectangle. Provide a class NameViewer and a class 
+
+NameComponent.
+==============================================================================================
+solution
+=====
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class NameComponent extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.setColor(Color.BLUE);
+		g.fillRect(100,150,200,100);
+		
+		g.setColor(Color.RED);
+		g.drawString("ABDO",190,200);
+	}
+}
+
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class NameViewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component=new NameComponent();
+		frame.add(component);
+
+	}
+}
+==============================================================================================

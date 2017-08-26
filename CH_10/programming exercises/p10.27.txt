@@ -1,0 +1,127 @@
+••• P10.27 Write a program that prompts the user to enter an integer in a text field. When a Draw button is clicked, draw as many rectangles at random 
+positions in a component as the user requested.
+==============================================================================================
+solution
+=====
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+	public class p10_27 extends JComponent
+	{
+		
+		private int n;
+		public p10_27()
+		{
+			n=0;
+		}
+	
+		public void paintComponent(Graphics g)
+		{
+			creatRectangles(g);
+		}
+		
+		public void append(int s)
+		{
+			n=s;
+			repaint();
+		}
+
+		private void creatRectangles(Graphics g) 
+		{
+			int x,y;
+			for(int i=0;i<n;i++)
+			{
+				 x=(int) (Math.random()*400);
+				 y=(int)(Math.random()*400);
+				 g.drawRect(x, y, 40, 60);
+			}
+		}
+	}
+==============================================================================================
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+
+public class p10_27_1 
+{
+	private int input;
+	private JFrame frame;
+	private JButton button;
+	private JTextField textField;
+	private JPanel panel;
+	private JComponent component;
+	
+	public p10_27_1()
+	{
+		input=0;
+		creatFrame();
+		creatButton();
+		creatTextField();
+		component=new p10_27();
+		component.setPreferredSize(new Dimension(400,400));
+		creatComponents();
+		
+	}
+	
+		private void creatFrame()
+		{
+			frame=new JFrame();
+			frame.setSize(500,500);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+    	}
+		
+		
+		public class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+			 		((p10_27) component).append(Integer.parseInt(textField.getText()));
+			}
+			
+		}
+		
+		private void creatButton()
+		{
+			button=new JButton("draw");
+			ActionListener listener=new ClickListener();
+			button.addActionListener(listener);
+	    }
+		
+		private void creatTextField()
+		{
+			textField=new JTextField(10);
+	    }
+		
+		private void creatComponents() 
+		{
+			
+			panel=new JPanel();
+			panel.add(textField);
+			panel.add(button);
+			
+			panel.add(component);
+			
+			frame.add(panel);
+		
+	    }
+	}
+==============================================================================================
+
+public class p10_27_3 
+{
+	public static void main(String[]args)
+	{
+		p10_27_1 x=new p10_27_1();
+	}
+}
+==============================================================================================

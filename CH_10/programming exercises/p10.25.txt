@@ -1,0 +1,57 @@
+•• P10.25 Modify the drawItalianFlag method in How To 10.1 to draw any flag with three horizontal colored stripes. Write a program that displays the German 
+
+and Hungarian flags.
+==============================================================================================
+solution
+=====
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class p10_25 extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		drawFlag(g,20,20,100,60,Color.black,Color.red,Color.yellow);
+		
+		drawFlag(g,20,100,100,60,Color.red,Color.white,Color.GREEN);
+	}
+	
+	public void drawFlag(Graphics g,int x,int y,int width,int height,Color s1,Color s2,Color s3)
+	{
+		//first horizontal stripe
+		g.setColor(s1);
+		g.fillRect(x, y, width, height/3);
+		
+				
+		//2nd horizontal stripe
+		g.setColor(s2);
+		g.fillRect(x, y+height/3, width, height/3);
+		
+		
+		//3rd horizontal stripe 
+		g.setColor(s3);
+		g.fillRect(x, y+2*height/3, width, height/3);
+	}
+
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+
+public class p10_25Viewer
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400,400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent component =new p10_25();
+		frame.add(component);
+	}
+}
+==============================================================================================

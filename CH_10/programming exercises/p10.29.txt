@@ -1,0 +1,112 @@
+•• P10.29 Write a program that has a Draw button and a component in which a random mixture of rectangles, ellipses, and lines, with random positions, is 
+displayed each time the Draw button is clicked.
+==============================================================================================
+solution
+=====
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+	public class p10_29 extends JComponent
+	{
+
+		public void paintComponent(Graphics g)
+		{
+			creatRectangles(g);
+		}
+		
+		public void append()
+		{
+			repaint();
+		}
+
+		private void creatRectangles(Graphics g) 
+		{
+		
+			g.drawLine((int)(Math.random()*300),(int)(Math.random()*300),(int)(Math.random()*100),(int)(Math.random()*100));
+			g.drawRect((int)(Math.random()*300), (int)(Math.random()*300), (int)(Math.random()*100), (int)(Math.random()*100));
+			g.drawOval((int)(Math.random()*300), (int)(Math.random()*300), (int)(Math.random()*100), (int)(Math.random()*100));
+			
+
+			g.drawLine((int)(Math.random()*300),(int)(Math.random()*300),(int)(Math.random()*100),(int)(Math.random()*100));
+			g.drawRect((int)(Math.random()*300), (int)(Math.random()*300), (int)(Math.random()*100), (int)(Math.random()*100));
+			g.drawOval((int)(Math.random()*300), (int)(Math.random()*300), (int)(Math.random()*100), (int)(Math.random()*100));
+		
+		}
+	}
+==============================================================================================
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class p10_29_1 
+{
+	private int input;
+	private JFrame frame;
+	private JButton button;
+	private JPanel panel;
+	private JComponent component;
+	
+	public p10_29_1()
+	{
+		input=0;
+		creatFrame();
+		creatButton();
+		component=new p10_29();
+		component.setPreferredSize(new Dimension(400,400));
+		creatComponents();
+		
+	}
+	
+		private void creatFrame()
+		{
+			frame=new JFrame();
+			frame.setSize(400,400);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+    	}
+		
+		
+		public class ClickListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+			 		((p10_29) component).append();
+			}
+			
+		}
+		
+		private void creatButton()
+		{
+			button=new JButton("draw");
+			ActionListener listener=new ClickListener();
+			button.addActionListener(listener);
+	    }
+				
+		private void creatComponents() 
+		{
+			
+			panel=new JPanel();
+			panel.add(button);
+			
+			panel.add(component);
+			
+			frame.add(panel);
+		
+	    }
+	}
+==============================================================================================
+
+public class p10_29_3 
+{
+	public static void main(String[]args)
+	{
+		p10_29_1 x=new p10_29_1();
+	}
+}
+==============================================================================================

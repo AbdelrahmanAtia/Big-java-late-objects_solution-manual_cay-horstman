@@ -1,0 +1,42 @@
+•• P10.19 Write a program that draws a picture of a house. It could be as simple as the accompanying figure, or if you like, make it more elaborate (3-D, 
+skyscraper, marble columns in the entryway, whatever).
+==============================================================================================
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JComponent;
+
+public class HOUSE extends JComponent
+{
+	public void paintComponent(Graphics g)
+	{
+		g.setColor(Color.BLUE);
+		g.drawRect(100,100,200,200);
+		
+		g.drawLine(100, 100, 200, 50);
+		g.drawLine(200, 50, 300, 100);
+		
+		g.drawRect(150, 200, 30, 100);
+		g.drawRect(220,220,40,40);
+		
+	}
+}
+==============================================================================================
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+public class houseViewer
+{
+	public static void main(String[]args)
+	{
+		JFrame frame=new JFrame();
+		frame.setSize(400, 400);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		
+		JComponent conponent=new HOUSE();
+		
+		frame.add(conponent);
+	}
+}
+==============================================================================================

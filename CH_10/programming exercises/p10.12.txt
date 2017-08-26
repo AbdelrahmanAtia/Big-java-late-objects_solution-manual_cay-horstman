@@ -1,0 +1,125 @@
+• P10.12 Write an application with three labeled text fields, one each for the initial amount of a savings account, the annual interest rate, and the number of 
+years. Add a button “Calculate” and a read-only text area to display the balance of the savings account after the end of each year.
+==============================================================================================
+solution
+=====
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+
+public class p10_12 extends JFrame
+{
+	private JLabel label1;
+	private JTextField initialAmount;
+	
+	private JLabel label2;
+	private JTextField interestRate;
+	
+	private JLabel label3;
+	private JTextField numberOfYears;
+	
+	private JButton button;
+	private JTextArea textArea;
+
+	
+	public p10_12()
+	{
+		creatTextField1();
+		creatTextField2();
+		creatTextField3();
+		creatButton();
+		creatTextArea();
+		creatCompnents();
+	}
+
+	private void creatTextArea() {
+		textArea=new JTextArea(10,10);
+		textArea.setEditable(false);
+		
+	}
+
+	private void creatTextField1() {
+		label1=new JLabel("initial amount");
+		final int fieldWidth1=10;
+		initialAmount=new JTextField(fieldWidth1);
+		
+	}
+
+	private void creatTextField2() {
+		label2=new JLabel("annual interest rate");
+		final int fieldWidth2=10;
+		interestRate=new JTextField(fieldWidth2);
+		
+	}
+
+	private void creatTextField3() {
+	    label3=new JLabel("number of years");
+		final int fieldWidth3=10;
+		numberOfYears=new JTextField(fieldWidth3);
+		
+	}
+	
+	public class ClickListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0) {
+			double p=Double.parseDouble(initialAmount.getText());
+			double i=Double.parseDouble(interestRate.getText());
+			double n=Double.parseDouble(numberOfYears.getText());
+			double F=p * Math.pow( 1+i , n );
+			textArea.setText(""+F);
+		}
+		
+	}
+	
+	private void creatButton() {
+		button=new JButton("Calculate");
+		ActionListener listener=new ClickListener();
+		button.addActionListener(listener);
+		
+	}
+	
+	private void creatCompnents() {
+		JPanel panel=new JPanel();
+		
+		panel.add(label1);
+		panel.add(initialAmount);
+		
+		panel.add(label2);
+		panel.add(interestRate);
+		
+		panel.add(label3);
+		panel.add(numberOfYears);
+		
+		panel.add(button);
+		panel.add(textArea);
+		add(panel);
+		
+	}
+
+}
+==============================================================================================
+import javax.swing.JFrame;
+
+
+public class p10_12Viewer 
+{
+	public static void main(String[]args)
+	{
+		JFrame component=new p10_12();
+		component.setSize(200,380);
+		component.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		component.setVisible(true);
+	}
+}
+==============================================================================================
+
+
+
