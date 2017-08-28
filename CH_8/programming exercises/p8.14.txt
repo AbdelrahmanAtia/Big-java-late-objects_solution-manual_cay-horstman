@@ -1,0 +1,72 @@
+••• P8.14 Write static methods
+• public static double sphereVolume(double r)
+• public static double sphereSurface(double r)
+• public static double cylinderVolume(double r, double h)
+• public static double cylinderSurface(double r, double h)
+• public static double coneVolume(double r, double h)
+• public static double coneSurface(double r, double h)
+
+that compute the volume and surface area of a sphere with a radius r, a cylinder with a circular base with radius r and height h, and a cone with a circular 
+base with radius r and height h. Place them into a class Geometry. Then write a program that prompts the user for the values of r and h, calls the six 
+methods, and prints the results.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+-----------
+public class Geometry
+{
+	public static double sphereVolume(double r)
+	{
+		return (4.0/3)*Math.PI*(r*r*r);
+	}
+	
+	public static double sphereSurface(double r)
+	{
+		return 4*Math.PI*r*r;
+	}
+	
+	public static double cylinderVolume(double r, double h)
+	{
+		return Math.PI *r*r*h;
+	}
+	
+	public static double cylinderSurface(double r, double h)
+	{
+		return 2*Math.PI*r*r+2*Math.PI*r*h;
+	}
+	
+	public static double coneVolume(double r, double h)
+	{
+		return (1.0/3)*Math.PI*r*r*h;
+	}
+	
+	public static double coneSurface(double r, double h)
+	{
+		return Math.PI *r*r+Math.PI*r*h;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class CODE 
+{
+	public static void main(String[]args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.println("enter radius: ");
+		double r=in.nextDouble();
+		System.out.println("enter height: ");
+		double h=in.nextDouble();
+		System.out.println("sphereVolume= "+Geometry.sphereVolume(r));
+		
+		System.out.println("sphereSurface= "+Geometry.sphereSurface(r));
+		
+		System.out.println("cylinderVolume= "+Geometry.cylinderVolume(r,h));
+		
+		System.out.println("cylinderSurface= "+Geometry.cylinderSurface(r,h));
+		
+		System.out.println("coneVolume= "+Geometry.coneVolume(r,h));
+		
+		System.out.println("coneSurface= "+Geometry.coneSurface(r,h));	
+	}
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

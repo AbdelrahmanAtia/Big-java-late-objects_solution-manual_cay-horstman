@@ -1,0 +1,39 @@
+•• P8.13 Implement a class Moth that models a moth flying in a straight line. The moth has a position, the distance from a fixed origin. When the moth moves 
+toward a point of light, its new position is halfway between its old position and the position of the light source. Supply a constructor
+
+public Moth(double initialPosition)
+and methods
+• public void moveToLight(double lightPosition)
+• public void getPosition()
+
+Your main method should construct a moth, move it toward a couple of light sources, and check that the moth’s position is as expected.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+----------
+public class Moth 
+{
+	private double ainitialPosition;
+	private double newPosition;
+	public Moth(double initialPosition)
+	{
+		ainitialPosition=initialPosition;
+	}
+	 public void moveToLight(double lightPosition)
+	 {
+		 newPosition=(lightPosition-ainitialPosition)/2.0 +ainitialPosition;
+		 ainitialPosition=newPosition;
+	 }
+	 public void getPosition()
+	 {
+		 System.out.println(newPosition);
+	 }
+	 public  static void main(String[] args)
+	 {
+		 Moth bug=new Moth(5);
+		 bug.moveToLight(15);
+		 bug.moveToLight(5);
+		 bug.getPosition();
+		 System.out.println("expected:7.5 ");
+	 }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

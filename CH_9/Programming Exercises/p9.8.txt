@@ -1,0 +1,106 @@
+•• P 9.8 Implement a superclass Person. Make two classes, Student and Instructor, that inherit from Person. A person has a name and a year of birth. A 
+student has a major, and an instructor has a salary. Write the class declarations, the constructors, and the methods toString for all classes. Supply a test 
+
+program that tests these classes and methods.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+----------
+public class Person 
+{
+	private String name;
+	private int yearOfBirth;
+	
+	public Person()
+	{
+		name="";
+		yearOfBirth=0;
+	}
+	public void setName(String aname)
+	{
+		name=aname;
+	}
+	
+	public void setYearOfBirth(int aYear)
+	{
+		yearOfBirth=aYear;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	
+	public int yearOfBirth()
+	{
+		return yearOfBirth;
+	}
+	public String toString()
+	{
+		return getClass().getName()+"[name: "+name+"]"+"[yearOfBirth: "+yearOfBirth+"]";
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class Student extends Person
+{
+	private String major;
+	public Student(String amajor)
+	{
+		major=amajor;
+	}
+	public String getMajor()
+	{
+		return major;
+	}
+	public String toString()
+	{
+		return super.toString() +"[major: "+major+"]" ;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class Instructor extends Person
+{
+	private double salary;
+	public Instructor(double asalary)
+	{
+		salary=asalary;
+	}
+	public double getSalary()
+	{
+		return salary;
+	}
+	public String toString()
+	{
+		return super.toString() +"[salary: "+salary+"]";
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class check 
+{
+	public static void main(String[]args)
+	{
+		Person obj1=new Person();
+		obj1.setName("abdo");
+		obj1.setYearOfBirth(1994);
+		
+		Student obj2=new Student("Dr.Hazem");
+		obj2.setName("omar");
+		obj2.setYearOfBirth(1980);
+		
+		
+		Instructor obj3=new Instructor(200000);
+		obj3.setName("khaled");
+		obj3.setYearOfBirth(1990);
+		
+		
+		presentObject(obj1);
+		presentObject(obj2);
+		presentObject(obj3);
+	}
+	public static void presentObject(Person p)
+	{
+		System.out.println(p.toString());
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

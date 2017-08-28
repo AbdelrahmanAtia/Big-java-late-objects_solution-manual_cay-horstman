@@ -1,0 +1,34 @@
+•• P8.10 Implement a VotingMachine class that can be used for a simple election. Have methods to clear the machine state, to vote for a Democrat, to vote for a Republican, and to get the tallies for both parties.
+____________________________________________________________________________________________________________________________________
+public class VotingMachine 
+{
+	private int Democrat;
+	private int Republican;
+	public VotingMachine()
+	{
+		Democrat=0;
+		Republican=0;
+	}
+	public void voteForDemocrat()
+	{
+		Democrat++;
+	}
+	public void voteForRepublican()
+	{
+		Republican++;
+	}
+	public int getDemocratVotes()
+	{
+		return Democrat;
+	}
+	public int getRepublicanVotes()
+	{
+		return Republican;
+	}
+	public void clear()
+	{
+		Democrat=0;
+		Republican=0;
+	}
+}
+____________________________________________________________________________________________________________________________________

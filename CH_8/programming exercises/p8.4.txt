@@ -1,0 +1,42 @@
+•• P8.4 Implement a class Address. An address has a house number, a street, an optional apartment number, a city, a state, and a postal code. Supply two 
+constructors: one with an apartment number and one without. Supply a print method that prints the address with the street on one line and the city, state, 
+and zip code on the next line. Supply a method public boolean comesBefore(Address other) that tests whether this address comes before another when the 
+
+addresses are compared by postal code.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class Address 
+{
+	private int house_number;
+	private String street;
+	private int apartment_number;
+	private String city;
+	private String state;
+	private int postal_code;
+	public Address(int house_number,String street,int apartment_number,String city,String state,int postal_code)
+	{
+		this.house_number=house_number;
+		this.street=street;
+		this.apartment_number=apartment_number;
+		this.city=city;
+		this.state=state;
+		this.postal_code=postal_code;	
+	}
+	public Address(int house_number,String street,String city,String state,int postal_code)
+	{
+		this.house_number=house_number;
+		this.street=street;
+		this.city=city;
+		this.state=state;
+		this.postal_code=postal_code;	
+	}
+	public void print()
+	{
+		System.out.println("street: "+street);
+		System.out.println("city: "+city+"  state: "+state+" postal code: "+postal_code);
+	}
+	public boolean comesBefore(Address other)
+	{
+		return this.postal_code > other.postal_code;
+	}	
+}
+-----------------------------------------------------------------------------------------------------------------------------------

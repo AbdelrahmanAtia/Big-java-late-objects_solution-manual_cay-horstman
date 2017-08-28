@@ -1,0 +1,74 @@
+•• P8.15 Solve Exercise P8.14 by implementing classes Sphere, Cylinder, and Cone. Which approach is more object-oriented?
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+---------
+public class Sphere
+{
+	public static double sphereVolume(double r)
+	{
+		return (4.0/3)*Math.PI*(r*r*r);
+	}
+	
+	public static double sphereSurface(double r)
+	{
+		return 4*Math.PI*r*r;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class Cylinder
+{
+	public static double cylinderVolume(double r, double h)
+	{
+		return Math.PI *r*r*h;
+	}
+	
+	public static double cylinderSurface(double r, double h)
+	{
+		return 2*Math.PI*r*r+2*Math.PI*r*h;
+	}
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class Cone
+{
+	public static double coneVolume(double r, double h)
+	{
+		return (1.0/3)*Math.PI*r*r*h;
+	}
+	
+	public static double coneSurface(double r, double h)
+	{
+		return Math.PI *r*r+Math.PI*r*h;
+	}
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class CODE 
+{
+	public static void main(String[]args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.println("enter radius: ");
+		double r=in.nextDouble();
+		System.out.println("enter height: ");
+		double h=in.nextDouble();
+		System.out.println("sphereVolume= "+Sphere.sphereVolume(r));
+		
+		System.out.println("sphereSurface= "+Sphere.sphereSurface(r));
+		
+		System.out.println("cylinderVolume= "+Cylinder.cylinderVolume(r,h));
+		
+		System.out.println("cylinderSurface= "+Cylinder.cylinderSurface(r,h));
+		
+		System.out.println("coneVolume= "+Cone.coneVolume(r,h));
+		
+		System.out.println("coneSurface= "+Cone.coneSurface(r,h));	
+	}
+
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>> i think that solution of p8.14 is more object oriented.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

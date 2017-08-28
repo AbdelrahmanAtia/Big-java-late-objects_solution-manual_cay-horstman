@@ -1,0 +1,53 @@
+••• P8.3 Reimplement the Menu class so that it stores all menu items in one long string. Hint: Keep a separate counter for the number of options. When a 
+new option is added, append the option count, the option, and a newline character.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+----------
+import java.util.Scanner;
+public class menu
+{
+	    private String options;
+		private Scanner in;
+		private int counter;
+		public menu()
+		{
+			options="";
+			in = new Scanner(System.in);
+			counter=0;
+		}
+		public void addOption(String option)
+		{
+			counter++;
+			options=options+counter+")"+option+"\n";
+		}
+		public int getInput()
+		{
+			int input;
+			do
+			{
+				System.out.println(options.trim());
+				input = in.nextInt();
+			}
+			while (input < 1 || input > counter);
+			return input;
+		}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public class menuTester
+{
+	  public static void main(String[] args)
+      {
+			menu mainMenu = new menu();
+			mainMenu.addOption("Open new account");
+			mainMenu.addOption("Log into existing account");
+			mainMenu.addOption("Help");
+			mainMenu.addOption("Quit");
+			int input = mainMenu.getInput();
+			System.out.println("Input: " + input);
+     }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

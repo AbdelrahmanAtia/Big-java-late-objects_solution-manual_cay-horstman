@@ -1,0 +1,54 @@
+************************************************************************************************************************************
+•• P8.7 Implement a class Student. For the purpose of this exercise, a student has a name and a total quiz score. Supply an appropriate constructor and 
+methods getName(), addQuiz(int score), getTotalScore(), and getAverageScore(). To compute the latter, you also need to store the number of quizzes that 
+the student took.
+____________________________________________________________________________________________________________________________________
+solution
+------------
+public class Student1 {
+	private String name;
+	private int totalQuizScore;
+	private int counter;
+	public Student1(String studentName)
+	{
+		name=studentName;
+		totalQuizScore=0;	
+		counter=0;
+	}
+	public String getName()
+	{
+		return name;
+	}
+	public void addQuiz(int score)
+	{
+		totalQuizScore=totalQuizScore+score;
+		counter++;
+	}
+	public int getTotalScore()
+	{
+		return  totalQuizScore;
+	}
+	public double getAverageScore()
+	{
+		return   totalQuizScore/(counter*1.0);
+	}
+}
+____________________________________________________________________________________________________________________________________
+public class student1TesterClass {
+	public static void main(String []args)
+	{
+		Student1 student=new Student1("abdo");
+		System.out.println(student.getName());
+		System.out.println("expected:   abdo");
+		student.addQuiz(50);
+		student.addQuiz(100);
+		student.addQuiz(100);
+		System.out.println (student.getTotalScore());
+		System.out.println("expected: 250");
+		System.out.printf(" %2.2f",student.getAverageScore());
+		System.out.println("");
+		System.out.println("expected: 83.33");
+	}
+}
+____________________________________________________________________________________________________________________________________
+

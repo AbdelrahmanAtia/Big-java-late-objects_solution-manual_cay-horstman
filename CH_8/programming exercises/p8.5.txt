@@ -1,0 +1,28 @@
+• P8.5 Implement a class SodaCan with methods getSurfaceArea() and getVolume(). In the constructor, supply the height and radius of the can.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+---------
+public class SodaCan 
+{
+	private double height;
+	private double radius;
+	public SodaCan(double aheight,double aradius)
+	{
+		height=aheight;
+		radius=aradius;
+	}
+	
+	public double getSurfaceArea()
+	{
+		return 2*Math.PI*radius*radius+2*Math.PI*radius*height;
+	}
+	
+	public double getVolume()
+	{
+		return Math.PI *radius*radius*height;
+
+	}
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

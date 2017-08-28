@@ -1,0 +1,50 @@
+•• P 9.1 Add a class NumericQuestion to the question hierarchy of Section 9.1. If the response and the expected answer differ by no more than 0.01, then 
+accept the response as correct.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+solution
+-----------
+public class NumericQuestion extends Question
+{
+	private double expectedAnswer;
+	private double diffrence;
+	public void setAnswer(double correctResponse)
+	{
+		expectedAnswer=correctResponse;
+	}
+	public boolean checkAnswer(double response)
+	{
+		diffrence=Math.abs(response-expectedAnswer);
+		if(diffrence <=0.01)
+		{
+			return true;
+		}
+		return false;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class questionDemo3
+{
+	public static void main(String[]args)
+	{
+		NumericQuestion first=new NumericQuestion();
+		first.setText("what is the value of 4/3 ?");
+		first.setAnswer(1.333333);
+		NumericQuestion second=new NumericQuestion();
+		second.setText("what is the value of 7/3 ?");
+		second.setAnswer(2.333333);
+		
+		
+		presentQuestion(first);
+		presentQuestion(second);
+	}
+	public static void presentQuestion(NumericQuestion q)
+	{
+		q.display();
+		System.out.print("your answer: ");
+		Scanner in=new Scanner(System.in);
+		double response=in.nextDouble();
+		System.out.println(q.checkAnswer(response));
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
