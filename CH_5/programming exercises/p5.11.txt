@@ -1,0 +1,109 @@
+•• P 5.11 Enhance the intName method so that it works correctly for values < 1,000,000,000.
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter an integer number: ");
+		int input=in.nextInt();
+		System.out.println(intName(input));
+	}
+	public static String intName(int input)
+		{
+		String str1="",str2="",str3="";
+		if(input>=1000000 && input<=999999999)
+		{
+			//Block is a function that returns a number between 1 and 999
+			str3=Block(input/1000000)+" "+"million"+" ";   
+			input=input%1000000;	
+		}
+		if(input>=1000 && input<=999999)
+		{
+			str2=Block(input/1000)+" "+"thousand"+" ";
+			input=input%1000;
+		}
+		if(input>=1 && input<=999)
+		{
+			str1=Block(input);
+		}
+		return str3+str2+str1;
+		}	
+	public static String digitName(int input)
+	{
+		String str="";
+		switch(input)
+		{
+		case 1: str="one";  break;
+		case 2: str="two";  break;
+		case 3: str="three";break;
+		case 4: str="four"; break;
+		case 5: str="five"; break;
+		case 6: str="six";  break;
+		case 7: str="seven";break;
+		case 8: str="eight";break;
+		case 9: str="nine";break;
+		default: break;
+		}
+		return str;
+	}
+	public static String teenName(int input)	
+	{
+		String str="";
+		switch(input)
+		{
+		case 11: str="eleven";       break;
+		case 12: str="twelve";       break;
+		case 13: str="thirteen";     break;
+		case 14: str="fourteen";     break;
+		case 15: str="fifteen";      break;
+		case 16: str="sixteen";      break;
+		case 17: str="seventeen";    break;
+		case 18: str="eighteen";     break;
+		case 19: str="nineteen";     break;
+		default:                     break;
+		}
+		return str;
+	}
+	public static String tensName(int input)	
+	{
+		String str="";
+		switch(input)
+		{
+		case 2: str="twenty";        break;
+		case 3: str="thirty";        break;
+		case 4: str="forty";        break;
+		case 5: str="fifty";         break;
+		case 6: str="sixty";         break;
+		case 7: str="seventy";       break;
+		case 8: str="eighty";        break;
+		case 9: str="ninety";        break;
+		default:                     break;
+		}
+		return str;
+	}	
+	public static String Block(int input)
+	{
+		String name="";	
+	if(input>=100 && input<=999 )
+	{
+		int hundreds=input/100;
+		 name=digitName(hundreds)+" "+"hundred";
+		input=input%100;
+	}
+	if(input>=1 && input<=9)
+	       name=name+" "+digitName(input);
+	if(input>=10 && input<=19)
+           name=name+" "+teenName(input);
+	if(input>=20 && input<=99)
+	{
+		int x=input/10;
+		int y=input%10;
+		String str1=tensName(x);
+		String str2=digitName(y);
+		name=name+" "+str1+" "+str2;
+	}
+	return name;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

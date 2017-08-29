@@ -1,0 +1,44 @@
+•• P 5.8 It is a well-known phenomenon that most people are easily able to read a text whose
+words have two characters flipped, provided the first and last letter of each word are
+not changed. For example,
+I dn’ot gvie a dman for a man taht can olny sepll a wrod one way. (Mrak Taiwn)
+Write a method String scramble(String word) that constructs a scrambled version of a
+given word, randomly
+flipping two characters other than the first and last one. Then
+write a program that reads words and prints the scrambled words.
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a word:");
+		String str=in.next();
+	    System.out.print(scramble(str));
+	}
+		public static String scramble(String word)
+		{
+		     int n=word.length();
+			if(n>=4)
+			{
+				boolean value=true;
+				int r1=0,r2=0;
+				while(value)
+				{
+				 r1=((int)(Math.random()*(n-2)))+1;
+				 r2=((int)(Math.random()*(n-2)))+1;
+				 if(r1<r2)
+					 value=false;
+				}
+				String str1=word.substring(0,r1);
+				char ch1=word.charAt(r1);
+				String str2=word.substring(r1+1,r2);
+				char ch2=word.charAt(r2);
+				String str3=word.substring(r2+1);
+				return str1+ch2+str2+ch1+str3;
+			}
+			else
+				return "the word should contain at least 4 characters";
+		}
+	}
+------------------------------------------------------------------------------------------------------------------------------------

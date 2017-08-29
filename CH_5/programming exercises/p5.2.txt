@@ -1,0 +1,109 @@
+•• P 5.2 Write the following methods and provide a program to test them.
+a. boolean allTheSame(double x, double y, double z), returning true if the arguments
+are all the same
+b. boolean allDifferent(double x, double y, double z), returning true if the arguments
+are all different
+c. boolean sorted(double x, double y, double z), returning true if the arguments are
+sorted, with the smallest one coming first
+-------------------------------------------------------------------------------------------------------------------------------------
+splution of (a)
+---------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{
+		
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter three numbers: ");
+		double x=in.nextDouble();
+		double y=in.nextDouble();
+		double z=in.nextDouble();
+		boolean result=allTheSame(x,y,z);
+		System.out.println(result);
+	}
+	public static boolean allTheSame(double x,double y,double z)
+	{
+		if(x==y && y==z)
+			return true;
+		else 
+			return false;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (b)
+---------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{
+		
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter three numbers: ");
+		double x=in.nextDouble();
+		double y=in.nextDouble();
+		double z=in.nextDouble();
+		boolean result=allDifferent(x,y,z);
+		System.out.println(result);
+	}
+	public static boolean allDifferent(double x,double y,double z)
+	{
+		if(x!=y && y!=z)
+			return true;
+		else 
+			return false;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (c)
+----------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{
+		
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter three numbers: ");
+		double x=in.nextDouble();
+		double y=in.nextDouble();
+		double z=in.nextDouble();
+		boolean result=sorted(x,y,z);
+		System.out.println(result);
+	}
+	public static boolean sorted(double x,double y,double z)
+	{
+		if(x<=y && y<=z)
+			return true;
+		else 
+			return false;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

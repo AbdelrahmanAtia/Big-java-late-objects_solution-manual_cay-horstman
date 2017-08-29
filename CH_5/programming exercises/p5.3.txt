@@ -1,0 +1,68 @@
+•• P 5.3 Write the following methods.
+a. int firstDigit(int n), returning the first digit of the argument
+b. int lastDigit(int n), returning the last digit of the argument
+c. int digits(int n), returning the number of digits of the argument
+For example, firstDigit(1729) is 1, lastDigit(1729) is 9, and digits(1729) is 4. Provide a
+program that tests your methods.
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (a)
+---------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter an integer ");
+		int input=in.nextInt();
+		System.out.println("first digit= "+firstDigit(input));
+	}
+	public static int firstDigit(int n)
+	{
+		while(n>9)
+			n=n/10;
+		return n;
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------
+solution of (b)|
+================
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter an integer ");
+		int input=in.nextInt();
+		System.out.println("last digit= "+lastDigit(input));
+	}
+	public static int lastDigit(int n)
+	{
+		return n%10;
+	}
+		
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (c)|
+===============
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter an integer ");
+		int input=in.nextInt();
+		System.out.println("number of digits= "+digits(input));
+	}
+	public static int digits(int n)
+	{
+		int count=0;
+		while(n>0)
+		{
+			n=n/10;
+			count++;
+		}
+		return count;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+

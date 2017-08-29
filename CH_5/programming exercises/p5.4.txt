@@ -1,0 +1,30 @@
+• P 5.4 Write a method
+public static String middle(String str)
+that returns a string containing the middle character in str if the length of str is odd,
+or the two middle characters if the length is even. For example, middle("middle")
+returns "dd".
+--------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a string: ");
+		 String input=in.next();
+		 System.out.println(middle(input));
+	}
+	public static String middle(String str)
+	{
+		String str1;
+		int length=str.length();
+		if(length%2!=0)
+		{
+			int n=length/2;
+			str1=str.substring(n,n+1);
+		}
+		else 
+		str1=str.substring(length/2 -1 ,length/2 +1);
+		return str1;
+	}
+}
+--------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+•• Business P 5.22 Write a method that computes the balance of a bank account with a given initial
+balance
+and interest rate, after a given number of years. Assume interest is compounded
+yearly.
+-------------------------------------------------------------------------------------------------------------------------------------
+ import java.util.Scanner;
+public class hello {
+	public static void main(String[] args)
+	 {
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter the value of the initial ballance: ");
+		double initial=in.nextInt();
+		System.out.print("enter the value of the interest: ");
+		double i=in.nextDouble();
+		System.out.print("enter the number of years: ");
+		int n=in.nextInt();
+		double balance=balance(initial,i,n);
+		System.out.println(balance);
+		
+		
+		
+	 }
+	public static double balance(double initial, double i, double n)
+	{
+		double ballance=initial;
+		double interest=initial*i/100.0;
+		for(int j=0;j<n;j++)
+			ballance=ballance+interest;
+		return ballance;
+			
+		
+	}
+		
+	
+}
+-------------------------------------------------------------------------------------------------------------------------------------

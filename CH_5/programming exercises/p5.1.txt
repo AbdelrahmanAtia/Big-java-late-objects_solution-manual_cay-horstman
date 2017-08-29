@@ -1,0 +1,64 @@
+• P 5.1 Write the following methods and provide a program to test them.
+
+a. double smallest(double x, double y, double z), returning the smallest of the
+
+arguments.
+
+b. double average(double x, double y, double z), returning the average of the
+
+arguments.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (a) |
+----------------
+
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{
+		
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter three numbers: ");
+		double x=in.nextDouble();
+		double y=in.nextDouble();
+		double z=in.nextDouble();
+		double min=smallest(x,y,z);
+		System.out.println("minimum= "+min);
+	}
+	public static double smallest(double x,double y,double z)
+	{
+		double min;
+		min=x;
+		if(y<min)
+			min=y;
+		if(z<min)
+			min=z;
+		return min;
+		
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (b)|
+---------------
+
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{
+		
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter three numbers: ");
+		double x=in.nextDouble();
+		double y=in.nextDouble();
+		double z=in.nextDouble();
+		double avg=average(x,y,z);
+		System.out.println("average= "+avg);
+	}
+	public static double average(double x,double y,double z)
+	{
+		return (x+y+z)/3.0;
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+
+

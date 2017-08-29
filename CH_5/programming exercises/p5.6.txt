@@ -1,0 +1,32 @@
+•• P 5.6 Write a method
+public static int countVowels(String str)
+that returns a count of all vowels in the string str. Vowels are the letters a, e, i, o, and
+u, and their uppercase
+variants.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a word: ");
+		String str=in.next();
+		int count=countVowels(str);
+		System.out.print("number of vowels= "+count);
+	}
+		public static int countVowels(String str)
+		{
+		int count=0;
+		for(int i=0;i<str.length();i++)
+		{
+			char ch=str.charAt(i);
+			if(ch=='a'|| ch=='e'|| ch=='i'|| ch=='o'|| ch=='u'|| ch=='y' )
+				count++;
+			if(ch=='A'|| ch=='E'|| ch=='I'|| ch=='O'|| ch=='U'|| ch=='Y' )
+				count++;	
+				
+		}
+		return count;
+		}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------

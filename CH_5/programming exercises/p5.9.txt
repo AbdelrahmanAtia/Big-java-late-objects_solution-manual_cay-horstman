@@ -1,0 +1,59 @@
+• P 5.9 Write methods
+public static double sphereVolume(double r)
+public static double sphereSurface(double r)
+public static double cylinderVolume(double r, double h)
+public static double cylinderSurface(double r, double h)
+public static double coneVolume(double r, double h)
+public static double coneSurface(double r, double h)
+that compute the volume and surface area of a sphere with radius r, a cylinder with a
+circular base with radius r and height h, and a cone with a circular base with radius r
+and height h. Then write a program that prompts the user for the values of r and h,
+calls the six methods, and prints the results.
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello{
+	public static void main(String [] args)
+	{	
+		Scanner in=new Scanner(System.in);
+		System.out.println("enter r and h : ");
+		double r=in.nextDouble();
+		double h=in.nextDouble();
+		System.out.println("sphere volume= "+sphereVolume(r));
+		System.out.println("sphere surface= "+sphereSurface(r));
+		System.out.println("cylinder Volume= "+cylinderVolume(r,h));
+		System.out.println("cylinder Surface= "+cylinderSurface(r,h));
+		System.out.println(" cone Volume= "+coneVolume(r,h));
+		System.out.println("cone Surface = "+coneSurface(r,h));
+	}
+	
+	public static double sphereVolume(double r)
+	{
+		return (4.0/3)*(Math.PI)*r*r;
+	}
+
+	public static double sphereSurface(double r)
+	{
+		return 4*Math.PI*r*r;
+	}
+	
+	public static double cylinderVolume(double r, double h)	
+	{
+		return Math.PI*r*r*h;	
+	}
+	
+	public static double cylinderSurface(double r, double h)
+	{
+		return 2*Math.PI*r*r+h*2*Math.PI*r;
+	}
+	
+	public static double coneVolume(double r, double h)
+	{
+		return (1.0/3) * Math.PI*r*r*h;
+	}
+	
+	public static double coneSurface(double r, double h)
+	{
+		return Math.PI*r*r+Math.PI*r*Math.sqrt(h*h+r*r);
+	}
+	}
+-------------------------------------------------------------------------------------------------------------------------------------

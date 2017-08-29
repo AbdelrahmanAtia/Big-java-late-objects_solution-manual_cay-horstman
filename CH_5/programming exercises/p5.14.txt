@@ -1,0 +1,125 @@
+••• P 5.14 Write a method String getTimeName(int hours, int minutes) that returns the English
+name for a point in time, such as "ten minutes past two", "half past three", "a quarter to
+four", or "five o'clock". Assume that hours is between 1 and 12.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class world {
+
+	public static void main(String [] args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter an integer represents hours: ");
+		int hours=in.nextInt();
+		System.out.print("enter an integer represents minutes: ");
+		int minutes=in.nextInt();
+		System.out.println(getTimeName(hours,minutes));
+	}
+	
+	    public static String getTimeName(int hours, int minutes)
+	{
+		String name="";
+	   if(minutes>=1 && minutes <30 && minutes!=15)
+			                    
+			                  name=numToString(minutes)+" past";
+		else if(minutes==15)
+			                  name="quarter"+" past";
+		else if(minutes==30)
+			                  name="half"+" past";
+		else if(minutes>30 && minutes<60 && minutes!=45)
+		{
+			                  hours++;
+			                  name=numToString(60-minutes)+" to";
+			                  
+		}
+		else if(minutes==45)
+		{
+			                  name="quarter"+" to";
+		                      hours++;
+		}
+        else
+			                  name="";
+	  if(minutes!=0)
+		return name+" "+numToString(hours);
+	  else
+		  return numToString(hours)+" o'clock";
+		
+		
+		
+	}
+		
+		public static String numToString(int input)
+		{
+			String name="";
+		
+			if(input>=1 && input<=9)
+			       name=digitName(input);
+			if(input>=10 && input<=19)
+		           name=teenName(input);
+			if(input>=20 && input<=60)
+			{
+				int x=input/10;
+				int y=input%10;
+				String str1=tensName(x);
+				String str2=digitName(y);
+				name=str1+" "+str2;
+			}
+			return name;
+		}
+		public static String tensName(int input)	
+			{
+				String str="";
+				switch(input)
+				{
+				case 2: str="twenty";        break;
+				case 3: str="thirty";        break;
+				case 4: str="forty";        break;
+				case 5: str="fifty";         break;
+				case 6: str="sixty";         break;
+				case 7: str="seventy";       break;
+				case 8: str="eighty";        break;
+				case 9: str="ninety";        break;
+				default:                     break;
+				}
+				return str;
+			}
+		public static String teenName(int input)	
+			{
+				String str="";
+				switch(input)
+				{
+				case 11: str="eleven";       break;
+				case 12: str="twelve";       break;
+				case 13: str="thirteen";     break;
+				case 14: str="fourteen";     break;
+				case 15: str="fifteen";      break;
+				case 16: str="sixteen";      break;
+				case 17: str="seventeen";    break;
+				case 18: str="eighteen";     break;
+				case 19: str="nineteen";     break;
+				default:                     break;
+				}
+				return str;
+			}
+
+		public static String digitName(int input)
+		{
+			String str="";
+			switch(input)
+			{
+			case 1: str="one";  break;
+			case 2: str="two";  break;
+			case 3: str="three";break;
+			case 4: str="four"; break;
+			case 5: str="five"; break;
+			case 6: str="six";  break;
+			case 7: str="seven";break;
+			case 8: str="eight";break;
+			case 9: str="nine";break;
+			default: break;
+			}
+			return str;
+		}
+	
+	
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------

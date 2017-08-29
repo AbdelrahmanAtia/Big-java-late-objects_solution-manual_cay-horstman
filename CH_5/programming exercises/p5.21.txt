@@ -1,0 +1,60 @@
+•• P 5.21 In Exercise P3.26 you were asked to write a program to
+convert a number to its representation
+in Roman numerals.
+At the time, you did not know how to eliminate duplicate
+code, and as a consequence the resulting program was rather
+long. Rewrite that program by implementing and using the
+following method:
+public static String romanDigit(int n, String one, String five, String ten)
+That method translates one digit, using the strings specified for the one, five, and ten
+values. You would call the method as follows:
+romanOnes = romanDigit(n % 10, “I”, “V”, “X”);
+n = n / 10;
+romanTens = romanDigit(n % 10, “X”, “L”, “C”);
+
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static String romanDigit(int n,String one,String five, String ten)
+	{
+		String digit="";
+		switch(n)
+		{
+		case 1: digit=one;                break;
+		case 2: digit=one+one;            break;
+		case 3: digit=one+one+one;        break;
+		case 4: digit=one+five;           break;
+		case 5: digit=five;               break;
+		case 6: digit=five+one;           break;
+		case 7: digit=five+one+one;       break;
+		case 8: digit=five+one+one+one;   break;
+		case 9: digit=one+ten;            break;
+		default:                          break;
+		}
+		return digit;
+	}
+	public static void main(String[] args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a positive integer: ");
+		int input=in.nextInt();
+		int n;
+		if(input>=1&& input<=3999)
+		{
+		n=input;
+		String romanOnes=romanDigit(n%10,"I","V","X");
+		n=input/10;
+		String romanTens=romanDigit(n%10,"X","L","C");
+		n=input/100;
+		String romanHundreds=romanDigit(n%10,"C","D","M");
+		n=input/1000;
+		String romanThousands=romanDigit(n%10,"M","","");
+		
+		System.out.println(romanThousands+romanHundreds+romanTens+romanOnes);
+
+		}
+		else
+			System.out.println("input must be in the range of 1 to 3999");
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,32 @@
+• P 5.5 Write a method
+public static String repeat(String str, int n)
+that returns the string str repeated n times. For example, repeat("ho", 3) returns
+"hohoho".
+
+------------------------------------------------------------------------------------------------------------------------------------
+ import java.util.Scanner;
+public class hello {
+	public static void main(String[] args)
+	 {
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a string u need to repeat: ");
+		String str1=in.next();
+		System.out.print("enter the number of times u need to repeat: ");
+		int n=in.nextInt();
+		String str=repeat(str1,n);
+		System.out.println(str);
+	 }
+	public static String repeat(String str2 , int m)
+	{
+		
+		String str3="";
+		for(int i=0;i<m;i++)
+			str3=str3+str2;
+		return str3;
+		
+		
+	}
+		
+	
+}
+-------------------------------------------------------------------------------------------------------------------------------------
