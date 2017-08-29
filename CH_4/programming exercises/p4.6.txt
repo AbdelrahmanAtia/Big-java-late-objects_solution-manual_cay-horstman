@@ -1,0 +1,37 @@
+• P 4.6 Translate the following pseudocode for finding the minimum value from a set of
+inputs into a Java program.
+Set a Boolean variable "first" to true.
+While another value has been read successfully
+If first is true
+Set the minimum to the value.
+Set first to false.
+Else if the value is less than the minimum
+Set the minimum to the value.
+Print the minimum.
+-------------------------------------------------------------------------------------------------------------------------------------
+ import java.util.Scanner;
+public class hello {
+	public static void main(String[] args)
+	 {
+		Scanner in=new Scanner(System.in);
+		int value;
+		int min=0;
+		boolean first=true;
+		System.out.println("enter a sequence of inputs,to quit press Q: ");
+		while(in.hasNextInt())
+		{
+			value=in.nextInt();
+			
+			if(first)
+			{
+				min=value;
+				first=false;
+			}
+			else if(value<min)
+				min=value;		
+		}
+		
+		System.out.println(min);
+	 }
+}
+-------------------------------------------------------------------------------------------------------------------------------------

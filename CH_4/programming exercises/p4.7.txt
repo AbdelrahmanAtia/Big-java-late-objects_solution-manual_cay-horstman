@@ -1,0 +1,38 @@
+••• P 4.7 Translate the following pseudocode for randomly permuting the characters in a
+string into a Java program.
+Read a word.
+Repeat word.length() times
+Pick a random position i in the word, but not the last position.
+Pick a random position j > i in the word.
+Swap the letters at positions j and i.
+Print the word.
+To swap the letters, construct substrings as follows:
+first i middle j last
+Then replace the string with
+first + word.charAt(j) + middle + word.charAt(i) + last
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		int i=0;int j=0;
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a word: ");
+		String input=in.next();
+		int length=input.length();
+		do
+		{
+		 i=(int)(Math.random()*(length-2)+1);
+		 j=(int)(Math.random()*(length-2)+1);
+		}
+		while(i>=j);
+		char ch1=input.charAt(i);
+		char ch2=input.charAt(j);
+		String str1=input.substring(0,i);
+		String str2=input.substring(i+1,j);
+        String str3=input.substring(j+1);
+        System.out.print(str1+ch2+str2+ch1+str3);
+  
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

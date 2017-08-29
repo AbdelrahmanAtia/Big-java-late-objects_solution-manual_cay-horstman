@@ -1,0 +1,28 @@
+•• P 4.3 Write programs that read a line of input as a string and print
+a. Only the uppercase letters in the string.
+b. Every second letter of the string.
+c. The string, with all vowels replaced by an underscore.
+d. The number of vowels in the string.
+e. The positions of all vowels in the string.
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (a)
+-----------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String[] args)
+	 {
+	    Scanner in=new Scanner(System.in);
+		System.out.println("enter a line of input as a string: ");
+	    String str=in.next();
+	    
+	    int n=str.length();
+	    for(int i=0;i<n;i++)
+	    {
+	    	
+	       char ch=str.charAt(i);
+	       if(ch>='A' && ch<='Z')
+	    	   System.out.println(ch);
+	    }
+	 }
+}
+-------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+
+••• P 4.17Factoring of integers. Write a program that asks the user for an integer and then
+prints out all its factors. For example, when the user enters 150, the program should
+print
+2
+3
+5
+5
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		System.out.print("enter an integer number : ");
+		int input=in.nextInt();
+		int s=2;
+		boolean value=true;
+		while(value)
+		{
+			if(input%s==0)
+			{
+				input=input/s;
+			    System.out.println(s);
+			    s=2;
+			}
+			else if(input%s!=0)
+			{
+				s++;
+			}
+			if(input==1)
+				value=false;
+		}
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

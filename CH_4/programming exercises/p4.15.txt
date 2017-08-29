@@ -1,0 +1,59 @@
+•• P4.15 Mean and standard deviation. Write a program that reads a set of floating-point data
+values. Choose an appropriate mechanism for prompting for the end of the data set.
+When all values have been read, print out the count of the values, the average,
+and
+the standard deviation. The average of a data set {x1, . . ., xn} is x = xi n, where
+xi = x1 +…+ xn is the sum of the input values. The standard deviation is
+s
+x x
+n
+= i
+( ? )
+?
+ 2
+1
+However, this formula is not suitable for the task. By the time the program has
+computed x , the individual
+xi are long gone. Until you know how to save these
+values, use the numerically less stable formula
+s
+x x
+n
+= i n i
+? ( )
+?
+ 2 1  2
+1
+You can compute this quantity by keeping track of the count, the sum, and the sum
+of squares as you process the input values.
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		System.out.println("enter a sequence of data,to quit press Q : ");
+		int n=0;
+		int xi;
+		int segma_xi=0;
+		int segma_squares_xi=0;
+		while(in.hasNextInt())
+		{
+			xi=in.nextInt();
+			segma_xi=segma_xi + xi;
+			
+			segma_squares_xi=segma_squares_xi + xi*xi;
+			n++;
+	   	}
+		System.out.println("count= "+n);
+		
+		double average=(segma_xi)*1.0/n;
+		
+		
+		double stand_dev=Math.sqrt((segma_squares_xi - (1.0/n)*segma_xi*segma_xi)/(n-1));
+				
+		System.out.println("average= "+average);
+		System.out.println("standard deviation= "+stand_dev);
+	   }
+	}
+-------------------------------------------------------------------------------------------------------------------------------------

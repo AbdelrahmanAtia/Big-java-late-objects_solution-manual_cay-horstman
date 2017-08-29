@@ -1,0 +1,20 @@
+•• P 4.9 Write a program that reads a word and prints the word in reverse. For example, if the
+user provides the input "Harry", the program prints
+yrraH
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a word: ");
+		String input=in.next();
+		int length=input.length();
+		for(int i=length-1;i>=0;i--)
+		{
+			System.out.print(input.charAt(i));
+		}
+		
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+••• P4.12 Write a program that reads a word and prints all substrings, sorted by length. For
+example, if the user provides the input "rum", the program prints
+r
+u
+m
+ru
+um
+rum
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	        {
+		Scanner in=new Scanner(System.in);
+		System.out.print("enter a sttring: ");
+		String str=in.next();
+		int length=str.length();
+		int n=length;
+
+		for(int j=1;j<=length-1;j++)
+		{
+			
+		      for(int i=0;i<n;i++)
+	     	{
+		        	System.out.println(str.substring(i,j+i));
+		    }
+		     
+                n=n-1;
+
+
+
+		}
+		System.out.println(str.substring(0));
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

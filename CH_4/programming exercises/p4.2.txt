@@ -1,0 +1,82 @@
+•• P 4.2 Write programs that read a sequence of integer inputs and print
+a. The smallest and largest of the inputs.
+b. The number of even and odd inputs.
+c. Cumulative totals. For example, if the input is 1 7 2 9, the program should print
+1 8 10 19.
+d. All adjacent duplicates. For example, if the input is 1 3 3 4 5 5 6 6 6 2, the
+program should print 3 5 6.
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (a)
+-----------------
+
+public static void main(String[] args) 
+{
+		Scanner in = new Scanner(System.in);
+		int input;
+		int smallest = Integer.MAX_VALUE;
+		int largest = Integer.MIN_VALUE;
+
+		while (in.hasNextInt()) 
+		{
+			input = in.nextInt();
+			if (input < smallest)
+				smallest = input;
+
+			if (input > largest)
+				largest = input;
+		}
+		System.out.println("smallest = " + smallest + " ,largest = " + largest);
+}
+------------------------------------------------------------------------------------------------------------------------------------
+solution of (b)
+-----------------
+public static void main(String[] args) 
+{
+	Scanner in = new Scanner(System.in);
+	int input;
+	int count_even = 0;
+	int count_odd = 0;
+	while (in.hasNextInt()) {
+		input = in.nextInt();
+		if (input % 2 == 0)
+			count_even++;
+		else
+			count_odd++;
+	}
+	System.out.println("number of even values = " + count_even);
+	System.out.println("number of odd values = " + count_odd);
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (c)
+-----------------
+public static void main(String[] args)
+{
+	Scanner in = new Scanner(System.in);
+	int total = 0;
+	int input;
+	while (in.hasNextInt()) {
+		input = in.nextInt();
+		total = total + input;
+		System.out.print(total + " ");
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+solution of (d)
+---------------
+public static void main(String[] args)
+	 {
+			Scanner in=new Scanner(System.in);
+			System.out.println("enter sequence of integers,to quit press Q :  ");
+	    	double previous;
+			double input=in.nextInt();
+	    	while(in.hasNextInt()){
+	    		previous=input;
+	    		input=in.nextInt();
+	    		if(previous==input)
+	    			System.out.println(input);
+	    		
+	    	}
+			
+			
+	 }
+-------------------------------------------------------------------------------------------------------------------------------------

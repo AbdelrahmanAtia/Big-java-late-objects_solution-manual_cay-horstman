@@ -1,0 +1,69 @@
+••• P 4.18 Prime numbers. Write a program that prompts the user for an integer and then prints
+out all prime numbers up to that integer. For example, when the user enters 20, the
+program should print
+2
+3
+5
+7
+11
+13
+17
+19
+Recall that a number is a prime number if it is not divisible by any number except 1
+and itself.
+-------------------------------------------------------------------------------------------------------------------------------------
+// a solution without using methods
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		System.out.print("enter an integer number : ");
+		int input=in.nextInt();	
+		boolean value=true;
+
+		for(int j=2;j<=input;j++)
+		{
+			    value=true;
+				for(int i=2;i<j;i++)
+				{
+					if(j%i==0)
+						value= false;
+				}
+				
+				if(value==true)
+					System.out.println(j);
+		}
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		System.out.print("enter an integer number : ");
+		int input=in.nextInt();	
+		
+		
+		
+		for(int j=2;j<=input;j++)
+		{
+			boolean value= isPrime(j);
+			if(value==true)
+				System.out.println(j);
+		}
+	}
+	public static boolean isPrime(int input)	
+{
+	for(int i=2;i<input;i++)
+	{
+		if(input%i==0)
+			return false;
+		
+	}
+			return true;		
+		
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------

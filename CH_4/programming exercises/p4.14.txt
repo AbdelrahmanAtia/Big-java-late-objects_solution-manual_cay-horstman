@@ -1,0 +1,26 @@
+•• P4.14 Write a program that reads a number and prints all of its binary digits: Print the
+remainder number % 2, then replace the number with number / 2. Keep going until the
+number is 0. For example, if the user provides the input 13, the output should be
+1
+0
+1
+1
+-------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello {
+	public static void main(String [] args)
+	{
+		Scanner in =new Scanner(System.in);
+		System.out.print("enter a number: ");
+		int number=in.nextInt();
+		boolean lock=true;
+		while(lock)
+		{
+		System.out.println(number%2);
+		number=number/2;
+		if(number==0)
+			lock=false;
+		}	
+	}
+}
+-------------------------------------------------------------------------------------------------------------------------------------
