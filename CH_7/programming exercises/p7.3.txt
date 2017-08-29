@@ -1,0 +1,40 @@
+• P 7.3 Repeat Exercise P7.2, but allow the user to specify the file name on the commandline. If the user doesn’t specify any file name, then prompt the user for the name.
+____________________________________________________________________________________________________________________________________
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+public class CODE{
+	public static void main(String[] args) throws FileNotFoundException{
+       
+           	Scanner in = null;
+	        PrintWriter out = null;
+		try
+		{
+	         File inputFile=new File(args[0]);
+        	 in=new Scanner(inputFile);
+        	 out=new PrintWriter(args[1]);
+		}
+		catch(RuntimeException IndexOutOfBound)
+		{
+			Scanner console=new Scanner(System.in);
+			System.out.println("enter the input file name:");
+			String inputFileName=console.next();
+			System.out.println("enter the name of output file:");
+			String outputFileName=console.next();
+			 File inputFile=new File(inputFileName);
+        	 in=new Scanner(inputFile);
+        	 out=new PrintWriter(outputFileName);
+		}
+       String input;int i=1;
+       while(in.hasNextLine())
+        {
+        	 input=in.nextLine();
+        	 out.println("/* "+ i+ " */ "+input);
+        	 i++;
+        }   
+       in.close();
+       out.close();
+	}
+}
+____________________________________________________________________________________________________________________________________

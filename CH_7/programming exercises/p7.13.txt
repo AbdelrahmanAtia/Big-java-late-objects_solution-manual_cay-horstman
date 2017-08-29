@@ -1,0 +1,32 @@
+•• P 7.13 Write a program that asks the user to input a set of floating-point values. When the user enters a value that is not a number, give the user a 
+second chance to enter the value. After two chances, quit reading input. Add all correctly specified values and print the sum when the user is done entering 
+
+data. Use exception handling to detect improper inputs.
+____________________________________________________________________________________________________________________________________
+import java.util.Scanner;
+public class CODE
+{
+	public static void main(String[]args)
+	{
+		int i=0;
+		int sum=0;
+		Scanner in;
+		System.out.println("enter a number");
+		while(i<2)
+		{
+			try
+			{
+				 in=new Scanner(System.in);
+				 int N=in.nextInt();
+				 sum=sum+N;
+			}
+			catch(RuntimeException NoSuchElementExeption)
+			{
+				System.out.println("invalid input,only numbers");
+				i++;
+			}
+	    }
+		 System.out.println("sum= "+sum);
+   }
+}
+____________________________________________________________________________________________________________________________________

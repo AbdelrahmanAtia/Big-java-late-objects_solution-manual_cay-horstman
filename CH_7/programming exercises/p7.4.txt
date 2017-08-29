@@ -1,0 +1,44 @@
+• P 7.4 Write a program that reads a file containing two columns of floating-point numbers. Prompt the user for the file name. Print the average of each column.
+____________________________________________________________________________________________________________________________________
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+public class CODE {
+	public static void main(String[] args) throws FileNotFoundException
+	{
+                   // Prompt for the input and output file names
+		Scanner console=new Scanner(System.in);
+		System.out.println("enter the input file name:");
+		String inputFileName=console.next();
+				
+		
+		// Construct the Scanner and PrintWriter objects for reading and writing
+		
+        	File inputFile=new File(inputFileName);
+        	Scanner in=new Scanner(inputFile);
+
+      // Read the input and write the output
+
+        int i=0;
+        double x=0,y=0;
+        double sum1=0.0,sum2=0.0;
+        while(in.hasNextLine())
+        {
+	         x=in.nextDouble();
+	         y=in.nextDouble();
+
+	      sum1=sum1+x;
+	      sum2=sum2+y;
+              i++;
+        }
+        System.out.println("average of the first column= "+sum1/i);
+        System.out.println("average of the second column= "+sum2/i);
+
+        
+
+        in.close();
+	}
+	
+}
+____________________________________________________________________________________________________________________________________

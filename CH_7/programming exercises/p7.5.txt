@@ -1,0 +1,34 @@
+•• P 7.5 Write a program that asks the user for a file name and prints the number of characters, words, and lines in that file.
+____________________________________________________________________________________________________________________________________
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+public class CODE {
+	public static void main(String[] args) throws FileNotFoundException {
+		int words=0;   
+		int characters=0; 
+		int lines=0;
+		Scanner consol=new Scanner(System.in);
+		System.out.println("enter the input file name");
+		String input=consol.next();
+		Scanner in=new Scanner(new File(input));		
+		while(in.hasNext())
+		{
+			String str=in.nextLine();
+			for(int m=0;m<str.length();m++)
+			{
+				if(str.charAt(m)==' ')    words++;
+				else      characters++;
+			}
+			words++;
+			lines++;
+		}	
+		System.out.println("lines= "+lines);
+		System.out.println("words= "+words);
+		// the number of characters don't include space characters
+		System.out.println("characters= "+characters);
+		in.close();
+	}
+}
+____________________________________________________________________________________________________________________________________
+		

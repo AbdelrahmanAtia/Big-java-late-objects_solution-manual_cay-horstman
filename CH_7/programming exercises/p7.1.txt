@@ -1,0 +1,30 @@
+• P 7.1 Write a program that carries out the following tasks:
+Open a file with the name hello.txt.
+Store the message “Hello, World!” in the file.
+Close the file.
+Open the same file again.
+Read the message into a string variable and print it.
+____________________________________________________________________________________________________________________________________
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+public class world {
+	public static void main(String [] args) throws FileNotFoundException
+	{
+		//prompot for the input and output file name
+		Scanner console=new Scanner(System.in);
+		System.out.print("output file: ");
+        String outputFileName=console.next();
+                        
+
+		//construct Scanner,PrintWriter,File objects
+		PrintWriter out=new PrintWriter(outputFileName);
+		out.println("Hello, World!");
+		out.close();
+		File inputFile=new File(outputFileName);
+		Scanner in=new Scanner(inputFile);
+		System.out.println(in.nextLine());
+	}
+}
+____________________________________________________________________________________________________________________________________
