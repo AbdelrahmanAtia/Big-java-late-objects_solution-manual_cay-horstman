@@ -1,0 +1,26 @@
+•• P 6.9 Write a method
+public static boolean equals(int[] a, int[] b)
+that checks whether two arrays have the same elements in the same order.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public static boolean equals(int[] a, int[] b)
+	{
+		if(a.length == b.length)
+		{
+        	boolean lock=true;
+			int i=0;
+			  while(lock && i<a.length)
+			 {
+						if(a[i] !=b[i])
+							 lock=false;
+							 i++;
+			 }
+			if(lock)
+	           return true;
+			else
+	           return false;
+		}
+		else
+			return false;
+	}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

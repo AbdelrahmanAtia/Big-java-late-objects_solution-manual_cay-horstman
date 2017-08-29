@@ -1,0 +1,37 @@
+•• P 6.1 Write a program that initializes an array with ten random integers and then prints
+four lines of output, containing
+• Every element at an even index.
+• Every even element.
+• All elements in reverse order.
+• Only the first and last element.
+------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+public class hello
+{
+	public static void main(String[] args)
+	{
+		int[] values=new int[10];
+		for(int i=0;i<10;i++)
+			values[i]=(int)(Math.random()*10);
+		
+		for(int i=0;i<10;i++ ) 
+				System.out.printf("%4d",values[i]);
+		System.out.println("");
+			
+		
+		for(int j=1;j<10;j=j+2)
+			System.out.printf("%4d",values[j]);
+		System.out.println("");
+
+		
+		for(int i=9;i>=0; i--)
+			System.out.printf("%4d",values[i]);
+		System.out.println("");
+
+		
+		System.out.printf("%4d%4d",values[0],values[9]);
+		
+	}
+	
+}
+-------------------------------------------------------------------------------------------------------------------------------------

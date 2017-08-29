@@ -1,0 +1,132 @@
+•• P 6.2 Write array methods that carry out the following tasks for an array of integers. For
+each method, provide a test program.
+a. Swap the first and last elements in the array.
+b. Shift all elements by one to the right and move the last element into the first
+position. For example, 1 4 9 16 25 would be transformed into 25 1 4 9 16.
+c. Replace all even elements with 0.
+d. Replace each element except the first and last by the larger of its two neighbors.
+e. Remove the middle element if the array length is odd, or the middle two
+elements if the length is even.
+f. Move all even elements to the front, otherwise preserving the order of the
+elements.
+g. Return the second-largest element in the array.
+h. Return true if the array is currently sorted in increasing order.
+i. Return true if the array contains two adjacent duplicate elements.
+j. Return true if the array contains duplicate elements (which need not be
+adjacent).
+____________________________________________________________________________________________________________________________________
+a)
+//values is an array
+int temp=values[0];
+values[0]=values[values.length-1];
+values[values.length-1]=temp;
+____________________________________________________________________________________________________________________________________
+b) 
+int temp=values[values.length-1];
+		   for(int i=values.length-2;i>=0;i--)
+		   {
+		       values[i+1]=values[i];
+		   }
+		   	values[0]=temp;
+____________________________________________________________________________________________________________________________________
+c)
+int[] values={1,2,3,4,5};
+	      for(int i=0;i<values.length;i++)
+	      {
+	      if(values[i]%2==0)
+	      values[i]=0;
+	      }
+____________________________________________________________________________________________________________________________________
+d)
+for(int i=0;i<values.length-2;i+=1)
+	      {
+	      values[i+1]=Math.max(values[i],values[i+2]);
+	      }
+____________________________________________________________________________________________________________________________________
+e)
+ int[] new_values;
+	      int n=values.length;
+	      if(values.length %2 !=0)
+	      {
+	      values[(int)n/2]=values[n-1];
+	      new_values=Arrays.copyOf(values,n-1);
+	      }
+	      else
+	      {
+	      values[n/2]=values[(n-1)];
+	      values[n/2 -1]=values[n-2];
+	      new_values=Arrays.copyOf(values,n-2);
+	      }
+
+	      values=new_values;
+____________________________________________________________________________________________________________________________________
+f.
+public static int[] move(int[]inputs)
+	{
+		int i,j=0;
+		int values[]=new int[inputs.length];
+		for(i=0;i<inputs.length;i++)
+		{
+			if(inputs[i]%2==0)
+			{
+				values[j]=inputs[i];
+				j++;
+			}	
+		}
+		for(int element:inputs)
+		{
+			if(element%2!=0)
+			{
+				values[j]=element;
+				j++;
+			}
+		}
+           return values;
+	}
+____________________________________________________________________________________________________________________________________
+g.
+public static int sec_max_of(int[]inputs)
+	{
+		Arrays.sort(inputs);
+		
+		int sec_max=inputs.length-2;
+		return inputs[sec_max];
+	}
+____________________________________________________________________________________________________________________________________
+h.
+	public static boolean is_sorted(int[]inputs)
+	{
+		for(int i=0;i<inputs.length-1;i++)
+		{
+			if(inputs[i]>inputs[i+1])
+		           return false;
+		}
+		return true;
+	}
+____________________________________________________________________________________________________________________________________
+i.
+public static boolean is_doubled(int[]inputs)
+	{
+		for(int i=0;i<inputs.length-1;i++)
+		{
+			if(inputs[i]==inputs[i+1])
+		           return true;
+		}
+		return false;
+	}
+____________________________________________________________________________________________________________________________________
+j.
+public static boolean is_doubled(int[]inputs)
+	{
+		for(int j=0;j<inputs.length;j++)
+		{
+				for(int i=j+1;i<inputs.length;i++)
+				{
+					if(inputs[i]==inputs[j])
+				           return true;
+				}
+				
+		}
+		return false;
+	}
+____________________________________________________________________________________________________________________________________

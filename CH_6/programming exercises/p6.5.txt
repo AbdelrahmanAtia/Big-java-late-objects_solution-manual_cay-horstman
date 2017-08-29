@@ -1,0 +1,39 @@
+• P 6.5 Write a method public static void removeMin that removes the minimum value from a
+partially filled array without calling other methods.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Scanner;
+public class world {
+	public static void main(String[] args) {
+		double[] values=new double[100];
+		Scanner in=new Scanner(System.in);
+		System.out.println("enter a sequence of numbers");
+		int current_size=0;
+		while(in.hasNextInt())
+		{
+			if(current_size < values.length)
+			{
+			      values[current_size]=in.nextDouble();
+			      current_size++;
+			}
+		}
+	       double[]	new_values=Arrays.copyOf(values, current_size);
+		   removeMin(new_values);
+	}
+	 public static void removeMin(double [] inputs)	
+	 {
+			 double min=inputs[0];
+			 int pos=0;
+			for(int i=0;i<inputs.length;i++)
+			{
+				if(inputs[i] < min)
+					pos=i;	
+			}
+			inputs[pos]=inputs[inputs.length-1];
+	        double[]new_inputs=Arrays.copyOf(inputs, inputs.length-1);
+	        inputs=new_inputs;
+			System.out.println(Arrays.toString(inputs));
+	 }
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

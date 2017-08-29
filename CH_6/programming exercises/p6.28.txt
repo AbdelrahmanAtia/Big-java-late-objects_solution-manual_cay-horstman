@@ -1,0 +1,31 @@
+•• P 6.28 Write a method
+public static ArrayList<Integer> mergeSorted(ArrayList<Integer> a,
+ArrayList<Integer> b)
+that merges two sorted array lists, producing a new sorted array list. Keep an index
+into each array list, indicating how much of it has been processed already. Each time,
+append the smallest unprocessed element from either array list, then advance the
+index. For example, if a is
+1 4 9 16
+and b is
+4 7 9 9 11
+then mergeSorted returns the array list
+1 4 4 7 9 9 9 11 16
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+public static ArrayList<Integer> mergeSorted(ArrayList<Integer> a,ArrayList<Integer> b)
+	{
+		ArrayList <Integer> result=new ArrayList <>();
+		for(int i=0;i<a.size();i++)
+		        result.add(a.get(i) );
+		
+		for(int i=0;i<b.size();i++)
+		          result.add(b.get(i) );
+		int [] values=new int[result.size()];
+		for(int i=0;i<result.size();i++)	
+			          values[i]=result.get(i);
+		Arrays.sort(values);
+		for(int i=0;i<values.length;i++)
+                  result.set(i, values[i]);
+		return result;
+	
+	}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

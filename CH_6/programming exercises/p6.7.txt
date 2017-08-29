@@ -1,0 +1,33 @@
+6.7 Write a method that reverses the sequence of elements in an array. For example, if
+you call the method with the array
+1 4 9 16 9 7 4 9 11
+then the array is changed to
+11 9 4 7 9 16 9 4 1
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Scanner;
+public class world {
+	public static void main(String [] args)
+	{
+		double [] inputs={5,7,9,2,5,4};
+		       inputs=reverse(inputs);
+		System.out.print(Arrays.toString(inputs));	
+	}
+	public static double [] reverse(double[] values)
+	{
+		double[] new_value=new double[values.length];
+		int j=0;
+		for(int i=values.length-1;i>=0;i--)
+		{
+			new_value[j]=values[i];
+			j++;
+		}
+		values=new_value;
+		return values;
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

@@ -1,0 +1,30 @@
+•• P 6.4 Write a method sumWithoutSmallest that computes the sum of an array of values,
+except for the smallest one, in a single loop. In the loop, update the sum and the
+smallest value. After the loop, return the difference.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		import java.util.Arrays;
+public class world {
+	public static void main(String[] args) {
+		int[] values={1,2,3,4,5};   		//any initialization for the array
+		System.out.println(sumWithoutSmallest(values));
+	}
+		public static int sumWithoutSmallest (int[] inputs)
+		{
+			int smallest=inputs[0];
+			for(int i=1;i<inputs.length;i++)
+			{
+				if(inputs[i]<smallest)
+					smallest=inputs[i];
+			}
+			int sum=0;
+			for(int element:inputs )
+			{
+				if(element!=smallest)
+					sum=sum+element;	
+			}
+			return sum;
+		}
+	}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+							  

@@ -1,0 +1,43 @@
+•• P 6.21 Write a program that reads a sequence of input values and displays a bar chart of the
+values, using asterisks, like this:
+**********************
+****************************************
+****************************
+**************************
+**************
+You may assume that all values are positive. First figure out the maximum value.
+That value’s bar should be drawn with 40 asterisks. Shorter bars should use proportionally
+fewer asterisks.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Scanner;
+import java.util.ArrayList;
+public class world {
+	public static void main(String [] args)
+	{ 
+		Scanner in=new Scanner(System.in);
+		System.out.println("enter a sequence of values:");
+		ArrayList <Integer> values=new ArrayList <Integer>();
+		while(in.hasNextInt())
+		{	
+			values.add(in.nextInt());
+		}
+                              //finding the max value in the array
+		int max=values.get(0);
+		for(int i=1;i<values.size();i++)
+		{
+			if(values.get(i)>max)
+				max=values.get(i);
+		}
+		for(int j=0;j<values.size();j++)
+		{
+			int element=values.get(j);
+			int stars=element*40/max;
+			for(int s=0;s<stars;s++)
+			{
+                                             System.out.print("*");				
+			}
+                                    System.out.println("");				
+		}	 
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

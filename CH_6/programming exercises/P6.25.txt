@@ -1,0 +1,75 @@
+••• P 6.25 Write a program that plays tic-tac-toe. The tic-tac-toe
+game is played on a 3 × 3 grid as in the photo at right. The
+game is played by two players, who take turns. The first
+player marks moves with a circle, the second with a cross.
+The player who has formed a horizontal, vertical, or diagonal
+sequence of three marks wins. Your program should
+draw the game board, ask the user for the coordinates of
+the next mark, change the players after every successful
+move, and pronounce the winner.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Scanner;
+public class world {
+	public static void main(String [] args){ 
+		Scanner in=new Scanner(System.in);
+		String[][] values=new String [3][3];
+		for(int s=0;s<3;s++)
+		{
+			for(int k=0;k<3;k++)
+				values[s][k]=" ";
+		}
+		int inputs=0;
+		boolean check=false;
+		while(inputs<9 && !check)
+		{
+			System.out.println("enter the coordinates: ");
+			int i=in.nextInt();
+			int j=in.nextInt();
+			System.out.println("enter O  or  X");
+			String input=in.next();
+			values[i][j]=input;
+		    //horizontal check
+		if(values[i][0].equals(values[i][1])&& values[i][1].equals(values[i][2]))
+			{
+			if(!(values[i][0].equals(" ")&& values[i][1].equals(" ")&&values[i][2].equals(" ")))
+					check=true;
+			}
+			//vertical check
+			else if(values[0][j].equals(values[1][j])&& values[1][j].equals(values[2][j]))
+			{
+				if(!(values[0][j].equals(" ")&&values[1][j].equals(" ")&&values[2][j].equals(" ")))
+					check=true;
+			}
+		     //diagonal check
+			else if(values[0][0].equals(values[1][1])&& values[1][1].equals(values[2][2]))
+			{
+				if(!(values[0][0].equals(" ")&& values[1][1].equals(" ")&&values[2][2].equals(" ")))
+					check=true;
+			}
+			else if(values[0][2].equals(values[1][1])&& values[1][1].equals(values[2][0]))
+			{
+                if(!(values[0][2].equals(" ")&& values[1][1].equals(" ")&&values[2][0].equals(" ")))			
+					check=true;
+			}
+		        	System.out.println("  ----------------");
+			     for(int s=0;s<3;s++)
+			     {
+						for(int k=0;k<3;k++)
+						{
+							System.out.print(" |");
+							System.out.printf("%4s",values[s][k]);	
+					    }
+						System.out.print("|");
+						System.out.println("");
+						System.out.println("  ----------------");
+		         }
+			inputs++;
+		}
+		if(check)
+           System.out.println("you are the winner");
+		else
+	           System.out.println("game ended");
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
